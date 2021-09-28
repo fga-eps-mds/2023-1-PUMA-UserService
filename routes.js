@@ -12,9 +12,15 @@ router.get('/', (req, res) =>{
 
 router.post('/aluno', (req, res) =>{//Falta tratamento dos dados
     var body = req.body;
-    res.status = 200
-
-    db.query("INSERT INTO ALUNO(nome,matricula,email,sobrenome,senha) VALUES ($1,$2,$3,$4,$5) RETURNING *", [body.nome,body.matricula,body.email,body.sobrenome,body.senha]).then( response => res.json({"created": response.rows})).catch(response => res.json)
+    db.query(
+        "INSERT INTO ALUNO(nome,matricula,email,sobrenome,senha) VALUES ($1,$2,$3,$4,$5) RETURNING *"
+        , [body.nome,body.matricula,body.email,body.sobrenome,body.senha])
+    .then((response) => {
+        res.status(200).json({ response: response.rows });
+    })
+    .catch((response) => {
+        res.status(400).json({ response: response });
+    });
 })
 
 router.get('/aluno/:matriculaId', (req, res) =>{
