@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const db = require('./dbconfig/dbConfig')
+const db = require('./dbconfig/dbConfig');
+const configRoutes = require('./src/routes/router');
 
 var app = express()
 app.use(cors())
@@ -8,11 +9,7 @@ app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/', (req,res) =>{
-    res.json({
-        Project: "Puma",
-        Service: "User-Service"
-    })
-})
+require('./src/routes/router')(app);
+configRoutes(app);
 
 app.listen(3001)
