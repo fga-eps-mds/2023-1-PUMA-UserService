@@ -13,7 +13,7 @@ routes.post('/aluno', (req, res) =>{
 
 routes.get('/aluno/:matriculaId', (req, res) =>{
 
-    var response = db.query("SELECT a.nome,a.matricula,a.sobrenome,a.email FROM ALUNO as a WHERE matricula=$1", [req.params.matriculaId]).then(response =>{
+    db.query("SELECT a.nome,a.matricula,a.sobrenome,a.email FROM ALUNO as a WHERE matricula=$1", [req.params.matriculaId]).then(response =>{
         res.json(response.rows)
     })
 })

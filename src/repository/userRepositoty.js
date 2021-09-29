@@ -7,7 +7,7 @@ const saltRounds = 10;
 function addUser(tipo, nome, matricula, email, sobrenome, senha) {
     return new Promise((resolve, reject) => {
         bcrypt.hash(senha, saltRounds, (error, hash) => {
-            
+
             if(error) {
                 reject(error);
             } else {
