@@ -9,20 +9,27 @@ function registerUser(newUser) {
         reject(error);
       } else {
         try {
-          const userId = await userRepository.addUser(name, email, hash);
-          switch(type) {
+          const userId = await userRepository.addUser(newUser, hash);
+          switch (newUser.type) {
             case 'Agente Externo':
-              await userRepository.addExternalAgent();
+              switch (newUser.externalAgentType) {
+                case 'Pessoa Fisica':
+                  await userRepository.addPhysicalAgent(userId, newUser);
+                  break;
+                case 'Pessoa Juridica':
+                  await userRepository.addJuridicalAgent(userId, newUser);
+                  break;
+              }
               break;
             case 'Aluno':
-              await userRepository.addStudent(userId, matricula);
+              await userRepository.addStudent(userId, newUser);
               break;
             case 'Professor':
-              await userRepository.addProfessor(userId, matricula);
+              await userRepository.addProfessor(userId, newUser);
               break;
           }
 
-        } catch(e) {
+        } catch (e) {
           reject(e);
         }
         resolve();
