@@ -6,14 +6,14 @@ const dbConfig = require('../../dbconfig/dbConfig');
 
 routes.post('/register', (req, res) =>{
     const body = req.body;
-    userController.registerUser(body.name, body.email, body.password, body.type, body.matricula)
+    userController.registerUser(body.newUser)
     .then(response => res.status(200).json({ response: response }))
     .catch(response =>res.status(400).json({ response: response }));
 })
 
 routes.post('/login', (req, res) =>{
     const body = req.body;
-    userRepository.logUserIn(body.email, body.password)
+    userRepository.logUserIn(body.newUser)
     .then(response => res.status(200).json({ response: response }))
     .catch(response =>res.status(400).json({ response: response }));
 })

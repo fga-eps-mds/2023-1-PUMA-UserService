@@ -2,9 +2,9 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const userRepository = require("../repository/userRepositoty");
 
-function registerUser(name, email, password, type, matricula) {
+function registerUser(newUser) {
   return new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltRounds, async (error, hash) => {
+    bcrypt.hash(newUser.password, saltRounds, async (error, hash) => {
       if (error) {
         reject(error);
       } else {
