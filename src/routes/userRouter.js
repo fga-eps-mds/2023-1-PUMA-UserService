@@ -2,7 +2,7 @@ const express = require('express');
 const routes = express.Router();
 const userController = require('../controller/userController');
 const db = require('../../dbconfig/dbConfig');
-const dbConfig = require('../../dbconfig/dbConfig');
+const userRepository = require('../repository/userRepositoty');
 
 routes.post('/register', (req, res) => {
     const body = req.body;
@@ -17,9 +17,13 @@ routes.post('/register', (req, res) => {
 
 routes.post('/login', (req, res) => {
     const body = req.body;
-    userRepository.logUserIn(body)
-        .then(response => res.status(200).json({ response: response }))
-        .catch(response => res.status(400).json({ response: response }));
+    userRepository.checkUser(body)
+        .then(userId => {
+            res.status(200).json({ userId })
+        })
+        .catch(response => {
+            res.status(400).json({ response: response })
+        });
 })
 
 routes.get('/aluno/:matriculaId', (req, res) => {

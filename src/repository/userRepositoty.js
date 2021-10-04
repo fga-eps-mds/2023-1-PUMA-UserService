@@ -74,17 +74,20 @@ function addPhysicalAgent(userId, newUser) {
   });
 }
 
-function logUserIn(email, senha) {
-  return new Promise((resolve, reject) => {
-    db.query("SELECT * FROM USER WHERE email = $1", [email]).then((response) => {
-      console.log("fonkto");
-      console.log(response);
-      resolve(response.rows);
-    }).catch((response) => {
-      console.log(response);
-      reject(response);
-    });
+function checkUser(loginUser) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.query("SELECT * FROM COMMON_USER WHERE email = $1", [loginUser.email])
+      user = user.rows[0];
+      if(await bcrypt.compare(loginUser.password, user.passwordhash)) {
+        resolve(user.userid);
+      } else {
+        reject(null);
+      }
+    } catch (e) {
+      reject(e);
+    }
   });
 }
 
-module.exports = { addUser, addProfessor, logUserIn, addStudent, addJuridicalAgent, addPhysicalAgent };
+module.exports = { addUser, addProfessor, checkUser, addStudent, addJuridicalAgent, addPhysicalAgent };
