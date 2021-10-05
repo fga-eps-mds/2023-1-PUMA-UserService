@@ -4,7 +4,7 @@ const express = require('express');
 const routes = express.Router();
 const userController = require('../controller/userController');
 const db = require('../../dbconfig/dbConfig');
-const userRepository = require('../repository/userRepositoty');
+const userRepository = require('../repository/userRepository');
 
 routes.post('/register', (req, res) => {
   const { body } = req;
