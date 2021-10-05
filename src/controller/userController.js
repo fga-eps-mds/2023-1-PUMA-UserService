@@ -2,7 +2,7 @@
 const bcrypt = require('bcrypt');
 
 const saltRounds = 10;
-const userRepository = require('../repository/userRepositoty');
+const userRepository = require('../repository/userRepository');
 
 function registerUser(newUser) {
   return new Promise((resolve, reject) => {
