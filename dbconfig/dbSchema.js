@@ -151,4 +151,5 @@ CREATE TABLE identifies (
       REFERENCES SUBJECT (subjectId),
     CONSTRAINT identifies_UK UNIQUE (subAreaId, subjectId)
 );
-`})
+`,
+});

@@ -1,6 +1,8 @@
+/* eslint-disable import/no-unresolved */
 const bcrypt = require('bcrypt');
+
 const saltRounds = 10;
-const userRepository = require("../repository/userRepositoty");
+const userRepository = require('../repository/userRepositoty');
 
 function registerUser(newUser) {
   return new Promise((resolve, reject) => {
@@ -19,6 +21,8 @@ function registerUser(newUser) {
                 case 'Pessoa Juridica':
                   await userRepository.addJuridicalAgent(userId, newUser);
                   break;
+                default:
+                  console.log('Tipo não encontrado');
               }
               break;
             case 'Aluno':
@@ -27,8 +31,9 @@ function registerUser(newUser) {
             case 'Professor':
               await userRepository.addProfessor(userId, newUser);
               break;
+            default:
+              console.log('Tipo não encontrado');
           }
-
         } catch (e) {
           reject(e);
         }
@@ -38,4 +43,4 @@ function registerUser(newUser) {
   });
 }
 
-module.exports = { registerUser }
+module.exports = { registerUser };
