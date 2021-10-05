@@ -2,7 +2,7 @@
 /* eslint-disable import/no-unresolved */
 const bcrypt = require('bcrypt');
 // eslint-disable-next-line no-unused-vars
-const User = require('../models/User');
+const User = require('../models/user');
 
 const saltRounds = 10;
 const userRepository = require('../repository/userRepository');

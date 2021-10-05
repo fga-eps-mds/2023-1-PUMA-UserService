@@ -3,6 +3,7 @@
 const express = require('express');
 const cors = require('cors');
 const environment = require('./config/environment');
+const configRoutes = require('./routes/router');
 // eslint-disable-next-line no-unused-vars
 const db = require('../dbconfig/dbConfig');
 
@@ -18,11 +19,8 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/', (req, res) => {
-  res.json({
-    Project: 'Puma',
-    Service: 'User-Service',
-  });
-});
+require('./routes/router')(app);
+
+configRoutes(app);
 
 app.listen(3001);
