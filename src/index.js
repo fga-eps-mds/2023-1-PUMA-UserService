@@ -1,10 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-<<<<<<< HEAD
 const db = require('./dbconfig/dbConfig')
-=======
-const db = require('../dbconfig/dbConfig')
->>>>>>> ea35152ad96a10613abadd2e0f2821111cb6a4e1
 
 var app = express()
 app.use(cors())
