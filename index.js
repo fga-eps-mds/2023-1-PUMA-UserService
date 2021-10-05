@@ -1,18 +1,18 @@
+/* eslint-disable import/no-unresolved */
 const express = require('express');
 const cors = require('cors');
-const db = require('./dbconfig/dbConfig')
+// eslint-disable-next-line no-unused-vars
+const db = require('./dbconfig/dbConfig');
+const configRoutes = require('./src/routes/router');
 
-var app = express()
-app.use(cors())
+const app = express();
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/', (req,res) =>{
-    res.json({
-        Project: "Puma",
-        Service: "User-Service"
-    })
-})
+require('./src/routes/router')(app);
 
-app.listen(3001)
+configRoutes(app);
+
+app.listen(3001);
