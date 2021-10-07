@@ -11,6 +11,7 @@
 */
 
 module.exports = Object.freeze({
+  DBSCHEMALEN: 15,
   DBSCHEMA: `
   CREATE TYPE stats AS ENUM ('Em alocacao', 'Aguardando aprovacao', 'Aprovado', 'Recusado');
   CREATE TABLE COMMON_USER (
@@ -82,7 +83,6 @@ module.exports = Object.freeze({
       name varchar(50) NOT NULL,
       problem VARCHAR(100) NOT NULL,
       expectedResult VARCHAR(500) NOT NULL,
-      knowledgeArea VARCHAR(100) NOT NULL,
       status stats DEFAULT 'Em alocacao' NOT NULL,
       userId SERIAL NOT NULL,
       subjectId SERIAL NOT NULL,
@@ -92,6 +92,24 @@ module.exports = Object.freeze({
         REFERENCES COMMON_USER (userId),
       CONSTRAINT PROJECT_SUBJECT_FK FOREIGN KEY (subjectId)
         REFERENCES SUBJECT (subjectId)
+  );
+
+  CREATE TABLE KNOWLEDGE_AREA (
+      knoledgeAreaId SERIAL,
+      knowledgeArea VARCHAR(100) NOT NULL,
+
+      CONSTRAINT KNOWLEDGE_AREA_PK PRIMARY KEY (knoledgeAreaId)
+  );
+
+  CREATE TABLE has (
+      knoledgeAreaId SERIAL NOT NULL,
+      projectId SERIAL NOT NULL,
+
+      CONSTRAINT has_KNOWLEGDE_AREA_FK FOREIGN KEY (knoledgeAreaId)
+        REFERENCES KNOWLEDGE_AREA (knoledgeAreaId),
+      CONSTRAINT has_PROJECT FOREIGN KEY (projectId)
+        REFERENCES PROJECT (projectId),
+      CONSTRAINT has_UK UNIQUE (knoledgeAreaId, projectId)
   );
 
   CREATE TABLE FILE (
