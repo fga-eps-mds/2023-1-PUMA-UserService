@@ -9,10 +9,8 @@ const userRepository = require('../repository/userRepository');
 routes.post('/register', (req, res) => {
   const { body } = req;
   userController.registerUser(body).then((response) => {
-    console.log('res 200');
     res.status(200).json({ response });
   }).catch((response) => {
-    console.log('res 400');
     res.status(400).json({ response });
   });
 });

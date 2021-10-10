@@ -23,4 +23,4 @@ require('./routes/router')(app);
 
 configRoutes(app);
 
-app.listen(3001)
+app.listen(3001);

@@ -177,4 +177,5 @@ module.exports = Object.freeze({
         REFERENCES SUBJECT (subjectId),
       CONSTRAINT identifies_UK UNIQUE (subAreaId, subjectId)
   );
-`})
+`,
+});
