@@ -1,5 +1,8 @@
 require('dotenv').config();
 const { Pool, Client } = require('pg');
+const environment = require('../src/config/environment');
+
+environment.configEnv();
 const connectionString = global.DB_URL;
 
 const dbSchema  = require('./dbSchema')
