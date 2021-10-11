@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start-dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "mocha './tests/*/*.test.js' --recursive"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.24.2"
+    "eslint-plugin-import": "^2.24.2",
+    "mocha": "^9.1.2"
   }
 }

@@ -25,7 +25,7 @@ function registerUser(newUser) {
                   await userRepository.addJuridicalAgent(userId, newUser);
                   break;
                 default:
-                  console.log('Tipo não encontrado');
+                  reject(new Error('Tipo não encontrado'));
               }
               break;
             case 'Aluno':
@@ -35,7 +35,7 @@ function registerUser(newUser) {
               await userRepository.addProfessor(userId, newUser);
               break;
             default:
-              console.log('Tipo não encontrado');
+              reject(new Error('Tipo não encontrado'));
           }
         } catch (e) {
           reject(e);
