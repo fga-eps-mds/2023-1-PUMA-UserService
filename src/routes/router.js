@@ -7,6 +7,7 @@ const userRoutes = require('./userRouter');
 router.get('/', (req, res) => {
   res.json({
     Project: 'Puma',
+    Service: 'User-Service',
   });
 });
 
