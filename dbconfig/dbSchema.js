@@ -98,7 +98,7 @@ module.exports = Object.freeze({
       knowledgeAreaId SERIAL,
       knowledgeArea VARCHAR(100) NOT NULL,
 
-      CONSTRAINT KNOWLEDGE_AREA_PK PRIMARY KEY (knoledgeAreaId),
+      CONSTRAINT KNOWLEDGE_AREA_PK PRIMARY KEY (knowledgeAreaId),
       CONSTRAINT KNOWLEDGE_AREA_UK UNIQUE (knowledgeArea)
   );
 
@@ -106,11 +106,11 @@ module.exports = Object.freeze({
       knowledgeAreaId SERIAL NOT NULL,
       projectId SERIAL NOT NULL,
 
-      CONSTRAINT has_KNOWLEGDE_AREA_FK FOREIGN KEY (knoledgeAreaId)
-        REFERENCES KNOWLEDGE_AREA (knoledgeAreaId),
+      CONSTRAINT has_KNOWLEGDE_AREA_FK FOREIGN KEY (knowledgeAreaId)
+        REFERENCES KNOWLEDGE_AREA (knowledgeAreaId),
       CONSTRAINT has_PROJECT FOREIGN KEY (projectId)
         REFERENCES PROJECT (projectId),
-      CONSTRAINT has_UK UNIQUE (knoledgeAreaId, projectId)
+      CONSTRAINT has_UK UNIQUE (knowledgeAreaId, projectId)
   );
 
   CREATE TABLE FILE (
