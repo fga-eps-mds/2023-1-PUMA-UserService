@@ -102,15 +102,25 @@ module.exports = Object.freeze({
       CONSTRAINT KNOWLEDGE_AREA_UK UNIQUE (knowledgeArea)
   );
 
+  CREATE TABLE SUBAREA (
+    subAreaId SERIAL,
+    knowledgeAreaId SERIAL NOT NULL,
+    description VARCHAR(100) NOT NULL,
+
+    CONSTRAINT SUBAREA_PK PRIMARY KEY (subAreaId),
+    CONSTRAINT SUBAREA_KNOWLEDGE_AREA_FK FOREIGN KEY (knowledgeAreaId)
+      REFERENCES KNOWLEDGE_AREA (knowledgeAreaId)
+  );
+
   CREATE TABLE has (
-      knowledgeAreaId SERIAL NOT NULL,
+      subAreaId SERIAL NOT NULL,
       projectId SERIAL NOT NULL,
 
-      CONSTRAINT has_KNOWLEGDE_AREA_FK FOREIGN KEY (knowledgeAreaId)
-        REFERENCES KNOWLEDGE_AREA (knowledgeAreaId),
+      CONSTRAINT has_SUBAREA_FK FOREIGN KEY (subAreaId)
+        REFERENCES SUBAREA (subAreaId),
       CONSTRAINT has_PROJECT FOREIGN KEY (projectId)
         REFERENCES PROJECT (projectId),
-      CONSTRAINT has_UK UNIQUE (knowledgeAreaId, projectId)
+      CONSTRAINT has_UK UNIQUE (subAreaId, projectId)
   );
 
   CREATE TABLE FILE (
@@ -124,15 +134,6 @@ module.exports = Object.freeze({
         REFERENCES PROJECT (projectId)
   );
 
-  CREATE TABLE SUBAREA (
-      subAreaId SERIAL,
-      knowledgeAreaId SERIAL NOT NULL,
-      description VARCHAR(100) NOT NULL,
-
-      CONSTRAINT SUBAREA_PK PRIMARY KEY (subAreaId),
-      CONSTRAINT SUBAREA_KNOWLEDGE_AREA_FK FOREIGN KEY (knowledgeAreaId)
-        REFERENCES KNOWLEDGE_AREA (knowledgeAreaId)
-  );
 
   CREATE TABLE CLASS (
       classId SERIAL,
