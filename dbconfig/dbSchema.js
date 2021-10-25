@@ -19,7 +19,7 @@ module.exports = Object.freeze({
       fullName VARCHAR(60) NOT NULL,
       email VARCHAR(70) NOT NULL,
       passwordHash VARCHAR(1000) NOT NULL,
-      phoneNumber VARCHAR(12) NOT NULL,
+      phoneNumber VARCHAR(12),
       isAdmin BOOL DEFAULT FALSE NOT NULL,
 
       CONSTRAINT COMMON_USER_PK PRIMARY KEY (userId),
@@ -29,7 +29,7 @@ module.exports = Object.freeze({
   CREATE TABLE STUDENT (
       regNumber VARCHAR(9) NOT NULL,
       softSkills VARCHAR(100) NOT NULL,
-      userId SERIAL,
+      userId SERIAL NOT NULL,
 
       CONSTRAINT STUDENT_PK PRIMARY KEY (regNumber),
       CONSTRAINT STUDENT_UK UNIQUE (userId),
@@ -42,7 +42,7 @@ module.exports = Object.freeze({
       cep VARCHAR(8) NOT NULL,
       companyName varchar(100) NOT NULL,
       socialReason VARCHAR(100) NOT NULL,
-      userId SERIAL,
+      userId SERIAL NOT NULL,
 
       CONSTRAINT JURIDICAL_AGENT_PK PRIMARY KEY(userId),
       CONSTRAINT JURIDICAL_AGENT_UK UNIQUE (cnpj),
@@ -62,7 +62,7 @@ module.exports = Object.freeze({
 
   CREATE TABLE PHYSICAL_AGENT (
       cpf VARCHAR(11) NOT NULL,
-      userId SERIAL,
+      userId SERIAL NOT NULL,
 
       CONSTRAINT PHYSICAL_AGENT_PK PRIMARY KEY(userId),
       CONSTRAINT PHYSICAL_AGENT_UK UNIQUE (cpf),
@@ -85,7 +85,7 @@ module.exports = Object.freeze({
       expectedResult VARCHAR(500) NOT NULL,
       status stats DEFAULT 'Em alocacao' NOT NULL,
       userId SERIAL NOT NULL,
-      subjectId SERIAL NOT NULL,
+      subjectId SERIAL,
 
       CONSTRAINT PROJECT_PK PRIMARY KEY (projectId),
       CONSTRAINT PROJECT_COMMON_USER_FK FOREIGN KEY (userId)
@@ -109,7 +109,8 @@ module.exports = Object.freeze({
 
     CONSTRAINT SUBAREA_PK PRIMARY KEY (subAreaId),
     CONSTRAINT SUBAREA_KNOWLEDGE_AREA_FK FOREIGN KEY (knowledgeAreaId)
-      REFERENCES KNOWLEDGE_AREA (knowledgeAreaId)
+      REFERENCES KNOWLEDGE_AREA (knowledgeAreaId),
+    CONSTRAINT SUBAREA_UK UNIQUE (description, knowledgeAreaId)
   );
 
   CREATE TABLE has (
