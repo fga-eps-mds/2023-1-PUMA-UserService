@@ -27,9 +27,9 @@ module.exports = Object.freeze({
   );
 
   CREATE TABLE STUDENT (
-      regNumber CHAR(9) NOT NULL,
+      regNumber VARCHAR(9) NOT NULL,
       softSkills VARCHAR(100) NOT NULL,
-      userId SERIAL,
+      userId SERIAL NOT NULL,
 
       CONSTRAINT STUDENT_PK PRIMARY KEY (regNumber),
       CONSTRAINT STUDENT_UK UNIQUE (userId),
@@ -38,11 +38,11 @@ module.exports = Object.freeze({
   );
 
   CREATE TABLE JURIDICAL_AGENT (
-      cnpj CHAR(14) NOT NULL,
-      cep CHAR(8) NOT NULL,
+      cnpj VARCHAR(14) NOT NULL,
+      cep VARCHAR(8) NOT NULL,
       companyName varchar(100) NOT NULL,
       socialReason VARCHAR(100) NOT NULL,
-      userId SERIAL,
+      userId SERIAL NOT NULL,
 
       CONSTRAINT JURIDICAL_AGENT_PK PRIMARY KEY(userId),
       CONSTRAINT JURIDICAL_AGENT_UK UNIQUE (cnpj),
@@ -52,7 +52,7 @@ module.exports = Object.freeze({
 
   CREATE TABLE PROFESSOR (
       regNumber SERIAL,
-      userId SERIAL,
+      userId SERIAL NOT NULL,
 
       CONSTRAINT PROFESSOR_PK PRIMARY KEY (regNumber),
       CONSTRAINT PROFESSOR_UK UNIQUE (userId),
@@ -61,8 +61,8 @@ module.exports = Object.freeze({
   );
 
   CREATE TABLE PHYSICAL_AGENT (
-      cpf CHAR(11) NOT NULL,
-      userId SERIAL,
+      cpf VARCHAR(11) NOT NULL,
+      userId SERIAL NOT NULL,
 
       CONSTRAINT PHYSICAL_AGENT_PK PRIMARY KEY(userId),
       CONSTRAINT PHYSICAL_AGENT_UK UNIQUE (cpf),
@@ -72,8 +72,8 @@ module.exports = Object.freeze({
 
   CREATE TABLE SUBJECT (
       subjectId SERIAL,
-      name CHAR(100) NOT NULL,
-      courseSyllabus CHAR(10000),
+      name VARCHAR(100) NOT NULL,
+      courseSyllabus VARCHAR(10000),
 
       CONSTRAINT SUBJECT_PK PRIMARY KEY (subjectId)
   );
@@ -85,7 +85,7 @@ module.exports = Object.freeze({
       expectedResult VARCHAR(500) NOT NULL,
       status stats DEFAULT 'Em alocacao' NOT NULL,
       userId SERIAL NOT NULL,
-      subjectId SERIAL NOT NULL,
+      subjectId SERIAL,
 
       CONSTRAINT PROJECT_PK PRIMARY KEY (projectId),
       CONSTRAINT PROJECT_COMMON_USER_FK FOREIGN KEY (userId)
@@ -95,26 +95,38 @@ module.exports = Object.freeze({
   );
 
   CREATE TABLE KNOWLEDGE_AREA (
-      knoledgeAreaId SERIAL,
+      knowledgeAreaId SERIAL,
       knowledgeArea VARCHAR(100) NOT NULL,
 
-      CONSTRAINT KNOWLEDGE_AREA_PK PRIMARY KEY (knoledgeAreaId)
+      CONSTRAINT KNOWLEDGE_AREA_PK PRIMARY KEY (knowledgeAreaId),
+      CONSTRAINT KNOWLEDGE_AREA_UK UNIQUE (knowledgeArea)
+  );
+
+  CREATE TABLE SUBAREA (
+    subAreaId SERIAL,
+    knowledgeAreaId SERIAL NOT NULL,
+    description VARCHAR(100) NOT NULL,
+
+    CONSTRAINT SUBAREA_PK PRIMARY KEY (subAreaId),
+    CONSTRAINT SUBAREA_KNOWLEDGE_AREA_FK FOREIGN KEY (knowledgeAreaId)
+      REFERENCES KNOWLEDGE_AREA (knowledgeAreaId),
+    CONSTRAINT SUBAREA_UK UNIQUE (description, knowledgeAreaId)
   );
 
   CREATE TABLE has (
-      knoledgeAreaId SERIAL NOT NULL,
+      subAreaId SERIAL NOT NULL,
       projectId SERIAL NOT NULL,
 
-      CONSTRAINT has_KNOWLEGDE_AREA_FK FOREIGN KEY (knoledgeAreaId)
-        REFERENCES KNOWLEDGE_AREA (knoledgeAreaId),
+      CONSTRAINT has_SUBAREA_FK FOREIGN KEY (subAreaId)
+        REFERENCES SUBAREA (subAreaId),
       CONSTRAINT has_PROJECT FOREIGN KEY (projectId)
         REFERENCES PROJECT (projectId),
-      CONSTRAINT has_UK UNIQUE (knoledgeAreaId, projectId)
+      CONSTRAINT has_UK UNIQUE (subAreaId, projectId)
   );
 
   CREATE TABLE FILE (
       fileId SERIAL,
-      fileName CHAR(100) NOT NULL,
+      fileName VARCHAR(100) NOT NULL,
       byteContent BYTEA NOT NULL,
       projectId SERIAL,
 
@@ -123,18 +135,12 @@ module.exports = Object.freeze({
         REFERENCES PROJECT (projectId)
   );
 
-  CREATE TABLE SUBAREA (
-      subAreaId SERIAL,
-      description CHAR(100) NOT NULL,
-
-      CONSTRAINT SUBAREA_PK PRIMARY KEY (subAreaId)
-  );
 
   CREATE TABLE CLASS (
       classId SERIAL,
-      subjectTerm CHAR(100) NOT NULL,
-      code CHAR(3) NOT NULL,
-      studentRegNumber CHAR(9),
+      subjectTerm VARCHAR(100) NOT NULL,
+      code VARCHAR(3) NOT NULL,
+      studentRegNumber VARCHAR(9),
       professorRegNumber SERIAL,
       subjectId SERIAL,
 
@@ -148,7 +154,7 @@ module.exports = Object.freeze({
   );
 
   CREATE TABLE participates (
-      regNumber CHAR(9) NOT NULL,
+      regNumber VARCHAR(9) NOT NULL,
       classId SERIAL,
 
       CONSTRAINT participates_STUDENT_FK FOREIGN KEY (regNumber)
@@ -157,7 +163,7 @@ module.exports = Object.freeze({
   );
 
   CREATE TABLE executes (
-      regNumber CHAR(9) NOT NULL,
+      regNumber VARCHAR(9) NOT NULL,
       projectId SERIAL,
 
       CONSTRAINT executes_STUDENT_FK FOREIGN KEY (regNumber)
