@@ -6,7 +6,8 @@
   "scripts": {
     "start-dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "test": "mocha './tests/*/*.test.js' --recursive"
+    "unitary-test": "nyc --reporter=cobertura --reporter=text mocha './tests/*/*.test.js' --recursive --reporter mocha-junit-reporter",
+    "test": "mocha './tests/*/*.Integrationtest.js' --recursive"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,8 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "mocha-junit-reporter": "^2.0.2",
+    "nyc": "^15.1.0",
     "pg": "^8.7.1"
   },
   "devDependencies": {
