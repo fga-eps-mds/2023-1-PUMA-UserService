@@ -25,3 +25,5 @@ console.log('Before config routes');
 configRoutes(app);
 console.log('After config routes');
 app.listen(3001);
+
+module.exports = app
