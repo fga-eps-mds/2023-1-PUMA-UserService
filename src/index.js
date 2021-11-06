@@ -2,7 +2,7 @@
 /* eslint-disable import/no-unresolved */
 const express = require('express');
 const cors = require('cors');
-const environment = require('./config/environment');
+const environment = require('./config/environment.config');
 const configRoutes = require('./routes/router');
 // eslint-disable-next-line no-unused-vars
 const db = require('../dbconfig/dbConfig');
