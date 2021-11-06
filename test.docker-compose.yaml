@@ -7,9 +7,7 @@ services:
             POSTGRES_PASSWORD: ${DB_PASS}
             POSTGRES_USER: ${DB_USER}
             POSTGRES_DB: ${DB}
-            DATABASE_URL: ${DB_URL}
-        volumes:
-            - ./dbdata:/var/lib/postgresql/data
+            DATABASE_URL: ${DB_URL_TEST}
         ports:
             - "5432:5432"
         networks:
@@ -30,6 +28,8 @@ services:
             - /app/node_modules
         networks:
             - puma-network
-          
+        command:
+          ["./wait-for-it.sh", "db-test:5432", "--", "npm","run","start"]
+
 networks:
-    puma-network:            
+    puma-network:
