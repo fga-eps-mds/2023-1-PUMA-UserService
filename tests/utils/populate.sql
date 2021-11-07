@@ -1,28 +1,28 @@
 
-INSERT INTO COMMON_USER(fullName, email, passwordHash, phoneNumber) VALUES
-  ('Gabriel Marques Tiveron', 'tiveron@email.com', 'hashzada da massa hehe', '6131385416'),
-  ('Luis Pereira Taira', 'taira@email.com', 'hashzada da massa hehe', '6131385416'),
-  ('Eduardo Vieira Lima', 'lima@email.com', 'hashzada da massa hehe', '6131385416'),
-  ('João Pedro de Aquino Corrêa Martins', 'martins@email.com', 'hashzada da massa hehe', '6131385416'),
-  ('Levi de Oliveira Queiroz', 'queiroz@email.com', 'hashzada da massa hehe', '6131385416'),
-  ('Artur Vinicius Dias Nunes', 'nunes@email.com', 'hashzada da massa hehe', '6131385416'),
-  ('Nicolas Georgeos Mantzos', 'mantzos@email.com', 'hashzada da massa hehe', '6131385416')
+INSERT INTO COMMON_USER(userId, fullName, email, passwordHash, phoneNumber) VALUES
+  (101, 'Gabriel Marques Tiveron', 'tiveron@email.com', 'hashzada da massa hehe', '6131385416'),
+  (102, 'Luis Pereira Taira', 'taira@email.com', 'hashzada da massa hehe', '6131385416'),
+  (103, 'Eduardo Vieira Lima', 'lima@email.com', 'hashzada da massa hehe', '6131385416'),
+  (104, 'João Pedro de Aquino Corrêa Martins', 'martins@email.com', 'hashzada da massa hehe', '6131385416'),
+  (105, 'Levi de Oliveira Queiroz', 'queiroz@email.com', 'hashzada da massa hehe', '6131385416'),
+  (106, 'Artur Vinicius Dias Nunes', 'nunes@email.com', 'hashzada da massa hehe', '6131385416'),
+  (107, 'Nicolas Georgeos Mantzos', 'mantzos@email.com', 'hashzada da massa hehe', '6131385416')
   ON CONFLICT DO NOTHING;
 
 INSERT INTO STUDENT(regNumber, softSkills, userId) VALUES
-  ('190142421', 'softzada', 6),
-  ('170108341', 'softzada', 5),
-  ('170051277', 'softzada', 7)
+  ('190142421', 'softzada', 105),
+  ('170108341', 'softzada', 106),
+  ('170051277', 'softzada', 107)
   ON CONFLICT DO NOTHING;
 
 INSERT INTO JURIDICAL_AGENT(cnpj, cep, companyName, socialReason, userId) VALUES
-  ('6854', '321654', 'Padoca', 'Padoca LTDA.', 1),
-  ('6548', '498431', 'Hehe', 'Hehe Co.', 2)
+  ('6854', '321654', 'Padoca', 'Padoca LTDA.', 101),
+  ('6548', '498431', 'Hehe', 'Hehe Co.', 102)
   ON  CONFLICT DO NOTHING;
 
 INSERT INTO PROFESSOR(regNumber, userId) VALUES
-  ('6843154', 3),
-  ('4354681', 4)
+  ('6843154', 103),
+  ('4354681', 104)
   ON CONFLICT DO NOTHING;
 
 INSERT INTO SUBJECT(name, courseSyllabus) VALUES

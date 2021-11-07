@@ -10,6 +10,6 @@ test:
 	echo "\033[96mRunning Tests...\033[0m" && \
 	 docker-compose -f test.docker-compose.yaml exec -T user-service-test npm run unitary-test) && \
 	echo "\033[96mGenerating test results...\033[0m" && \
-	 docker cp user-service-test:/app/test-results.xml . &&\
-	 docker cp user-service-test:/app/coverage/cobertura-coverage.xml . &&\
+	 (docker cp user-service-test:/app/test-results.xml . &&\
+	 docker cp user-service-test:/app/coverage/cobertura-coverage.xml .);\
 	 docker-compose -f test.docker-compose.yaml down

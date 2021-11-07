@@ -13,7 +13,7 @@ module.exports = {
           resolve(response.rows[0].userid);
         })
         .catch((response) => {
-          reject(response);
+          reject(response.severity);
         });
     });
   },
