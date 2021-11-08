@@ -46,17 +46,13 @@ module.exports = {
       });
     });
   },
-  
+
   checkUserAndGetType: async (user) => {
     let userId, userType;
-    try {
-      userId = await userRepository.checkUser(user);
-      userType = await userRepository.getUserType(userId);
-      
-    }catch (e) {
-      console.log(e);
-      throw(e);
-    }
+    
+    userId = await userRepository.checkUser(user);
+    userType = await userRepository.getUserType(userId);
+
     return {userId, userType};
   }
 }

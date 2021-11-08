@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Pool } = require('pg');
-const environment = require('../src/config/environment');
+const environment = require('../src/config/environment.config');
 
 environment.configEnv();
 const connectionString = global.DB_URL;
