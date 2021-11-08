@@ -1,7 +1,7 @@
 const assert = require('assert');
 
-describe('coco', () => {
-  it('shoud', () => {
+describe('test', () => {
+  it('should', () => {
     assert.equal(1, 1);
   });
 });
