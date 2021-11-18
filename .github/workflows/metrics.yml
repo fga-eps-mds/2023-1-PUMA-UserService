@@ -9,6 +9,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: dev
     steps:
     - uses: actions/checkout@v2
     - name: Set file
