@@ -9,13 +9,14 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    env:
-      ENVIRONMENT: dev
     steps:
     - uses: actions/checkout@v2
     - name: Set file
       id: filesetting
       run: |
+          touch .env
+          echo ENVIRONMENT=dev >> .env
+          cat .env
           sudo make test
   metrics:
     runs-on: ubuntu-latest
