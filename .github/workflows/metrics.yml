@@ -22,10 +22,6 @@ jobs:
           echo DB=puma >> .env
           cat .env
           sudo make test
-  metrics:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
     - name: collect
       id: metrics
       run: |
