@@ -7,7 +7,7 @@ const constants = require('../utils/constants');
 const success = constants.success;
 const fail = constants.fail
 
-describe('addUser', () => {
+describe('src/repository/userRepository.js -> addUser', () => {
 
   it('should create a user -> Professor', (done) => {
     repository.addUser(success.newUserProfessor, success.hash).then((response) => {
@@ -33,7 +33,7 @@ describe('addUser', () => {
 });
 
 
-describe('add user type()', () => {
+describe('src/repository/userRepository.js -> add user type()', () => {
   let id = 0;
   beforeEach((done) => {
     const newUser = {name: `asd${id}`, email: `asd${id}@email.com`}
@@ -104,7 +104,7 @@ describe('add user type()', () => {
 
 });
 
-describe('getUserType -> Professor', () => {
+describe('src/repository/userRepository.js -> getUserType -> Professor', () => {
   let id = 4500;
   before((done) => {
     repository.addUser({name: `erg${id}`, email: `evgb${id}@email.com`}, success.hash).then((response) => {
@@ -123,7 +123,7 @@ describe('getUserType -> Professor', () => {
   });
 });
 
-describe('getUserType -> Student', () => {
+describe('src/repository/userRepository.js -> getUserType -> Student', () => {
   let id = 5500;
   before((done) => {
     repository.addUser({name: `erg${id}`, email: `evgb${id}@email.com`}, success.hash).then((response) => {
@@ -142,7 +142,7 @@ describe('getUserType -> Student', () => {
   });
 });
 
-describe('getUserType -> physicalAgent', () => {
+describe('src/repository/userRepository.js -> getUserType -> physicalAgent', () => {
   let id = 6500;
   before((done) => {
     repository.addUser({name: `erg${id}`, email: `evgb${id}@email.com`}, success.hash).then((response) => {
@@ -161,7 +161,7 @@ describe('getUserType -> physicalAgent', () => {
   });
 });
 
-describe('getUserType -> juridicalAgent', () => {
+describe('src/repository/userRepository.js -> getUserType -> juridicalAgent', () => {
   let id = 7500;
   before((done) => {
     repository.addUser({name: `erg${id}`, email: `evgb${id}@email.com`}, success.hash).then((response) => {
@@ -180,7 +180,7 @@ describe('getUserType -> juridicalAgent', () => {
   });
 });
 
-describe('getUserType -> Failure', () => {
+describe('src/repository/userRepository.js -> getUserType -> Failure', () => {
   let id = 234
   before((done) => {
     repository.addUser({name: `fail${id}`, email: `failure${id}@email.com`}, success.hash).then((response) => {
@@ -207,7 +207,7 @@ describe('getUserType -> Failure', () => {
 
 });
 
-describe('checkUser', () => {
+describe('src/repository/userRepository.js -> checkUser', () => {
   let hash;
 
   before((done) => {

@@ -7,7 +7,7 @@ const constants = require('../utils/constants');
 const success = constants.success;
 const fail = constants.fail
 
-describe('registerUser', () =>{
+describe('src/controller/userController.js -> registerUser', () =>{
   it('should register a user -> professor', (done) => {
       controller.registerUser({
         ...success.newUserProfessor,
@@ -95,7 +95,7 @@ describe('registerUser', () =>{
 
 });
 
-describe('checkUserAndGetType', () => {
+describe('src/controller/userController.js -> checkUserAndGetType', () => {
 
   before((done) => {
     controller.registerUser({
