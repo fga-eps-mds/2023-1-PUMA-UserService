@@ -11,7 +11,8 @@ environment.configEnv();
 const app = express();
 app.disable('x-powered-by');
 const corsOptions = {
-  origin: `${global.URL_API}`,
+  // origin: `${global.URL_API}`,
+  origin:'*',
 };
 console.log('Api URL:', global.URL_API);
 app.use(cors(corsOptions));
