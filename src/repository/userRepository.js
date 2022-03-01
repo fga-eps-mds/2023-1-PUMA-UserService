@@ -6,8 +6,8 @@ module.exports = {
   addUser: (newUser, hash) => {
     return new Promise((resolve, reject) => {
       db.query(
-        'INSERT INTO COMMON_USER(fullName,email,passwordHash,isAdmin) VALUES ($1,$2,$3,$4) RETURNING *;',
-        [newUser.name, newUser.email, hash, false],
+        'INSERT INTO COMMON_USER(fullName,email,passwordHash,isAdmin,phonenumber) VALUES ($1,$2,$3,$4,$5) RETURNING *;',
+        [newUser.name, newUser.email, hash, false, newUser.phoneNumber],
       )
         .then((response) => {
           resolve(response.rows[0].userid);
