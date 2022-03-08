@@ -7,7 +7,8 @@
     "start-dev": "nodemon src/index.js",
     "start": "node src/index.js",
     "unitary-test": "nyc --reporter=cobertura --reporter=text mocha './tests/*/*.test.js' --recursive --reporter mocha-junit-reporter",
-    "test": "mocha './tests/*/*.Integrationtest.js' --recursive"
+    "test": "mocha './tests/*/*.Integrationtest.js' --recursive",
+    "lint": "./node_modules/.bin/eslint ."
   },
   "repository": {
     "type": "git",
