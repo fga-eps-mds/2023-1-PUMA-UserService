@@ -11,6 +11,9 @@ let tries = 5;
 
 const pool = new Pool({
   connectionString,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 while (tries > 0) {
@@ -31,9 +34,7 @@ while (tries > 0) {
         });
       } else if (res.rowCount !== dbSchema.DBSCHEMALEN) {
         throw new Error('\x1b[33mFaulty database in project\n\x1b[33mDelete dbdata and start project again');
-      }
-
-      else console.log('Database \x1b[32mOK\x1b[0m');
+      } else console.log('Database \x1b[32mOK\x1b[0m');
     });
     break;
   } catch (err) {
