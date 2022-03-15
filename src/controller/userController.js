@@ -52,5 +52,26 @@ module.exports = {
     userType = await userRepository.getUserType(userId);
 
     return {userId, userType};
+  }, 
+   
+  updatePassword: async (user) => {
+    const { email, password } = user;
+    console.log(user);
+    return new Promise ((resolve, reject) => {
+      try {
+        const { email, password } = user;
+      console.log(user);
+      bcrypt.hash(password, saltRounds, async (error, hash) => {
+        if (error) {
+          reject(error);
+        } else{
+          const user = await userRepository.updateUserPassword(email, hash);
+          
+      }});
+      resolve({email});
+      } catch(e){
+        console.log(e);
+      }
+    })
   }
 }
