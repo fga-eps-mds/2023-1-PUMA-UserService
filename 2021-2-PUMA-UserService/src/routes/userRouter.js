@@ -35,13 +35,4 @@ routes.get('/', (req, res) => {
   });
 });
 
-routes.put('/password/:email', (req, res) => {
-  const {body, params} = req;
-  userController.updatePassword({...body, ...params}).then(({email}) => {
-    res.status(200).json({email});
-  }).catch((response) => {
-    res.status(400).json({response});
-  })
-});
-
 module.exports = routes;
