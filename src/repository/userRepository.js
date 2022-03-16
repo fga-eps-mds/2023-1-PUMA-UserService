@@ -51,8 +51,8 @@ module.exports = {
   addJuridicalAgent: (userId, newUser) => {
     return new Promise((resolve, reject) => {
       db.query(
-        'INSERT INTO JURIDICAL_AGENT(userid,cnpj,cep,companyName,socialReason) VALUES ($1,$2,$3,$4,$5) RETURNING *;',
-        [userId, newUser.cnpj, newUser.cep, newUser.companyName, newUser.socialReason],
+        'INSERT INTO JURIDICAL_AGENT(userid,cnpj,companyName,socialReason) VALUES ($1,$2,$3,$4) RETURNING *;',
+        [userId, newUser.cnpj, newUser.companyName, newUser.socialReason],
       )
         .then((response) => {
           resolve(response.rows[0].userid);
