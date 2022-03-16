@@ -17,11 +17,11 @@ routes.post('/register', (req, res) => {
 
 routes.post('/login', (req, res) => {
   const { body } = req;
-  userController.checkUserAndGetType(body).then(({userId, userType}) => {
-      res.status(200).json({ userId, userType });
-    }).catch((response) => {
-      res.status(400).json({ response });
-    });
+  userController.checkUserAndGetType(body).then((data) => {
+    res.status(200).json({ ...data });
+  }).catch((response) => {
+    res.status(400).json({ response });
+  });
 });
 
 routes.get('/aluno/:matriculaId', (req, res) => {
