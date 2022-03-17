@@ -8,17 +8,17 @@ routes.post('/register', (req, res) => {
   const { body } = req;
   userController.registerUser(body).then((response) => {
     res.status(200).json({ response });
-  }).catch((response) => {
-    res.status(400).json({ response });
+  }).catch((error) => {
+    res.status(400).json({ error });
   });
 });
 
 routes.post('/login', (req, res) => {
   const { body } = req;
-  userController.checkUserAndGetType(body).then(({ userId, userType }) => {
-    res.status(200).json({ userId, userType });
-  }).catch((response) => {
-    res.status(400).json({ response });
+  userController.checkUserAndGetType(body).then((response) => {
+    res.status(200).json({ ...response });
+  }).catch((error) => {
+    res.status(400).json({ error });
   });
 });
 

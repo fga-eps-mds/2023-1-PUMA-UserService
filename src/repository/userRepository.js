@@ -96,27 +96,45 @@ module.exports = {
     });
   },
 
-  getUserType: async (userId) => {
-    try{
+  getUserData: async (userId) => {
+    try {
+      let type = null;
+
+      const userData = await db.query('SELECT * FROM COMMON_USER WHERE userId = $1', [userId]);
+      if (userData.rows[0].isadmin) {
+        type = 'Administrador';
+      }
+
       const professorResult = await db.query('SELECT * FROM PROFESSOR WHERE userId = $1', [userId]);
-      if(professorResult.rows[0]) {
-        return 'Professor';
+      if (professorResult.rows[0]) {
+        type = 'Professor';
       }
+
       const studentResult = await db.query('SELECT * FROM STUDENT WHERE userId = $1', [userId]);
-      if(studentResult.rows[0]) {
-        return 'Aluno';
+      if (studentResult.rows[0]) {
+        type = 'Aluno';
       }
+
       const physicalAgentResult = await db.query('SELECT * FROM PHYSICAL_AGENT WHERE userId = $1', [userId]);
-      if(physicalAgentResult.rows[0]) {
-        return 'Agente Externo';
+      if (physicalAgentResult.rows[0]) {
+        type = 'Agente Externo';
       }
+
       const juridicalAgentResult = await db.query('SELECT * FROM JURIDICAL_AGENT WHERE userId = $1', [userId]);
-      if(juridicalAgentResult.rows[0]) {
-        return 'Agente Externo';
+      if (juridicalAgentResult.rows[0]) {
+        type = 'Agente Externo';
       }
-    } catch(e) {
-      throw(e);
+
+      return {
+        userId: userData.rows[0].userid,
+        fullName: userData.rows[0].fullname,
+        email: userData.rows[0].email,
+        type,
+      }
+
+    } catch (e) {
+      throw (e);
     }
-    throw(new Error('User not found'));
+    throw (new Error('User not found'));
   }
 }

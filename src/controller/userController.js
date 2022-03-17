@@ -46,11 +46,11 @@ module.exports = {
   },
 
   checkUserAndGetType: async (user) => {
-    let userId, userType;
-    
-    userId = await userRepository.checkUser(user);
-    userType = await userRepository.getUserType(userId);
+    let userId;
 
-    return {userId, userType};
+    userId = await userRepository.checkUser(user);
+    userData = await userRepository.getUserData(userId);
+
+    return { ...userData };
   }
 }
