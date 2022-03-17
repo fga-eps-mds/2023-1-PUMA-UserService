@@ -12,7 +12,7 @@ const app = express();
 app.disable('x-powered-by');
 const corsOptions = {
   // origin: `${global.URL_API}`,
-  origin:'*',
+  origin: '*',
 };
 console.log('Api URL:', global.URL_API);
 app.use(cors(corsOptions));
@@ -25,6 +25,11 @@ require('./routes/router')(app);
 console.log('Before config routes');
 configRoutes(app);
 console.log('After config routes');
-app.listen(3001);
 
-module.exports = app
+const PORT = process.env.PORT || 3001;
+
+app.listen(PORT, () => {
+  console.log(`Server running on PORT: ${PORT}`);
+});
+
+module.exports = app;
