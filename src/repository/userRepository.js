@@ -105,8 +105,6 @@ module.exports = {
         type = 'Administrador';
       }
 
-      console.log('==> ', userData.rows)
-
       const professorResult = await db.query('SELECT * FROM PROFESSOR WHERE userId = $1', [userId]);
       if (professorResult.rows[0]) {
         type = 'Professor';
