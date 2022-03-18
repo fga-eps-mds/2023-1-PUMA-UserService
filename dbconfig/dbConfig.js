@@ -9,12 +9,21 @@ const dbSchema = require('./dbSchema');
 
 let tries = 5;
 
-const pool = new Pool({
+let settings = {
   connectionString,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
+};
+
+if(process.env.ENVIRONMENT === 'test') {
+  settings = {
+    ...settings,
+    ssl: {
+      rejectUnauthorized: false,
+    }
+  }
+}
+
+console.log(settings);
+const pool = new Pool(settings);
 
 while (tries > 0) {
   try {
