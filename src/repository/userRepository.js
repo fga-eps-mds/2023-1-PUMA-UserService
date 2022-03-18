@@ -6,8 +6,8 @@ module.exports = {
   addUser: (newUser, hash) => {
     return new Promise((resolve, reject) => {
       db.query(
-        'INSERT INTO COMMON_USER(fullName,email,passwordHash,isAdmin) VALUES ($1,$2,$3,$4) RETURNING *;',
-        [newUser.name, newUser.email, hash, false],
+        'INSERT INTO COMMON_USER(fullName,email,passwordHash,isAdmin,phoneNumber) VALUES ($1,$2,$3,$4,$5) RETURNING *;',
+        [newUser.name, newUser.email, hash, false, newUser.phoneNumber],
       )
         .then((response) => {
           resolve(response.rows[0].userid);
@@ -51,8 +51,8 @@ module.exports = {
   addJuridicalAgent: (userId, newUser) => {
     return new Promise((resolve, reject) => {
       db.query(
-        'INSERT INTO JURIDICAL_AGENT(userid,cnpj,cep,companyName,socialReason) VALUES ($1,$2,$3,$4,$5) RETURNING *;',
-        [userId, newUser.cnpj, newUser.cep, newUser.companyName, newUser.socialReason],
+        'INSERT INTO JURIDICAL_AGENT(userid,cnpj,companyName,socialReason) VALUES ($1,$2,$3,$4) RETURNING *;',
+        [userId, newUser.cnpj, newUser.companyName, newUser.socialReason],
       )
         .then((response) => {
           resolve(response.rows[0].userid);
@@ -87,7 +87,6 @@ module.exports = {
         if (await bcrypt.compare(loginUser.password, user.passwordhash)) {
           resolve(user.userid);
         } else {
-          // eslint-disable-next-line prefer-promise-reject-errors
           reject(null);
         }
       } catch (e) {
@@ -96,27 +95,66 @@ module.exports = {
     });
   },
 
-  getUserType: async (userId) => {
-    try{
+  getUserData: async (userId) => {
+    try {
+      let type = null;
+
+      const userData = await db.query('SELECT * FROM COMMON_USER WHERE userId = $1', [userId]);
+      if (userData.rows[0].isadmin) {
+        type = 'Administrador';
+      }
+
       const professorResult = await db.query('SELECT * FROM PROFESSOR WHERE userId = $1', [userId]);
-      if(professorResult.rows[0]) {
-        return 'Professor';
+      if (professorResult.rows[0]) {
+        type = 'Professor';
       }
+
       const studentResult = await db.query('SELECT * FROM STUDENT WHERE userId = $1', [userId]);
-      if(studentResult.rows[0]) {
-        return 'Aluno';
+      if (studentResult.rows[0]) {
+        type = 'Aluno';
       }
+
       const physicalAgentResult = await db.query('SELECT * FROM PHYSICAL_AGENT WHERE userId = $1', [userId]);
-      if(physicalAgentResult.rows[0]) {
-        return 'Agente Externo';
+      if (physicalAgentResult.rows[0]) {
+        type = 'Agente Externo';
       }
+
       const juridicalAgentResult = await db.query('SELECT * FROM JURIDICAL_AGENT WHERE userId = $1', [userId]);
-      if(juridicalAgentResult.rows[0]) {
-        return 'Agente Externo';
+      if (juridicalAgentResult.rows[0]) {
+        type = 'Agente Externo';
       }
-    } catch(e) {
-      throw(e);
+
+      return {
+        userId: userData.rows[0].userid,
+        fullName: userData.rows[0].fullname,
+        email: userData.rows[0].email,
+        type,
+      }
+
+    } catch (e) {
+      throw (e);
     }
-    throw(new Error('User not found'));
+    throw (new Error('User not found'));
+  },
+
+  updateUserPassword: async (email, hash) => {
+    try {
+      return new Promise((resolve, reject) => {
+        db.query(
+          'UPDATE COMMON_USER SET passwordHash = $1 WHERE email = $2 RETURNING *;',
+          [hash, email],
+        )
+          .then((response) => {
+            console.log(response)
+            resolve(response.rows[0]);
+          })
+          .catch((response) => {
+            reject(response);
+          });
+      });
+    } catch (e) {
+      reject(e);
+    }
   }
 }
+

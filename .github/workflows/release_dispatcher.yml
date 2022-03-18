@@ -13,5 +13,5 @@ jobs:
           repo_token: ${{ secrets.REPO_TOKEN }}
           event_type: event_name
           repositories: |
-            fga-eps-mds/2021-1-PUMA
-          client_payload: '{"repo_name": "${{ env.REPO_NAME }}"}'
+            fga-eps-mds/2021-2-PUMA-Doc
+          client_payload: '{"repo_name": "${{ env.REPO_NAME }}", "version": "${{ secrets.VERSION }}"}'
