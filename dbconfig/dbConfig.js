@@ -11,9 +11,9 @@ let tries = 5;
 
 const pool = new Pool({
   connectionString,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  /*   ssl: {
+      rejectUnauthorized: false,
+    }, */
 });
 
 while (tries > 0) {
