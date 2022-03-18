@@ -87,7 +87,6 @@ module.exports = {
         if (await bcrypt.compare(loginUser.password, user.passwordhash)) {
           resolve(user.userid);
         } else {
-          // eslint-disable-next-line prefer-promise-reject-errors
           reject(null);
         }
       } catch (e) {
@@ -136,5 +135,26 @@ module.exports = {
       throw (e);
     }
     throw (new Error('User not found'));
+  },
+
+  updateUserPassword: async (email, hash) => {
+    try {
+      return new Promise((resolve, reject) => {
+        db.query(
+          'UPDATE COMMON_USER SET passwordHash = $1 WHERE email = $2 RETURNING *;',
+          [hash, email],
+        )
+          .then((response) => {
+            console.log(response)
+            resolve(response.rows[0]);
+          })
+          .catch((response) => {
+            reject(response);
+          });
+      });
+    } catch (e) {
+      reject(e);
+    }
   }
 }
+

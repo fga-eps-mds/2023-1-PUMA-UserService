@@ -45,12 +45,30 @@ module.exports = {
     });
   },
 
-  checkUserAndGetType: async (user) => {
+  checkUserAndGetUserData: async (user) => {
     let userId;
 
     userId = await userRepository.checkUser(user);
     userData = await userRepository.getUserData(userId);
 
     return { ...userData };
+  },
+
+  updatePassword: async (user) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const { email, password } = user;
+        bcrypt.hash(password, saltRounds, async (error, hash) => {
+          if (error) {
+            reject(error);
+          } else {
+            const user = await userRepository.updateUserPassword(email, hash);
+          }
+        });
+        resolve({ email });
+      } catch (e) {
+        console.log(e);
+      }
+    })
   }
 }
