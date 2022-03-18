@@ -5,11 +5,11 @@ const dbSchema = require('./dbSchema');
 
 environment.configEnv();
 
-const connectionString = global.DB_URL;
-
 let tries = 5;
 
-const settings = { connectionString };
+const connectionString = global.DB_URL;
+
+let settings = { connectionString };
 
 if (process.env.ENVIRONMENT === 'test') {
   settings = {
@@ -19,8 +19,6 @@ if (process.env.ENVIRONMENT === 'test') {
     }
   }
 }
-
-console.log(settings);
 
 const pool = new Pool(settings);
 
