@@ -73,7 +73,7 @@ module.exports = Object.freeze({
       CONSTRAINT SUBJECT_PK PRIMARY KEY (subjectId)
     );
 
-    CREATE TYPE stats_project AS ENUM ('SB', 'AN', 'AC', 'RC', 'DT', 'EX', 'EC');
+    CREATE TYPE stats_project AS ENUM ('SB', 'AN', 'AC', 'RC', 'IC', 'EX', 'EC');
 
     CREATE TABLE PROJECT (
       projectId SERIAL,
@@ -81,6 +81,7 @@ module.exports = Object.freeze({
       subjectId SERIAL,
       name varchar(100) NOT NULL,
       expectedResult VARCHAR(500) NOT NULL,
+      feedback VARCHAR(500),
       problem VARCHAR(1000) NOT NULL,
       status stats_project DEFAULT 'SB' NOT NULL,
       createdAt TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -170,24 +171,24 @@ module.exports = Object.freeze({
       CONSTRAINT POST_PK PRIMARY KEY (postId)
     );
 
-    CREATE TABLE has (
+    CREATE TABLE abstracts (
       keywordId SERIAL NOT NULL,
       projectId SERIAL NOT NULL,
       main BOOL DEFAULT FALSE NOT NULL,
 
-      CONSTRAINT has_KEYWORD_FK FOREIGN KEY (keywordId) 
+      CONSTRAINT abstracts_KEYWORD_FK FOREIGN KEY (keywordId) 
         REFERENCES KEYWORD(keywordId),
-      CONSTRAINT has_PROJECT_FK FOREIGN KEY (projectId) 
+      CONSTRAINT abstracts_PROJECT_FK FOREIGN KEY (projectId) 
         REFERENCES PROJECT(projectId)
     );
 
-    CREATE TABLE resume (
+    CREATE TABLE summarize (
       keywordId SERIAL NOT NULL,
       subjectId SERIAL NOT NULL,
 
-      CONSTRAINT resume_KEYWORD_FK FOREIGN KEY (keywordId) 
+      CONSTRAINT summarize_KEYWORD_FK FOREIGN KEY (keywordId) 
         REFERENCES KEYWORD(keywordId),
-      CONSTRAINT has_SUBJECT_FK FOREIGN KEY (subjectId) 
+      CONSTRAINT summarize_SUBJECT_FK FOREIGN KEY (subjectId) 
         REFERENCES SUBJECT(subjectId)
     );
 
