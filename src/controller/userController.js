@@ -74,8 +74,20 @@ module.exports = {
     try {
       const { email } = user;
 
-      const info = emailService.sendEmail('puma@gmail.com', email);
-      resolve(info);
+      userRepository.checkUserByEmail(email)
+        .then(async (response) => {
+          if (response.rows.length > 0) {
+            const info = await emailService.sendEmail('puma@gmail.com', email);
+            resolve({
+              ...info,
+              status: 200,
+            });
+          } else {
+            resolve({
+              status: 404,
+            });
+          }
+        });
     } catch (e) {
       reject(e);
     }

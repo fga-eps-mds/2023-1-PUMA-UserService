@@ -41,18 +41,21 @@ routes.put('/password/:email', (req, res) => {
     res.status(200).json({ email });
   }).catch((response) => {
     res.status(400).json({ response });
-  })
+  });
 });
 
 routes.post('/recover', async (req, res) => {
   const { body } = req;
 
   userController.recoverPassword(body).then((response) => {
-    res.status(200).json({ response });
+    if (response.status === 404) {
+      res.status(404).json({ response });
+    } else {
+      res.status(200).json({ response });
+    }
   }).catch((response) => {
     res.status(400).json({ response });
   });
 });
-
 
 module.exports = routes;
