@@ -89,9 +89,6 @@ module.exports = {
       let type = null;
 
       const userData = await db.query('SELECT * FROM COMMON_USER WHERE userId = $1', [userId]);
-      if (userData.rows[0].isadmin) {
-        type = 'Administrador';
-      }
 
       const professorResult = await db.query('SELECT * FROM PROFESSOR WHERE userId = $1', [userId]);
       if (professorResult.rows[0]) {
@@ -117,6 +114,7 @@ module.exports = {
         userId: userData.rows[0].userid,
         fullName: userData.rows[0].fullname,
         email: userData.rows[0].email,
+        isAdmin: userData.rows[0].isadmin,
         type,
       };
     } catch (e) {
