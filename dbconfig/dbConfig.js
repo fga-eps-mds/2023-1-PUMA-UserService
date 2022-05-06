@@ -11,7 +11,7 @@ const connectionString = global.DB_URL;
 
 let settings = { connectionString };
 
-if (process.env.ENVIRONMENT === 'test') {
+if (process.env.ENVIRONMENT === 'hom') {
   settings = {
     ...settings,
     ssl: {
