@@ -12,10 +12,12 @@ Para utilizar o projeto com todos os microsserviços, siga as intruções de com
 
 ``` $ sudo docker run -p 3001:3001 userservice ```
 
+É necessário preencher o arquivo .env na raiz com as informações necessárias.
+
 Para rodar os testes, execute:
 
 ``` $ sudo make test```
 
 ``` $ sudo make test-debug```
 
-É necessário preencher o arquivo .env na raiz com as informações necessárias
+
