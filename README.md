@@ -1,8 +1,5 @@
 # 2021-1-PUMA-UserService
 
-[![Build Status](https://dev.azure.com/puma-eps/Puma/_apis/build/status/UserService-CI)](https://dev.azure.com/puma-eps/Puma/_build/latest?definitionId=6)
-![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/puma-eps/Puma/6?style=flat-square)
-
 ## Objetivo
 
 Esse serviço é responsável por lidar com todas as operações que envolvem usuários no projeto Puma.
@@ -15,8 +12,10 @@ Para utilizar o projeto com todos os microsserviços, siga as intruções de com
 
 ``` $ sudo docker run -p 3001:3001 userservice ```
 
-Para rodar os testes unitários, execute:
+Para rodar os testes, execute:
 
-``` $ sudo make test ```
+``` $ sudo make test```
+
+``` $ sudo make test-debug```
 
 É necessário preencher o arquivo .env na raiz com as informações necessárias
