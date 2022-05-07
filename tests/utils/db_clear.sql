@@ -1,0 +1,23 @@
+TRUNCATE TABLE 
+    lectures,
+    is_assigned,
+    is_registered,
+    participate,
+    identifies,
+    summarize,
+    abstracts,
+    TEAM,
+    PROJECT,
+    KEYWORD,
+    SUBAREA,
+    KNOWLEDGE_AREA,
+    SEMESTER,
+    SUBJECT,
+    PROFESSOR,
+    PHYSICAL_AGENT,
+    JURIDICAL_AGENT,
+    STUDENT,
+    COMMON_USER,
+    POST,
+    FILE 
+    RESTART IDENTITY;

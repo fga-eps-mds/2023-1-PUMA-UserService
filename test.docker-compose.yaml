@@ -1,8 +1,8 @@
 version: "3"
 services:
-    db-test:
+    dbtest:
         image: postgres
-        container_name: db-test
+        container_name: dbtest
         environment:
             POSTGRES_PASSWORD: ${DB_PASS}
             POSTGRES_USER: ${DB_USER}
@@ -22,14 +22,21 @@ services:
         ports:
             - "3001:3001"
         depends_on:
-            - db-test
+            - dbtest
         volumes:
             - ./:/app
             - /app/node_modules
         networks:
             - puma-network
         command:
-          ["./wait-for-it.sh", "db-test:5432", "--", "npm","run","start"]
+            [
+                "./wait-for-it.sh",
+                "dbtest:5432",
+                "--",
+                "npm",
+                "run",
+                "start"
+            ]
 
 networks:
     puma-network:
