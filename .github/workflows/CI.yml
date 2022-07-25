@@ -1,0 +1,23 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js 14.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 14.x
+
+    - name: Run npm install
+      run: npm install
+
+    # run nyc
+    # run SonarCloud
