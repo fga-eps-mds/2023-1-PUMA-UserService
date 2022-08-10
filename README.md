@@ -2,6 +2,7 @@
 
 ## Objetivo
 
+Desenvolvido para manter o controle de usuários, desde sua criação até o controle das rotas de acesso permitidas, criação de times dentre outros.
 Esse serviço é responsável por lidar com todas as operações que envolvem usuários no projeto Puma. Utiliza das entidades COMMON_USER, STUDENT, PROFESSOR, JURIDICAL_AGENT e PHYSICAL_AGENT no banco de dados.
 
 ## Endpoints
