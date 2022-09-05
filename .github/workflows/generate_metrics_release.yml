@@ -3,6 +3,9 @@ name: Generate Metrics Release
 on:
   release:
     types: [released]
+  pull_request:
+    types:
+      - closed
 
 jobs:
   send-release:
