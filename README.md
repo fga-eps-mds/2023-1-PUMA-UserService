@@ -120,11 +120,21 @@ body: {email: <email>}
 
 ### Como rodar
 
-Para utilizar o projeto com todos os microsserviços, siga as intruções de como rodar no [Api Gateway](https://github.com/fga-eps-mds/2021-1-PUMA-ApiGateway). Para rodar este serviço individualmente, execute:
+Para utilizar o projeto com todos os microsserviços, siga as intruções de como rodar no [Api Gateway](https://github.com/fga-eps-mds/2021-1-PUMA-ApiGateway). Para buildar e iniciar este serviço individualmente, execute:
 
-``` $ sudo docker build -t userservice -f dev.Dockerfile . ```
+``` $ make dev ```
 
-``` $ sudo docker run -p 3001:3001 userservice ```
+Para apenas buildar, execute:
+
+```$ make build ```
+
+Para apenas iniciar, execute:
+
+```$ make run ```
+
+Para encerrar os containers de desenvolvimento execute:
+
+``` $ make down ```
 
 Para rodar os testes, execute:
 
