@@ -24,6 +24,14 @@ dev:
 	chmod +x ../${USER_PATH}/wait-for-it.sh && \
 	sudo docker-compose -f docker-compose.yaml up --build
 
-#build:
+build:
+	chmod +x ../${USER_PATH}/wait-for-it.sh && \
+	sudo docker-compose -f docker-compose.yaml build
 
-#run:
+run:
+	chmod +x ../${USER_PATH}/wait-for-it.sh && \
+	sudo docker-compose -f docker-compose.yaml up
+
+down:
+	chmod +x ../${USER_PATH}/wait-for-it.sh && \
+	sudo docker-compose -f docker-compose.yaml down -v
