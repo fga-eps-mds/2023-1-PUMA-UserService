@@ -20,6 +20,10 @@ test-debug:
 	sudo docker-compose -f test.docker-compose.yaml exec -T user-service-test npm run test-debug);\
 	sudo docker-compose -f test.docker-compose.yaml down
 
-up-build:
+dev:
 	chmod +x ../${USER_PATH}/wait-for-it.sh && \
 	sudo docker-compose -f docker-compose.yaml up --build
+
+#build:
+
+#run:

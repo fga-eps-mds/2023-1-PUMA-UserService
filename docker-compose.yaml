@@ -1,8 +1,8 @@
 version: "3"
 services:
-    db:
+    db-user-dev:
         image: postgres
-        container_name: db
+        container_name: db-user-dev
         environment:
             POSTGRES_PASSWORD: ${DB_PASS}
             POSTGRES_USER: ${DB_USER}
@@ -14,8 +14,8 @@ services:
             - "5432:5432"
         networks:
             - puma-network
-    user-microservice:
-        container_name: user-microservice
+    user-service-dev:
+        container_name: user-service-dev
         environment:
             ENVIRONMENT: dev
         build:
@@ -24,7 +24,7 @@ services:
         ports:
             - "3001:3001"
         depends_on:
-            - db
+            - db-user-dev
         volumes:
             - ../${USER_PATH}:/app
             - /app/node_modules
