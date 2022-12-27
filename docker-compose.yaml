@@ -7,7 +7,7 @@ services:
             POSTGRES_PASSWORD: ${DB_PASS}
             POSTGRES_USER: ${DB_USER}
             POSTGRES_DB: ${DB}
-            DATABASE_URL: ${DB_URL}
+            DATABASE_URL: ${DB_URL_DEV}
         volumes:
             - ./dbdata:/var/lib/postgresql/data
         ports:
@@ -17,10 +17,10 @@ services:
     user-service-dev:
         container_name: user-service-dev
         environment:
-            ENVIRONMENT: dev
+            ENVIRONMENT: service-dev
         build:
             context: ../${USER_PATH}/
-            dockerfile: dev.Dockerfile
+            dockerfile: dev.service.Dockerfile
         ports:
             - "3001:3001"
         depends_on:
