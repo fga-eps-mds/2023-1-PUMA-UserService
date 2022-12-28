@@ -1,13 +1,15 @@
 version: "3"
 services:
-    dbtest:
+    db-user-test:
         image: postgres
-        container_name: dbtest
+        container_name: db-user-test
         environment:
             POSTGRES_PASSWORD: ${DB_PASS}
             POSTGRES_USER: ${DB_USER}
             POSTGRES_DB: ${DB}
             DATABASE_URL: ${DB_URL_TEST}
+        volumes:
+            - ./dbdata:/var/lib/postgresql/data
         ports:
             - "5432:5432"
         networks:
@@ -17,26 +19,17 @@ services:
         environment:
             ENVIRONMENT: test
         build:
-            context: .
-            dockerfile: dev.Dockerfile
+            context: ../${USER_PATH}/
+            dockerfile: test.service.Dockerfile
         ports:
             - "3001:3001"
         depends_on:
-            - dbtest
+            - db-user-test
         volumes:
-            - ./:/app
+            - ../${USER_PATH}:/app
             - /app/node_modules
         networks:
             - puma-network
-        command:
-            [
-                "./wait-for-it.sh",
-                "dbtest:5432",
-                "--",
-                "npm",
-                "run",
-                "start"
-            ]
 
 networks:
-    puma-network:
+    puma-network: 
