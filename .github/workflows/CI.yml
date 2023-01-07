@@ -16,7 +16,6 @@ jobs:
     services:
       dbtest:
         image: postgres
-        container_name: dbtest
         env:
             POSTGRES_PASSWORD: "pumaadmin"
             POSTGRES_USER: "pumaadmin"
