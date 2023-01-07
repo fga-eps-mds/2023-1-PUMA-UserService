@@ -13,9 +13,23 @@ jobs:
     defaults:
       run:
         working-directory: ./
+    services:
+      dbtest:
+        image: postgres
+        container_name: dbtest
+        env:
+            POSTGRES_PASSWORD: "pumaadmin"
+            POSTGRES_USER: "pumaadmin"
+            POSTGRES_DB: "puma"
+            DATABASE_URL: "postgres://pumaadmin:pumaadmin@dbtest:5432/puma"
+        ports:
+            - "5432:5432"
+    env:
+      DB_URL: "postgres://pumaadmin:pumaadmin@dbtest:5432/puma"
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Use Node.js 14.x
       uses: actions/setup-node@v3
       with:
@@ -26,9 +40,6 @@ jobs:
     
     - name: Test and Coverage
       run: npm run test-coverage
-
-    #- name: Run Tests
-    #  run: npm test
 
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
