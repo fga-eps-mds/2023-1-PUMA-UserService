@@ -17,9 +17,9 @@ jobs:
       dbtest:
         image: postgres
         env:
-            POSTGRES_PASSWORD: "pumaadmin"
-            POSTGRES_USER: "pumaadmin"
-            POSTGRES_DB: "puma"
+            POSTGRES_PASSWORD: pumaadmin
+            POSTGRES_USER: pumaadmin
+            POSTGRES_DB: puma
             DATABASE_URL: "postgres://pumaadmin:pumaadmin@dbtest:5432/puma"
         ports:
             - "5432:5432"
