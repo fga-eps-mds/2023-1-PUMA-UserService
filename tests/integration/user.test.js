@@ -5,6 +5,8 @@ const request = require('supertest');
 const app = require('../utils/testapp');
 const CONSTANTS = require('../utils/constants');
 const environment = require('../../src/config/environment.config');
+const { Pool } = require('pg');
+
 
 environment.configEnv();
 
@@ -233,6 +235,19 @@ describe('Register Failure', () => {
             .expect('Content-Type', /json/)
             .expect(400)
             .then(() => {
+                done();
+            }).catch((error) => {
+                done(new Error(error));
+            });
+    });
+});
+
+describe('Data Query', () => {
+    it('Should get student by matricula', (done) => {
+        request(app)
+            .get('/aluno/' + CONSTANTS.USER.REGISTER.STUDENT.SUCCESS.T1.matricula)
+            .expect(200)
+            .then((response) => {
                 done();
             }).catch((error) => {
                 done(new Error(error));
