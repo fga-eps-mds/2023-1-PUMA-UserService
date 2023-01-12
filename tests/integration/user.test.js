@@ -254,3 +254,19 @@ describe('Data Query', () => {
             });
     });
 });
+
+
+describe('Initial page', () => {
+    it('Should get initial page', (done) => {
+        request(app)
+            .get('/')
+            .expect(200)
+            .then(() => {
+                done();
+            }).catch((error) => {
+                done(new Error(error));
+            });
+    });
+});
+
+
