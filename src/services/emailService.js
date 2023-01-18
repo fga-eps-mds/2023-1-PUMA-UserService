@@ -4,11 +4,10 @@ module.exports = {
   async sendEmail(mailerAddress, receiverAddress) {
     const settings = {
       service: process.env.EMAIL_SERVICE,
-      host: process.env.EMAIL_HOST,
       port: parseInt(process.env.EMAIL_PORT, 10),
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: process.env.GMAIL_ACCOUNT,
+        pass: process.env.GMAIL_APP_PASS,
       },
     };
 
@@ -24,7 +23,11 @@ module.exports = {
         address: receiverAddress,
       },
       subject: 'Puma - Recuperação de Senha',
-      html: "<h1> Clique no link para recuperar sua senha: <a href='https://puma-2021-2.netlify.app/usuario/atualizar-senha'>Puma</a> <h1>",
+      //use abaixo para testar no ambiente de desenvolvimento
+      //html: "<h1> Clique no link para recuperar sua senha: <a href='http://localhost:8080/usuario/atualizar-senha/'>RECUPERAR SENHA</a> <h1>",
+
+      //use abaixo em produção
+      html: "<h1> Clique no link para recuperar sua senha: <a href='http://146.190.123.60:8080/usuario/atualizar-senha/'>RECUPERAR SENHA</a> <h1>",
     });
 
     return info;
