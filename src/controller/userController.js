@@ -37,6 +37,7 @@ module.exports = {
             default:
               reject(new Error('Tipo não encontrado'));
           }
+          await emailService.sendEmailRegister(process.env.GMAIL_ACCOUNT, newUser.email, newUser.name);
         } catch (e) {
           reject(e);
         }
