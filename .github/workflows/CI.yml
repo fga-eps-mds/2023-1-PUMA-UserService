@@ -15,7 +15,9 @@ jobs:
         working-directory: ./
     services:
       dbtest:
-        image: postgres            
+        image: postgres
+        volumes:
+          - ./dbdata:/var/lib/postgresql/data
         ports:
           - "5432:5432"
         options: >-
