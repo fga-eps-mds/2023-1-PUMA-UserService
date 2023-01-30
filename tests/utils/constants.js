@@ -171,6 +171,11 @@ module.exports = {
                     T1: {
                         email: 'user05@email.com'
                     }
+                },
+                FAILURE: {
+                    T1: {
+                        email: 'user95@email.com'
+                    }
                 }
             },
             PROFESSOR: {
@@ -179,11 +184,21 @@ module.exports = {
                         email: 'user04@email.com'
                     }
                 },
+                FAILURE: {
+                    T1: {
+                        email: 'user94@email.com'
+                    }
+                }
             },
             JURIDICAL_AGENT: {
                 SUCCESS: {
                     T1: {
                         email: 'user01@email.com'
+                    }
+                },
+                FAILURE: {
+                    T1: {
+                        email: 'user91@email.com'
                     }
                 }
             },
@@ -191,6 +206,11 @@ module.exports = {
                 SUCCESS: {
                     T1: {
                         email: 'user09@email.com'
+                    }
+                },
+                FAILURE: {
+                    T1: {
+                        email: 'user99@email.com'
                     }
                 }
             },
