@@ -30,6 +30,11 @@ jobs:
           POSTGRES_DB: puma
           PGUSER: postgres
     env:
+      EMAIL_PORT: 2525
+      EMAIL_SERVICE: gmail
+      GMAIL_ACCOUNT: ${{ secrets.GMAIL_ACCOUNT }}
+      GMAIL_ACCOUNT_PASS: ${{ secrets.GMAIL_ACCOUNT_PASS }}
+      GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
       DB_HOST: localhost
       DB_URL_TEST: postgres://pumaadmin:pumaadmin@localhost:5432/puma
       ENVIRONMENT: test
