@@ -386,3 +386,62 @@ describe('Recover Password Success', () => {
             });
     });
 });
+
+
+describe('Recover Password Failure', () => {
+    it('Should not Recover Aluno Password', (done) => {
+        request(app)
+            .post('/recover')
+            .set('Accept', 'application/json')
+            .send(CONSTANTS.USER.RECOVER.STUDENT.FAILURE.T1)
+            .expect('Content-Type', /json/)
+            .expect(404)
+            .then(() => {
+                done();
+            }).catch((error) => {
+                done(new Error(error));
+            });
+    });
+
+    it('Should not Recover Professor Password', (done) => {
+        request(app)
+            .post('/recover')
+            .set('Accept', 'application/json')
+            .send(CONSTANTS.USER.RECOVER.PROFESSOR.FAILURE.T1)
+            .expect('Content-Type', /json/)
+            .expect(404)
+            .then(() => {
+                done();
+            }).catch((error) => {
+                done(new Error(error));
+            });
+    });
+
+    it('Should not Recover PF Password', (done) => {
+        request(app)
+            .post('/recover')
+            .set('Accept', 'application/json')
+            .send(CONSTANTS.USER.RECOVER.PHYSICAL_AGENT.FAILURE.T1)
+            .expect('Content-Type', /json/)
+            .expect(404)
+            .then(() => {
+                done();
+            }).catch((error) => {
+                done(new Error(error));
+            });
+    });
+
+    it('Should not Recover PJ Password', (done) => {
+        request(app)
+            .post('/recover')
+            .set('Accept', 'application/json')
+            .send(CONSTANTS.USER.RECOVER.JURIDICAL_AGENT.FAILURE.T1)
+            .expect('Content-Type', /json/)
+            .expect(404)
+            .then(() => {
+                done();
+            }).catch((error) => {
+                done(new Error(error));
+            });
+    });
+});
