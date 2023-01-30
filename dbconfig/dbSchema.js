@@ -8,7 +8,7 @@
 */
 
 module.exports = Object.freeze({
-    DBSCHEMALEN: 24,
+    DBSCHEMALEN: 25,
     DBSCHEMA: `
     CREATE TABLE COMMON_USER (
         userId SERIAL,
@@ -19,6 +19,14 @@ module.exports = Object.freeze({
         passwordHash VARCHAR(1000) NOT NULL,
         CONSTRAINT COMMON_USER_PK PRIMARY KEY (userId),
         CONSTRAINT COMMON_USER_UK UNIQUE (email)
+    );
+
+    CREATE TABLE USER_TYPE (
+        userTypeId SERIAL,
+        typeName VARCHAR(50) NOT NULL,
+        description VARCHAR(300) NOT NULL,
+        CONSTRAINT USER_TYPE_PK PRIMARY KEY (userTypeId),
+        CONSTRAINT JURIDICAL_AGENT_UK UNIQUE (typeName)
     );
 
     CREATE TABLE STUDENT (
