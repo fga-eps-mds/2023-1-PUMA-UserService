@@ -194,3 +194,37 @@ CREATE TABLE is_assigned (
     CONSTRAINT is_assigned_PROFESSOR_FK FOREIGN KEY (regNumber) REFERENCES PROFESSOR(regNumber),
     CONSTRAINT is_assigned_SEMESTER_FK FOREIGN KEY (semesterId) REFERENCES SEMESTER(semesterId)
 );
+
+CREATE TYPE semester_types AS ENUM ('1', '2', 'VERAO');
+
+CREATE TABLE CLASSES (
+    classId SERIAL UNIQUE,
+    subjectId INT NOT NULL,
+    classCode VARCHAR(3) NOT NULL,
+    year INT NOT NULL,
+    semester semester_types NOT NULL,
+    password VARCHAR(6) NOT NULL,
+    deleted BOOL DEFAULT FALSE NOT NULL,
+    CONSTRAINT CLASSES_PK PRIMARY KEY (subjectId, classCode)
+);
+
+CREATE TABLE CLASSES_TEACHER (
+    classTeacherId SERIAL,
+    userId INT NOT NULL,
+    classId INT NOT NULL,
+    CONSTRAINT CCLASSES_TEACHER_PK PRIMARY KEY (classTeacherId),
+    CONSTRAINT CLASSES_TEACHER_COMMON_USER_FK FOREIGN KEY (userId) REFERENCES COMMON_USER (userId),
+    CONSTRAINT CLASSES_TEACHER_CLASSES_FK FOREIGN KEY (classId) REFERENCES CLASSES (classId)
+);
+
+CREATE TYPE schedule_days_types AS ENUM ('Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábadp');
+
+CREATE TABLE CLASSES_SCHEDULE (
+    classScheduleId SERIAL,
+    classId INT NOT NULL,
+    day schedule_days_types NOT NULL,
+    start VARCHAR(5),
+    finish VARCHAR(5),
+    CONSTRAINT CLASSES_SCHEDULE_PK PRIMARY KEY (classScheduleId),
+    CONSTRAINT CLASSES_TEACHER_CLASSES_FK FOREIGN KEY (classId) REFERENCES CLASSES (classId)
+);

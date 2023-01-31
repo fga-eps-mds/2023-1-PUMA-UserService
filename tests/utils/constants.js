@@ -165,5 +165,55 @@ module.exports = {
                 }
             },
         },
+        RECOVER: {
+            STUDENT: {
+                SUCCESS: {
+                    T1: {
+                        email: 'user05@email.com'
+                    }
+                },
+                FAILURE: {
+                    T1: {
+                        email: 'user95@email.com'
+                    }
+                }
+            },
+            PROFESSOR: {
+                SUCCESS: {
+                    T1: {
+                        email: 'user04@email.com'
+                    }
+                },
+                FAILURE: {
+                    T1: {
+                        email: 'user94@email.com'
+                    }
+                }
+            },
+            JURIDICAL_AGENT: {
+                SUCCESS: {
+                    T1: {
+                        email: 'user01@email.com'
+                    }
+                },
+                FAILURE: {
+                    T1: {
+                        email: 'user91@email.com'
+                    }
+                }
+            },
+            PHYSICAL_AGENT: {
+                SUCCESS: {
+                    T1: {
+                        email: 'user09@email.com'
+                    }
+                },
+                FAILURE: {
+                    T1: {
+                        email: 'user99@email.com'
+                    }
+                }
+            },
+        }
     },
 };
