@@ -56,7 +56,7 @@ module.exports = {
       [userTypeId],
     )
       .then((response) => {
-        resolve();
+        resolve(true);
       })
       .catch((response) => {
         reject(response);

@@ -37,7 +37,7 @@ routes.put('/userType/:UserTypeid', (req, res) => {
 
 routes.delete('/userType/:UserTypeid', (req, res) => {
   userTypeController.deleteUserType(req.params.UserTypeid).then((response) => {
-    res.status(200).json(response.data);
+    res.status(200).json(response);
   }).catch((error) => {
     res.status(400).json({ error });
   });
