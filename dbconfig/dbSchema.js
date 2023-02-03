@@ -8,7 +8,7 @@
 */
 
 module.exports = Object.freeze({
-    DBSCHEMALEN: 25,
+    DBSCHEMALEN: 24,
     DBSCHEMA: `
     CREATE TABLE COMMON_USER (
         userId SERIAL,
