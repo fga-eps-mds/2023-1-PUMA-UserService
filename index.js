@@ -21,6 +21,7 @@ const app = express();
     await Physical_Agent.sync({ alter: true })
     await Student.sync({ alter: true })
     await Teacher.sync({ alter: true })
+    console.log("Database Inicializado")
   } catch (error) {
     console.log("Erro ao inicializar o banco -> ", error);
   }

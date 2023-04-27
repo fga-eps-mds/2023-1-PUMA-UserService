@@ -19,7 +19,7 @@ module.exports = {
         reject(error);
       } else {
         try {
-          await Common_User.create({
+          const newUserDb = await Common_User.create({
             fullName: newUser.name,
             email: newUser.email,
             passwordHash: hash,
@@ -31,13 +31,13 @@ module.exports = {
               switch (newUser.externalAgentType) {
                 case 'Pessoa Fisica':
                   await Physical_Agent.create({
-                    email: newUser.email,
+                    userId: newUserDb.userId,
                     cpf: newUser.cpf
                   });
                   break;
                 case 'Pessoa Juridica':
                   await Juridical_Agent.create({
-                    email: newUser.email,
+                    userId: newUserDb.userId,
                     cnpj: newUser.cnpj,
                     companyName: newUser.companyName,
                     socialReason: newUser.socialReason
@@ -49,14 +49,14 @@ module.exports = {
               break;
             case 'Aluno':
               await Student.create({
-                email: newUser.email,
+                userId: newUserDb.userId,
                 regNumber: newUser.matricula,
                 softSkills: ' ',
               });
               break;
             case 'Professor':
               await Teacher.create({
-                email: newUser.email,
+                userId: newUserDb.userId,
                 regNumber: newUser.matricula,
               });
               break;

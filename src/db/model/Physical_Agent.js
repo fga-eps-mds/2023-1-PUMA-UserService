@@ -2,21 +2,21 @@ const { DataTypes } = require('sequelize');
 const database = require('../AppDb');
 
 const Physical_Agent = database.define('Physical_Agent', {
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
+    userId: {
+        type: DataTypes.INTEGER,
         primaryKey: true,
         references: {
             model: {
                 tableName: "Common_User",
                 schema: "public",
             },
-            key: "email"
+            key: "userId"
         },
     },
     cpf: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     }
 }, {
     freezeTableName: true

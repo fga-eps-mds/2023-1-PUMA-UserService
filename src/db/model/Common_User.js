@@ -2,10 +2,15 @@ const { DataTypes } = require('sequelize');
 const database = require('../AppDb');
 
 const Common_User = database.define('Common_User', {
+    userId: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        primaryKey: true
+        unique: true
     },
     fullName: {
         type: DataTypes.STRING,
@@ -22,8 +27,7 @@ const Common_User = database.define('Common_User', {
     },
     phoneNumber: {
         type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: false
+        allowNull: false
     },
 }, {
     freezeTableName: true
