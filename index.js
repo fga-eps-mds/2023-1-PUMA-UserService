@@ -9,6 +9,17 @@ const db = require('./dbconfig/dbConfig');
 
 environment.configEnv();
 const app = express();
+
+(async () => {
+  const database = require('./db');
+  try {
+    const resultado = await database.sync();
+    console.log(resultado);
+  } catch (error) {
+    console.log(error);
+  }
+})();
+
 app.disable('x-powered-by');
 const corsOptions = {
   // origin: `${global.URL_API}`,
