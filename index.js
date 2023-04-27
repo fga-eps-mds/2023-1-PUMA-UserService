@@ -4,19 +4,25 @@ const express = require('express');
 const cors = require('cors');
 const environment = require('./src/config/environment.config');
 const configRoutes = require('./src/routes/router');
+const Common_User = require('./src/db/model/Common_User');
+const Juridical_Agent = require('./src/db/model/Juridical_Agent');
+const Physical_Agent = require('./src/db/model/Physical_Agent');
+const Student = require('./src/db/model/Student');
+const Teacher = require('./src/db/model/Teacher');
 // eslint-disable-next-line no-unused-vars
-const db = require('./dbconfig/dbConfig');
 
 environment.configEnv();
 const app = express();
 
 (async () => {
-  const database = require('./db');
   try {
-    const resultado = await database.sync();
-    console.log(resultado);
+    await Common_User.sync({ alter: true })
+    await Juridical_Agent.sync({ alter: true })
+    await Physical_Agent.sync({ alter: true })
+    await Student.sync({ alter: true })
+    await Teacher.sync({ alter: true })
   } catch (error) {
-    console.log(error);
+    console.log("Erro ao inicializar o banco -> ", error);
   }
 })();
 

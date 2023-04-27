@@ -1,6 +1,6 @@
 require('dotenv/config');
 
-export const appDbConfig = {
+const appDbConfig = {
     dialect: 'postgres',
     host: process.env.DB_APP_HOST,
     username: process.env.DB_APP_USER,
@@ -12,3 +12,5 @@ export const appDbConfig = {
         underscoredAll: true,
     },
 };
+
+module.exports = appDbConfig;

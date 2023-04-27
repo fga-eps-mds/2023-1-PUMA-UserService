@@ -1,30 +1,32 @@
-const Sequelize = require('sequelize');
-const database = require('./AppDb');
+const { DataTypes } = require('sequelize');
+const database = require('../AppDb');
 
 const Common_User = database.define('Common_User', {
     email: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         primaryKey: true
     },
     fullName: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false
     },
     passwordHash: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false
     },
     isAdmin: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         defaultValue: false
     },
     phoneNumber: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         defaultValue: false
     },
+}, {
+    freezeTableName: true
 })
 
 module.exports = Common_User

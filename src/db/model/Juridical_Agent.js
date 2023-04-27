@@ -1,9 +1,9 @@
-const Sequelize = require('sequelize');
-const database = require('./AppDb');
+const { DataTypes } = require('sequelize');
+const database = require('../AppDb');
 
-const Juridical_Agent = database.init('Juridical_Agent', {
+const Juridical_Agent = database.define('Juridical_Agent_TESTE', {
     email: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         primaryKey: true,
         references: {
@@ -15,18 +15,20 @@ const Juridical_Agent = database.init('Juridical_Agent', {
         },
     },
     cnpj: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         unique: true
     },
     companyName: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false
     },
     socialReason: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false
     }
+}, {
+    freezeTableName: true
 })
 
 module.exports = Juridical_Agent

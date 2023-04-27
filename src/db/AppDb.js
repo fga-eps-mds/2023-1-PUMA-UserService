@@ -1,6 +1,6 @@
-import { Sequelize } from 'sequelize';
+const { Sequelize } = require('sequelize');
 
-import { appDbConfig } from '../config/appDbConfig';
+const appDbConfig = require('../config/appDbConfig');
 
 const sequelize = new Sequelize(appDbConfig.database, appDbConfig.username, appDbConfig.password, {
     host: appDbConfig.host,

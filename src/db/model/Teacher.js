@@ -1,9 +1,9 @@
-const Sequelize = require('sequelize');
-const database = require('./AppDb');
+const { DataTypes } = require('sequelize');
+const database = require('../AppDb');
 
 const Teacher = database.define('Teacher', {
     email: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         unique: true,
         references: {
@@ -15,10 +15,12 @@ const Teacher = database.define('Teacher', {
         },
     },
     regNumber: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         primaryKey: true
     }
+}, {
+    freezeTableName: true
 })
 
 module.exports = Teacher;
