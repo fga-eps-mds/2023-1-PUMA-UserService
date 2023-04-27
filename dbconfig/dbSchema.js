@@ -26,7 +26,7 @@ module.exports = Object.freeze({
         typeName VARCHAR(50) NOT NULL,
         description VARCHAR(300) NOT NULL,
         CONSTRAINT USER_TYPE_PK PRIMARY KEY (userTypeId),
-        CONSTRAINT JURIDICAL_AGENT_UK UNIQUE (typeName)
+        CONSTRAINT USER_TYPE_UK UNIQUE (typeName)
     );
 
     CREATE TABLE STUDENT (
