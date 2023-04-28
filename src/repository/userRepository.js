@@ -1,6 +1,11 @@
 /* eslint-disable import/no-unresolved */
 const bcrypt = require('bcrypt');
 const db = require('../../dbconfig/dbConfig');
+const Common_User = require('../db/model/Common_User');
+const Juridical_Agent = require('../db/model/Juridical_Agent');
+const Physical_Agent = require('../db/model/Physical_Agent');
+const Student = require('../db/model/Student');
+const Teacher = require('../db/model/Teacher');
 
 module.exports = {
   addUser: (newUser, hash) => new Promise((resolve, reject) => {
@@ -72,14 +77,14 @@ module.exports = {
     // eslint-disable-next-line no-async-promise-executor
     new Promise(async (resolve, reject) => {
       try {
-        const response = await db.query('SELECT * FROM COMMON_USER WHERE email = $1', [loginUser.email]);
-        const user = response.rows[0];
-        if (await bcrypt.compare(loginUser.password, user.passwordhash)) {
-          resolve(user.userid);
+        const user = await Common_User.findOne({where: { email: loginUser.email }});
+        if (await bcrypt.compare(loginUser.password, user.passwordHash)) {
+          resolve(user.userId);
         } else {
           reject(null);
         }
       } catch (e) {
+        console.log(e)
         reject(e);
       }
     }),
@@ -88,33 +93,33 @@ module.exports = {
     try {
       let type = null;
 
-      const userData = await db.query('SELECT * FROM COMMON_USER WHERE userId = $1', [userId]);
+      const userData = await Common_User.findOne({where: { userId: userId }});
 
-      const professorResult = await db.query('SELECT * FROM PROFESSOR WHERE userId = $1', [userId]);
-      if (professorResult.rows[0]) {
+      const professorResult = await Teacher.findOne({where: { userId: userId }});
+      if (professorResult) {
         type = 'Professor';
       }
 
-      const studentResult = await db.query('SELECT * FROM STUDENT WHERE userId = $1', [userId]);
-      if (studentResult.rows[0]) {
+      const studentResult = await Student.findOne({where: { userId: userId }});
+      if (studentResult) {
         type = 'Aluno';
       }
 
-      const physicalAgentResult = await db.query('SELECT * FROM PHYSICAL_AGENT WHERE userId = $1', [userId]);
-      if (physicalAgentResult.rows[0]) {
+      const physicalAgentResult = await Physical_Agent.findOne({where: { userId: userId }});
+      if (physicalAgentResult) {
         type = 'Agente Externo';
       }
 
-      const juridicalAgentResult = await db.query('SELECT * FROM JURIDICAL_AGENT WHERE userId = $1', [userId]);
-      if (juridicalAgentResult.rows[0]) {
+      const juridicalAgentResult = await Juridical_Agent.findOne({where: { userId: userId }});
+      if (juridicalAgentResult) {
         type = 'Agente Externo';
       }
 
       return {
-        userId: userData.rows[0].userid,
-        fullName: userData.rows[0].fullname,
-        email: userData.rows[0].email,
-        isAdmin: userData.rows[0].isadmin,
+        userId: userData.userId,
+        fullName: userData.fullName,
+        email: userData.email,
+        isAdmin: userData.isAdmin,
         type,
       };
     } catch (e) {
