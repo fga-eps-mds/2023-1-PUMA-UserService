@@ -2,10 +2,10 @@
 /* eslint-disable import/no-unresolved */
 const express = require('express');
 const cors = require('cors');
-const environment = require('./src/config/environment.config');
-const configRoutes = require('./src/routes/router');
+const environment = require('./config/environment.config');
+const configRoutes = require('./routes/router');
 // eslint-disable-next-line no-unused-vars
-const db = require('./dbconfig/dbConfig');
+const db = require('../dbconfig/dbConfig');
 
 environment.configEnv();
 const app = express();
@@ -20,7 +20,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-require('./src/routes/router')(app);
+require('./routes/router')(app);
 
 console.log('Before config routes');
 configRoutes(app);
