@@ -36,6 +36,10 @@ jobs:
       GMAIL_ACCOUNT_PASS: ${{ secrets.GMAIL_ACCOUNT_PASS }}
       GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
       DB_HOST: localhost
+      DB_APP_HOST_TEST: dbtest
+      DB_USER: pumaadmin
+      DB_PASS: pumaadmin
+      DB: puma
       DB_URL_TEST: postgres://pumaadmin:pumaadmin@localhost:5432/puma
       ENVIRONMENT: test
 
