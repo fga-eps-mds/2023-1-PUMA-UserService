@@ -2,7 +2,7 @@ const express = require('express');
 
 const routes = express.Router();
 const userController = require('../controller/userController');
-const db = require('../../dbconfig/dbConfig');
+const Student = require('../db/model/Student');
 
 routes.post('/register', (req, res) => {
   const { body } = req;
@@ -23,9 +23,8 @@ routes.post('/login', (req, res) => {
 });
 
 routes.get('/aluno/:matriculaId', (req, res) => {
-  //db.query('SELECT a.nome,a.matricula,a.sobrenome,a.email FROM STUDENT as a WHERE matricula=$1', [req.params.matriculaId]).then((response) => {
-  db.query('SELECT a.userid,a.regNumber,a.softSkills FROM STUDENT as a WHERE userid=$1', [req.params.matriculaId]).then((response) => {
-    res.json(response.rows);
+  Student.findAll({ where: { userId: req.params.matriculaId }}).then((response) => {
+    res.json(response);
   });
 });
 

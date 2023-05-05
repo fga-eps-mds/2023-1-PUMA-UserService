@@ -21,7 +21,7 @@ const Common_User = database.define('Common_User', {
         allowNull: false
     },
     isAdmin: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false
     },

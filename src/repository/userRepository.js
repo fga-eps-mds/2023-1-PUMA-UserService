@@ -1,6 +1,5 @@
 /* eslint-disable import/no-unresolved */
 const bcrypt = require('bcrypt');
-const db = require('../../dbconfig/dbConfig');
 const Common_User = require('../db/model/Common_User');
 const Juridical_Agent = require('../db/model/Juridical_Agent');
 const Physical_Agent = require('../db/model/Physical_Agent');
@@ -9,12 +8,15 @@ const Teacher = require('../db/model/Teacher');
 
 module.exports = {
   addUser: (newUser, hash) => new Promise((resolve, reject) => {
-    db.query(
-      'INSERT INTO COMMON_USER(fullName,email,passwordHash,isAdmin,phoneNumber) VALUES ($1,$2,$3,$4,$5) RETURNING *;',
-      [newUser.name, newUser.email, hash, false, newUser.phoneNumber],
-    )
+    Common_User.create({
+      fullName: newUser.name,
+      email: newUser.email,
+      passwordHash: hash,
+      isAdmin: false,
+      phoneNumber: newUser.phoneNumber
+    })
       .then((response) => {
-        resolve(response.rows[0].userid);
+        resolve(response.userId);
       })
       .catch((response) => {
         reject(response.severity);
@@ -22,12 +24,12 @@ module.exports = {
   }),
 
   addProfessor: (userId, newUser) => new Promise((resolve, reject) => {
-    db.query(
-      'INSERT INTO PROFESSOR(userid,regNumber) VALUES ($1,$2) RETURNING *;',
-      [userId, newUser.matricula],
-    )
+    Teacher.create({
+      userId: userId,
+      regNumber: newUser.matricula,
+    })
       .then((response) => {
-        resolve(response.rows[0].userid);
+        resolve(response.userId);
       })
       .catch((response) => {
         reject(response);
@@ -35,12 +37,13 @@ module.exports = {
   }),
 
   addStudent: (userId, newUser) => new Promise((resolve, reject) => {
-    db.query(
-      'INSERT INTO STUDENT(userid,regNumber,softSkills) VALUES ($1,$2,$3) RETURNING *;',
-      [userId, newUser.matricula, ' '],
-    )
+    Student.create({
+      userId: userId,
+      regNumber: newUser.matricula,
+      softSkills: ' ',
+    })
       .then((response) => {
-        resolve(response.rows[0].userid);
+        resolve(response.userId);
       })
       .catch((response) => {
         reject(response);
@@ -48,12 +51,14 @@ module.exports = {
   }),
 
   addJuridicalAgent: (userId, newUser) => new Promise((resolve, reject) => {
-    db.query(
-      'INSERT INTO JURIDICAL_AGENT(userid,cnpj,companyName,socialReason) VALUES ($1,$2,$3,$4) RETURNING *;',
-      [userId, newUser.cnpj, newUser.companyName, newUser.socialReason],
-    )
+    Juridical_Agent.create({
+      userId: userId,
+      cnpj: newUser.cnpj,
+      companyName: newUser.companyName,
+      socialReason: newUser.socialReason
+    })
       .then((response) => {
-        resolve(response.rows[0].userid);
+        resolve(response.userId);
       })
       .catch((response) => {
         reject(response);
@@ -61,12 +66,12 @@ module.exports = {
   }),
 
   addPhysicalAgent: (userId, newUser) => new Promise((resolve, reject) => {
-    db.query(
-      'INSERT INTO PHYSICAL_AGENT(userid,cpf) VALUES ($1,$2) RETURNING *;',
-      [userId, newUser.cpf],
-    )
+    Physical_Agent.create({
+      userId: userId,
+      cpf: newUser.cpf
+    })
       .then((response) => {
-        resolve(response.rows[0].userid);
+        resolve(response.userId);
       })
       .catch((response) => {
         reject(response);
@@ -131,13 +136,12 @@ module.exports = {
   updateUserPassword: async (email, hash) => {
     try {
       return new Promise((resolve, reject) => {
-        db.query(
-          'UPDATE COMMON_USER SET passwordHash = $1 WHERE email = $2 RETURNING *;',
-          [hash, email],
-        )
-          .then((response) => {
-            console.log(response);
-            resolve(response.rows[0]);
+        Common_User.update(
+          { passwordHash: hash },
+          { where: { email:email }}
+          )
+          .then((_response) => {
+            resolve();
           })
           .catch((response) => {
             reject(response);
@@ -150,7 +154,7 @@ module.exports = {
 
   checkUserByEmail: (email) => new Promise((resolve, reject) => {
     try {
-      db.query('SELECT * FROM COMMON_USER WHERE email = $1', [email])
+      Common_User.findAll({ where: { email: email }})
         .then((response) => resolve(response))
         .catch((e) => reject(e));
     } catch (e) {

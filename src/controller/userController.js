@@ -6,11 +6,6 @@ const emailService = require('../services/emailService');
 
 const saltRounds = 10;
 const userRepository = require('../repository/userRepository');
-const Juridical_Agent = require('../db/model/Juridical_Agent');
-const Physical_Agent = require('../db/model/Physical_Agent');
-const Common_User = require('../db/model/Common_User');
-const Student = require('../db/model/Student');
-const Teacher = require('../db/model/Teacher');
 
 module.exports = {
   registerUser: (newUser) => new Promise((resolve, reject) => {
@@ -19,46 +14,25 @@ module.exports = {
         reject(error);
       } else {
         try {
-          const newUserDb = await Common_User.create({
-            fullName: newUser.name,
-            email: newUser.email,
-            passwordHash: hash,
-            isAdmin: false,
-            phoneNumber: newUser.phoneNumber
-          });
+          const userId = await userRepository.addUser(newUser, hash);
           switch (newUser.type) {
             case 'Agente Externo':
               switch (newUser.externalAgentType) {
                 case 'Pessoa Fisica':
-                  await Physical_Agent.create({
-                    userId: newUserDb.userId,
-                    cpf: newUser.cpf
-                  });
+                  await userRepository.addPhysicalAgent(userId, newUser);
                   break;
                 case 'Pessoa Juridica':
-                  await Juridical_Agent.create({
-                    userId: newUserDb.userId,
-                    cnpj: newUser.cnpj,
-                    companyName: newUser.companyName,
-                    socialReason: newUser.socialReason
-                  });
+                  await userRepository.addJuridicalAgent(userId, newUser);
                   break;
                 default:
                   reject(new Error('Tipo não encontrado'));
               }
               break;
             case 'Aluno':
-              await Student.create({
-                userId: newUserDb.userId,
-                regNumber: newUser.matricula,
-                softSkills: ' ',
-              });
+              await userRepository.addStudent(userId, newUser);
               break;
             case 'Professor':
-              await Teacher.create({
-                userId: newUserDb.userId,
-                regNumber: newUser.matricula,
-              });
+              await userRepository.addProfessor(userId, newUser);
               break;
             default:
               reject(new Error('Tipo não encontrado'));
