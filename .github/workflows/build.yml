@@ -1,0 +1,32 @@
+name: Build
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Install dependencies
+        run: npm install
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+      - name: Create and Populate Database
+        run: | 
+          sudo docker cp ./tests/utils/db_drop.sql dbtest:/db_drop.sql
+          sudo docker exec dbtest psql -U pumaadmin -d puma -f /db_drop.sql
+          sudo docker cp ./tests/utils/db_create.sql dbtest:/db_create.sql 
+          sudo docker exec dbtest psql -U pumaadmin -d puma -f /db_create.sql
+          sudo docker cp ./tests/utils/db_populate.sql dbtest:/db_populate.sql
+          sudo docker exec dbtest psql -U pumaadmin -d puma -f /db_populate.sql
+      - name: Run Tests
+        run: npm run test-coverage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
