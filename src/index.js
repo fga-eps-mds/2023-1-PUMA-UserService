@@ -2,14 +2,14 @@
 /* eslint-disable import/no-unresolved */
 const express = require('express');
 const cors = require('cors');
-const environment = require('./src/config/environment.config');
-const configRoutes = require('./src/routes/router');
-const Common_User = require('./src/db/model/Common_User');
-const Juridical_Agent = require('./src/db/model/Juridical_Agent');
-const Physical_Agent = require('./src/db/model/Physical_Agent');
-const Student = require('./src/db/model/Student');
-const Teacher = require('./src/db/model/Teacher');
-const User_Type = require('./src/db/model/User_Type');
+const environment = require('./config/environment.config');
+const configRoutes = require('./routes/router');
+const Common_User = require('./db/model/Common_User');
+const Juridical_Agent = require('./db/model/Juridical_Agent');
+const Physical_Agent = require('./db/model/Physical_Agent');
+const Student = require('./db/model/Student');
+const Teacher = require('./db/model/Teacher');
+const User_Type = require('./db/model/User_Type');
 // eslint-disable-next-line no-unused-vars
 
 environment.configEnv();
@@ -41,7 +41,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-require('./src/routes/router')(app);
+require('./routes/router')(app);
 
 console.log('Before config routes');
 configRoutes(app);
