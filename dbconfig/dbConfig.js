@@ -22,7 +22,7 @@ if (process.env.ENVIRONMENT === 'hom') {
 
 const pool = new Pool(settings);
 
-while (tries > 0) {
+while (false) {
   try {
     pool.query("SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'", (err, res) => {
       if (err) console.log(err);

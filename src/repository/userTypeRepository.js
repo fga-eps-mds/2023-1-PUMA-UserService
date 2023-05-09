@@ -1,15 +1,14 @@
 /* eslint-disable import/no-unresolved */
-const db = require('../../dbconfig/dbConfig');
+const User_Type = require('../db/model/User_Type');
 
 module.exports = {
   addUserType: (newUserType) => new Promise((resolve, reject) => {
-    db.query(
-      'INSERT INTO USER_TYPE(typeName,description) \
-        VALUES ($1,$2) RETURNING *',
-      [newUserType.typeName, newUserType.description],
-    )
+    User_Type.create({
+      typeName: newUserType.typeName,
+      description: newUserType.description
+    })
       .then((response) => {
-        resolve(response.rows[0].userTypeid);
+        resolve(response.userTypeid);
       })
       .catch((response) => {
         reject(response);
@@ -17,32 +16,37 @@ module.exports = {
   }),
 
   getUserType: (userTypeId) => new Promise((resolve, reject) => {
-    const query = userTypeId ? 
-    db.query(
-      'SELECT * FROM USER_TYPE WHERE userTypeId = $1',
-      [userTypeId],
-    ) : 
-    db.query(
-      'SELECT * FROM USER_TYPE',
-      [],
-    ); 
-    query.then((response) => {
-      resolve(response.rows);
-    })
-    .catch((response) => {
-      reject(response);
-    });
+
+    if(userTypeId){
+      User_Type.findAll({
+        where: {
+          userTypeId: userTypeId
+        }
+      })
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((response) => {
+        reject(response);
+      });
+    }else{
+      User_Type.findAll()
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((response) => {
+        reject(response);
+      });
+    }
   }),
 
   updateUserType: (userTypeId, newUserType) => new Promise((resolve, reject) => {
-    db.query(
-      'UPDATE USER_TYPE \
-        SET typeName = $2, description = $3 \
-        WHERE userTypeId = $1 RETURNING *',
-      [userTypeId, newUserType.typeName, newUserType.description],
+    User_Type.update(
+      { typeName: newUserType.typeName, description: newUserType.description },
+      { where: { userTypeId: userTypeId}, returning: true}
     )
       .then((response) => {
-        resolve(response.rows[0].userTypeid);
+        resolve(response[1][0].userTypeId);
       })
       .catch((response) => {
         reject(response);
@@ -50,11 +54,9 @@ module.exports = {
   }),
 
   deleteUserType: (userTypeId) => new Promise((resolve, reject) => {
-    db.query(
-      'DELETE FROM USER_TYPE \
-      WHERE userTypeId = $1',
-      [userTypeId],
-    )
+    User_Type.destroy({
+      where: { userTypeId: userTypeId }
+    })
       .then((response) => {
         resolve(true);
       })

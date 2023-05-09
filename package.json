@@ -31,7 +31,10 @@
     "mocha-junit-reporter": "^2.0.2",
     "nodemailer": "^6.7.2",
     "nyc": "^15.1.0",
-    "pg": "^8.7.1"
+    "pg": "^8.10.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.31.0",
+    "sequelize-cli": "^6.6.0"
   },
   "devDependencies": {
     "eslint": "^6.0.0",
