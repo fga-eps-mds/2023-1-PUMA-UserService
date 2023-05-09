@@ -9,6 +9,7 @@ const Juridical_Agent = require('./src/db/model/Juridical_Agent');
 const Physical_Agent = require('./src/db/model/Physical_Agent');
 const Student = require('./src/db/model/Student');
 const Teacher = require('./src/db/model/Teacher');
+const User_Type = require('./src/db/model/User_Type');
 // eslint-disable-next-line no-unused-vars
 
 environment.configEnv();
@@ -21,6 +22,8 @@ const app = express();
     await Physical_Agent.sync({ alter: true })
     await Student.sync({ alter: true })
     await Teacher.sync({ alter: true })
+    await User_Type.sync({ alter: true})
+
     console.log("Database Inicializado")
   } catch (error) {
     console.log("Erro ao inicializar o banco -> ", error);

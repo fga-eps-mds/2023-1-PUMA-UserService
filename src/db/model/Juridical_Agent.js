@@ -13,11 +13,6 @@ const Juridical_Agent = database.define('Juridical_Agent', {
             key: "userId"
         },
     },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-    },
     cnpj: {
         type: DataTypes.STRING,
         allowNull: false,

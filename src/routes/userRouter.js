@@ -24,7 +24,8 @@ routes.post('/login', (req, res) => {
 
 routes.get('/aluno/:matriculaId', (req, res) => {
   Student.findAll({ where: { userId: req.params.matriculaId }}).then((response) => {
-    res.json(response);
+    const result = response.map((model) => {return {userid: model.userId, regnumber: model.regNumber, softskills: model.softSkills}})
+    res.json(result);
   });
 });
 

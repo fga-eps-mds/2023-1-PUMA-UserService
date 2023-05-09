@@ -77,7 +77,7 @@ module.exports = {
 
       userRepository.checkUserByEmail(email)
         .then(async (response) => {
-          if (response.rows.length > 0) {
+          if (response.length > 0) {
             const info = await emailService.sendEmail(process.env.GMAIL_ACCOUNT, email);
             resolve({
               ...info,
