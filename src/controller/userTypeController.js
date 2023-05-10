@@ -6,11 +6,6 @@ const userTypeRepository = require('../repository/userTypeRepository');
 module.exports = {
     addUserType: (newUserType) => new Promise(async (resolve, reject) => {
         try {
-            const {
-                typeName,
-                description,
-            } = newUserType;
-
             const userTypeResponse = await userTypeRepository.addUserType(newUserType);
 
             resolve({
@@ -39,10 +34,6 @@ module.exports = {
 
     updateUserType: (userTypeId, newUserType) => new Promise(async (resolve, reject) => {
         try {
-            const {
-                typeName,
-                description,
-            } = newUserType;
             const response = await userTypeRepository.updateUserType(userTypeId, newUserType);
             resolve(response);
         } catch (e) {

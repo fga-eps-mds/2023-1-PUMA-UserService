@@ -61,7 +61,7 @@ module.exports = {
       //html: "<h1> Clique no link para recuperar sua senha: <a href='http://localhost:8080/usuario/atualizar-senha/'>RECUPERAR SENHA</a> <h1>",
 
       //use abaixo em produção
-      html: "<h1> Olá " + userName + ", seja bem-vindo a plataforma PUMA!!!<h1><p>Cadastro efetuado no dia " + date.getDate() + "/" + date.getMonth() + 1 + "/" + date.getFullYear() + "</p>",
+      html: "<h1> Olá " + userName + ", seja bem-vindo a plataforma PUMA!!!<h1><p>Cadastro efetuado no dia " + date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + "</p>",
     });
 
     return info;
