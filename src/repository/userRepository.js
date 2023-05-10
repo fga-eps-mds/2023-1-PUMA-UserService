@@ -19,7 +19,7 @@ module.exports = {
         resolve(response.userId);
       })
       .catch((response) => {
-        reject(response.severity);
+        reject(response);
       });
   }),
 
@@ -130,7 +130,6 @@ module.exports = {
     } catch (e) {
       throw (e);
     }
-    throw (new Error('User not found'));
   },
 
   updateUserPassword: async (email, hash) => {
