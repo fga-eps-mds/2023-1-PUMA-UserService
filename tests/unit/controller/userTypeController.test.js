@@ -9,7 +9,7 @@ describe('userTypeController', () => {
   });
 
   describe('addUserType', () => {
-    test('should add a new user type', async () => {
+    it('should add a new user type', async () => {
       const newUserType = {
         typeName: 'Admin',
       };
@@ -24,7 +24,7 @@ describe('userTypeController', () => {
       expect(userTypeRepository.addUserType).toHaveBeenCalledWith(newUserType);
     });
 
-    test('should reject when userTypeRepository.addUserType throws an error', async () => {
+    it('should reject when userTypeRepository.addUserType throws an error', async () => {
       const newUserType = {
         typeName: 'Admin',
       };
@@ -38,7 +38,7 @@ describe('userTypeController', () => {
   });
 
   describe('getUserType', () => {
-    test('should get a user type by ID', async () => {
+    it('should get a user type by ID', async () => {
       const userTypeId = 1;
       const userTypeResponse = { id: userTypeId, typeName: 'Admin' };
 
@@ -48,7 +48,7 @@ describe('userTypeController', () => {
       expect(userTypeRepository.getUserType).toHaveBeenCalledWith(userTypeId);
     });
 
-    test('should get all user types when no ID is provided', async () => {
+    it('should get all user types when no ID is provided', async () => {
       const userTypesResponse = [
         { id: 1, typeName: 'Admin' },
         { id: 2, typeName: 'User' },
@@ -60,7 +60,7 @@ describe('userTypeController', () => {
       expect(userTypeRepository.getUserType).toHaveBeenCalledWith();
     });
 
-    test('should reject when userTypeRepository.getUserType throws an error', async () => {
+    it('should reject when userTypeRepository.getUserType throws an error', async () => {
       const userTypeId = 1;
 
       const error = new Error('getUserType error');
@@ -72,7 +72,7 @@ describe('userTypeController', () => {
   });
 
   describe('updateUserType', () => {
-    test('should update a user type', async () => {
+    it('should update a user type', async () => {
       const userTypeId = 1;
       const newUserType = { typeName: 'User' };
 
@@ -84,7 +84,7 @@ describe('userTypeController', () => {
       expect(userTypeRepository.updateUserType).toHaveBeenCalledWith(userTypeId, newUserType);
     });
 
-    test('should reject when userTypeRepository.updateUserType throws an error', async () => {
+    it('should reject when userTypeRepository.updateUserType throws an error', async () => {
       const userTypeId = 1;
       const newUserType = { typeName: 'User' };
 
@@ -97,7 +97,7 @@ describe('userTypeController', () => {
   });
 
   describe('deleteUserType', () => {
-    test('should delete a user type', async () => {
+    it('should delete a user type', async () => {
         const userTypeId = 1;
   
         const response = { id: userTypeId, typeName: 'Admin' };
@@ -108,7 +108,7 @@ describe('userTypeController', () => {
         expect(userTypeRepository.deleteUserType).toHaveBeenCalledWith(userTypeId);
       });
   
-      test('should reject when userTypeRepository.deleteUserType throws an error', async () => {
+      it('should reject when userTypeRepository.deleteUserType throws an error', async () => {
         const userTypeId = 1;
   
         const error = new Error('deleteUserType error');

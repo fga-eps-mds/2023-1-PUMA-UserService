@@ -9,7 +9,7 @@ describe('Email Service', () => {
   });
 
   describe('sendEmail', () => {
-    test('should send an email successfully', async () => {
+    it('should send an email successfully', async () => {
       const mailerAddress = 'sender@example.com';
       const receiverAddress = 'receiver@example.com';
 
@@ -49,7 +49,7 @@ describe('Email Service', () => {
   });
 
   describe('sendEmailRegister', () => {
-    test('should send a registration email successfully', async () => {
+    it('should send a registration email successfully', async () => {
       const mailerAddress = 'sender@example.com';
       const receiverAddress = 'receiver@example.com';
       const userName = 'John Doe';
