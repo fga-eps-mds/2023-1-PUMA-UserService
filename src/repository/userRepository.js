@@ -83,11 +83,16 @@ module.exports = {
     new Promise(async (resolve, reject) => {
       try {
         const user = await Common_User.findOne({where: { email: loginUser.email }});
-        if (await bcrypt.compare(loginUser.password, user.passwordHash)) {
-          resolve(user.userId);
-        } else {
+        if(user){
+          if (await bcrypt.compare(loginUser.password, user.passwordHash)) {
+            resolve(user.userId);
+          } else {
+            reject(null);
+          }
+        }else{
           reject(null);
         }
+        
       } catch (e) {
         console.log(e)
         reject(e);
