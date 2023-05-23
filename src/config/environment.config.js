@@ -3,13 +3,13 @@ require('dotenv').config();
 module.exports = {
   configEnv: () => {
     if (process.env.ENVIRONMENT === 'dev') {
-      global.URL_FRONT = `http://${process.env.IP_ADDRESS}:8080`
+      global.URL_FRONT = `http://localhost:8080`
       global.URL_API = `http://${process.env.IP_ADDRESS}:5000`;
       global.SECRET = process.env.SECRET;
       global.DB_URL = process.env.DB_URL;
       global.DB_APP_HOST = process.env.DB_APP_HOST;
     } else if (process.env.ENVIRONMENT === 'test') {
-      global.URL_FRONT = `http://${process.env.IP_ADDRESS}:8080`
+      global.URL_FRONT = `http://localhost:8080`
       global.URL_API = `http://${process.env.IP_ADDRESS}:3004`;
       global.SECRET = process.env.SECRET;
       global.DB_URL = process.env.DB_URL_TEST;
@@ -27,7 +27,7 @@ module.exports = {
       global.DB_URL = process.env.DB_URL;
       global.DB_APP_HOST = process.env.DB_APP_HOST;
     } else if (process.env.ENVIRONMENT === 'service-dev') {
-      global.URL_FRONT = `http://${process.env.IP_ADDRESS}:8080`
+      global.URL_FRONT = `http://localhost:8080`
       global.URL_API = `http://${process.env.IP_ADDRESS}:3004`;
       global.SECRET = process.env.SECRET;
       global.DB_URL = process.env.DB_URL_DEV;
