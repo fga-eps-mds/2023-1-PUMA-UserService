@@ -63,6 +63,7 @@ module.exports = {
           reject(error);
         } else {
           await userRepository.updateUserPassword(email, hash);
+          await emailService.sendEmailConfimationPasswordUpdated(process.env.GMAIL_ACCOUNT, email);
         }
       });
       resolve({ email });
