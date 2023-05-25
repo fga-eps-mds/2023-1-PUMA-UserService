@@ -15,13 +15,13 @@ module.exports = {
       global.DB_URL = process.env.DB_URL_TEST;
       global.DB_APP_HOST = process.env.DB_APP_HOST_TEST;
     } else if (process.env.ENVIRONMENT === 'hom') {
-      global.URL_FRONT = 'https://dev--2023-1-puma.netlify.app/'
+      global.URL_FRONT = 'https://dev--2023-1-puma.netlify.app'
       global.URL_API = 'https://puma2023-1-user.herokuapp.com';
       global.SECRET = process.env.SECRET;
       global.DB_URL = process.env.DB_URL;
       global.DB_APP_HOST = process.env.DB_APP_HOST;
     } else if (process.env.ENVIRONMENT === 'prod') {
-      global.URL_FRONT = 'https://dev--2023-1-puma.netlify.app/'
+      global.URL_FRONT = 'https://dev--2023-1-puma.netlify.app'
       global.URL_API = `http://${process.env.IP_ADDRESS}:3004`;
       global.SECRET = process.env.SECRET_PROD;
       global.DB_URL = process.env.DB_URL;
