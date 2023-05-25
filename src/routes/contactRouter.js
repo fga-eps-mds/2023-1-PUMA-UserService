@@ -10,6 +10,14 @@ routes.post('/contact/create', (req, res) => {
     }).catch((error) => {
       res.status(400).json({ error });
     });
-  });
+});
 
-  module.exports = routes;
+routes.get('/contact', (_, res) => {
+  contactController.getContacts().then((response) => {
+    res.status(200).json(response);
+  }).catch((response) => {
+    res.status(400).json(response);
+  });
+});
+
+module.exports = routes;

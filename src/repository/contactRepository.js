@@ -12,5 +12,15 @@ module.exports = {
           .catch((response) => {
             reject(response);
           });
-    })
+    }),
+
+    getContacts: () => new Promise((resolve, reject) => {
+        try {
+            Contact.findAll()
+              .then((response) => resolve(response))
+              .catch((e) => reject(e));
+          } catch (e) {
+            reject(e);
+          }
+    }),
 };

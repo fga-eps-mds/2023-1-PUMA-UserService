@@ -8,5 +8,14 @@ module.exports = {
         } catch (error) {
             reject(error);
         }
-    })
+    }),
+
+    getContacts: () => new Promise ( async (resolve, reject) => {
+        try {
+            const contacts = await contactRepository.getContacts();
+            resolve(contacts);
+        } catch (error) {
+            reject(error);
+        }
+    }),
 };
