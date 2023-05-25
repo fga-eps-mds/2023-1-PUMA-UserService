@@ -8,7 +8,7 @@
 */
 
 module.exports = Object.freeze({
-    DBSCHEMALEN: 24,
+    DBSCHEMALEN: 25,
     DBSCHEMA: `
     CREATE TABLE COMMON_USER (
         userId SERIAL,
@@ -247,6 +247,13 @@ module.exports = Object.freeze({
         finish VARCHAR(5),
         CONSTRAINT CLASSES_SCHEDULE_PK PRIMARY KEY (classScheduleId),
         CONSTRAINT CLASSES_TEACHER_CLASSES_FK FOREIGN KEY (classId) REFERENCES CLASSES (classId)
+    );
+
+    CREATE TABLE CONTACT (
+        contactId INT NOT NULL,
+        name VARCHAR(200) NOT NULL,
+        email VARCHAR(70) NOT NULL UNIQUE,
+        CONSTRAINT CONTACT_PK PRIMARY KEY (contactId),
     );
 `,
 });

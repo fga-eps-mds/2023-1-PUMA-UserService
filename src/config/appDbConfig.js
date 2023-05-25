@@ -5,7 +5,7 @@ const connectionHost = global.DB_APP_HOST;
 
 const appDbConfig = {
     dialect: 'postgres',
-    host: connectionHost,
+    host: process.env.DB_APP_HOST,
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB,
