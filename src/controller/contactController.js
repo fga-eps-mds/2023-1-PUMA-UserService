@@ -24,6 +24,7 @@ module.exports = {
             const contact = await contactRepository.updateContact(contactId, newContact);
             resolve(contact);
         } catch (error) {
+            console.log(error);
             reject(error);
         }
     }),

@@ -39,13 +39,13 @@ module.exports = {
   updateContact: (contactId, newContact) => new Promise((resolve, reject) => {
     Contact.update(
       { name: newContact.name, email: newContact.email },
-      { where: { contactId: contactId} }
+      { where: { contactId: contactId } }
     )
       .then((response) => {
-        resolve(response[1][0].contactId);
+        resolve(true);
       })
-      .catch((response) => {
-        reject(response);
+      .catch((error) => {
+        reject(error);
       });
   }),
 };
