@@ -20,4 +20,21 @@ routes.get('/contact', (_, res) => {
   });
 });
 
+routes.put('/contact/update/:contactId', (req, res) => {
+  const { body } = req;
+  contactController.updateContact(req.params.contactId, body).then((response) => {
+    res.status(200).json( response );
+  }).catch((error) => {
+    res.status(400).json(error);
+  });
+});
+
+routes.delete('/contact/delete/:contactId', (req, res) => {
+  contactController.deleteContact(req.params.contactId).then((response) => {
+    res.status(200).json(response);
+  }).catch((error) => {
+    res.status(400).json( error );
+  });
+});
+
 module.exports = routes;

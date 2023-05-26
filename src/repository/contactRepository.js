@@ -23,4 +23,29 @@ module.exports = {
             reject(e);
           }
     }),
+
+    deleteContacts: (contactId) => new Promise((resolve, reject) => {
+      try {
+          Contact.destroy({
+            where: { contactId: contactId }
+          })
+            .then((response) => resolve(true))
+            .catch((e) => reject(e));
+        } catch (e) {
+          reject(e);
+        }
+  }),
+
+  updateContact: (contactId, newContact) => new Promise((resolve, reject) => {
+    Contact.update(
+      { name: newContact.name, email: newContact.email },
+      { where: { contactId: contactId} }
+    )
+      .then((response) => {
+        resolve(response[1][0].contactId);
+      })
+      .catch((response) => {
+        reject(response);
+      });
+  }),
 };

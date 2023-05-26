@@ -18,4 +18,22 @@ module.exports = {
             reject(error);
         }
     }),
+
+    updateContact: (contactId, newContact) => new Promise (async (resolve, reject) => {
+        try {
+            const contact = await contactRepository.updateContact(contactId, newContact);
+            resolve(contact);
+        } catch (error) {
+            reject(error);
+        }
+    }),
+
+    deleteContact: (contactId) => new Promise (async (resolve, reject) => {
+        try {
+            const contact = await contactRepository.deleteContacts(contactId);
+            resolve(contact);
+        } catch (error) {
+            reject(error);
+        }
+    }),
 };
