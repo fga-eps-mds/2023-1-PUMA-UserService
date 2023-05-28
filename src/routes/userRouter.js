@@ -23,8 +23,8 @@ routes.post('/login', (req, res) => {
 });
 
 routes.get('/aluno/:matriculaId', (req, res) => {
-  Student.findAll({ where: { userId: req.params.matriculaId }}).then((response) => {
-    const result = response.map((model) => {return {userid: model.userId, regnumber: model.regNumber, softskills: model.softSkills}})
+  Student.findAll({ where: { userId: req.params.matriculaId } }).then((response) => {
+    const result = response.map((model) => ({ userid: model.userId, regnumber: model.regNumber, softskills: model.softSkills }));
     res.json(result);
   });
 });
@@ -40,6 +40,17 @@ routes.put('/password/:email', (req, res) => {
   const { body, params } = req;
   userController.updatePassword({ ...body, ...params }).then(({ email }) => {
     res.status(200).json({ email });
+  }).catch((response) => {
+    res.status(400).json({ response });
+  });
+});
+
+routes.put('/user/:id', (req, res) => {
+  const { body, params } = req;
+  console.log(body);
+  console.log(params);
+  userController.updateTeacherIdealizer(params.id, body.isIdealizer).then(() => {
+    res.status(200).json({ status: 'success' });
   }).catch((response) => {
     res.status(400).json({ response });
   });

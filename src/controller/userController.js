@@ -72,6 +72,11 @@ module.exports = {
     }
   }),
 
+  updateTeacherIdealizer: async (userId, value) => {
+    await userRepository.updateTeacherIdealizer(userId, value);
+    return { userId };
+  },
+
   recoverPassword: (user) => new Promise((resolve, reject) => {
     try {
       const { email } = user;

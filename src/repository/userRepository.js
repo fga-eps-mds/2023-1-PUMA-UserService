@@ -13,7 +13,7 @@ module.exports = {
       email: newUser.email,
       passwordHash: hash,
       isAdmin: false,
-      phoneNumber: newUser.phoneNumber
+      phoneNumber: newUser.phoneNumber,
     })
       .then((response) => {
         resolve(response.userId);
@@ -25,7 +25,7 @@ module.exports = {
 
   addProfessor: (userId, newUser) => new Promise((resolve, reject) => {
     Teacher.create({
-      userId: userId,
+      userId,
       regNumber: newUser.matricula,
     })
       .then((response) => {
@@ -38,7 +38,7 @@ module.exports = {
 
   addStudent: (userId, newUser) => new Promise((resolve, reject) => {
     Student.create({
-      userId: userId,
+      userId,
       regNumber: newUser.matricula,
       softSkills: ' ',
     })
@@ -52,10 +52,10 @@ module.exports = {
 
   addJuridicalAgent: (userId, newUser) => new Promise((resolve, reject) => {
     Juridical_Agent.create({
-      userId: userId,
+      userId,
       cnpj: newUser.cnpj,
       companyName: newUser.companyName,
-      socialReason: newUser.socialReason
+      socialReason: newUser.socialReason,
     })
       .then((response) => {
         resolve(response.userId);
@@ -67,8 +67,8 @@ module.exports = {
 
   addPhysicalAgent: (userId, newUser) => new Promise((resolve, reject) => {
     Physical_Agent.create({
-      userId: userId,
-      cpf: newUser.cpf
+      userId,
+      cpf: newUser.cpf,
     })
       .then((response) => {
         resolve(response.userId);
@@ -82,19 +82,18 @@ module.exports = {
     // eslint-disable-next-line no-async-promise-executor
     new Promise(async (resolve, reject) => {
       try {
-        const user = await Common_User.findOne({where: { email: loginUser.email }});
-        if(user){
+        const user = await Common_User.findOne({ where: { email: loginUser.email } });
+        if (user) {
           if (await bcrypt.compare(loginUser.password, user.passwordHash)) {
             resolve(user.userId);
           } else {
             reject(null);
           }
-        }else{
+        } else {
           reject(null);
         }
-        
       } catch (e) {
-        console.log(e)
+        console.log(e);
         reject(e);
       }
     }),
@@ -103,24 +102,24 @@ module.exports = {
     try {
       let type = null;
 
-      const userData = await Common_User.findOne({where: { userId: userId }});
+      const userData = await Common_User.findOne({ where: { userId } });
 
-      const professorResult = await Teacher.findOne({where: { userId: userId }});
+      const professorResult = await Teacher.findOne({ where: { userId } });
       if (professorResult) {
         type = 'Professor';
       }
 
-      const studentResult = await Student.findOne({where: { userId: userId }});
+      const studentResult = await Student.findOne({ where: { userId } });
       if (studentResult) {
         type = 'Aluno';
       }
 
-      const physicalAgentResult = await Physical_Agent.findOne({where: { userId: userId }});
+      const physicalAgentResult = await Physical_Agent.findOne({ where: { userId } });
       if (physicalAgentResult) {
         type = 'Agente Externo';
       }
 
-      const juridicalAgentResult = await Juridical_Agent.findOne({where: { userId: userId }});
+      const juridicalAgentResult = await Juridical_Agent.findOne({ where: { userId } });
       if (juridicalAgentResult) {
         type = 'Agente Externo';
       }
@@ -142,8 +141,27 @@ module.exports = {
       return new Promise((resolve, reject) => {
         Common_User.update(
           { passwordHash: hash },
-          { where: { email:email }}
-          )
+          { where: { email } },
+        )
+          .then((_response) => {
+            resolve();
+          })
+          .catch((response) => {
+            reject(response);
+          });
+      });
+    } catch (e) {
+      reject(e);
+    }
+  },
+
+  updateTeacherIdealizer: async (userId, value) => {
+    try {
+      return new Promise((resolve, reject) => {
+        Teacher.update(
+          { isIdealizer: value },
+          { where: { userId } },
+        )
           .then((_response) => {
             resolve();
           })
@@ -158,7 +176,7 @@ module.exports = {
 
   checkUserByEmail: (email) => new Promise((resolve, reject) => {
     try {
-      Common_User.findAll({ where: { email: email }})
+      Common_User.findAll({ where: { email } })
         .then((response) => resolve(response))
         .catch((e) => reject(e));
     } catch (e) {
