@@ -3,6 +3,7 @@ const express = require('express');
 const routes = express.Router();
 const userController = require('../controller/userController');
 const Student = require('../db/model/Student');
+const Teacher = require('../db/model/Teacher');
 
 routes.post('/register', (req, res) => {
   const { body } = req;
@@ -27,6 +28,13 @@ routes.get('/aluno/:matriculaId', (req, res) => {
     const result = response.map((model) => {return {userid: model.userId, regnumber: model.regNumber, softskills: model.softSkills}})
     res.json(result);
   });
+});
+
+routes.get('/user/teacher/pending', (req, res) => {
+  Teacher.findAll({ where: { status: 'PENDENTE' } })
+    .then((pendingTeachers) => {
+      res.status(200).json(pendingTeachers);
+    });
 });
 
 routes.get('/', (req, res) => {
