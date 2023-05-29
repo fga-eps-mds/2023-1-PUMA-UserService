@@ -4,6 +4,8 @@ const routes = express.Router();
 const userController = require('../controller/userController');
 const Student = require('../db/model/Student');
 const Teacher = require('../db/model/Teacher');
+const Common_User = require('../db/model/Common_User');
+const emailService = require('../services/emailService');
 
 routes.post('/register', (req, res) => {
   const { body } = req;
@@ -41,10 +43,20 @@ routes.patch('/user/teacher/pending/:userId', (req, res) => {
   const { userId } = req.params;
   const { accept } = req.body;
 
-  Teacher.update({ status: accept ? 'ACEITO' : 'RECUSADO' }, { where: { userId } }).then((response) => {
+  Teacher.update({ status: accept ? 'ACEITO' : 'RECUSADO' }, { where: { userId } }).then(async (response) => {
     if (response[0] === 0) {
       res.status(404).json({ message: 'Professor não encontrado' });
     } else {
+
+      const user = await Common_User.findOne({
+        where: {userId}
+      });
+
+      if(accept){
+        await emailService.sendEmailTeacherAccepted(process.env.GMAIL_ACCOUNT, user.email, user.fullName);
+      }else{
+        await emailService.sendEmailTeacherRefused(process.env.GMAIL_ACCOUNT, user.email, user.fullName);
+      }
       res.status(200).json({ message: 'Status atualizado' });
     }
   });
