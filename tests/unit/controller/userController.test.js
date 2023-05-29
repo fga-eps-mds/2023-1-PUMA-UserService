@@ -2,9 +2,11 @@ const bcrypt = require('bcrypt');
 const emailService = require('../../../src/services/emailService');
 const controller = require('../../../src/controller/userController');
 const userRepository = require('../../../src/repository/userRepository');
+const Common_User = require('../../../src/db/model/Common_User');
 
 jest.mock('../../../src/repository/userRepository');
 jest.mock('../../../src/services/emailService');
+jest.mock('../../../src/db/model/Common_User');
 
 describe('Controller', () => {
   describe('registerUser', () => {
@@ -72,6 +74,8 @@ describe('Controller', () => {
 
     it('should register a professor agent', async () => {
         newUser.type = 'Professor';
+        Common_User.findAll.mockResolvedValue([]);
+
         await expect(controller.registerUser(newUser)).resolves.toBeUndefined();
         expect(addPhysicalAgent).not.toHaveBeenCalledWith(userId, newUser);
         expect(addJuridicalAgent).not.toHaveBeenCalled();
