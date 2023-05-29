@@ -10,6 +10,7 @@ const Physical_Agent = require('./db/model/Physical_Agent');
 const Student = require('./db/model/Student');
 const Teacher = require('./db/model/Teacher');
 const User_Type = require('./db/model/User_Type');
+const Contact = require('./db/model/Contact');
 // eslint-disable-next-line no-unused-vars
 
 environment.configEnv();
@@ -22,7 +23,8 @@ const app = express();
     await Physical_Agent.sync({ alter: true })
     await Student.sync({ alter: true })
     await Teacher.sync({ alter: true })
-    await User_Type.sync({ alter: true})
+    await User_Type.sync({ alter: true })
+    await Contact.sync({ alter: true })
 
     console.log("Database Inicializado")
   } catch (error) {
@@ -35,7 +37,7 @@ const corsOptions = {
   // origin: `${global.URL_API}`,
   origin: '*',
 };
-console.log('Api URL:', global.URL_API);
+// console.log('Api URL:', global.URL_API);
 app.use(cors(corsOptions));
 
 app.use(express.json());

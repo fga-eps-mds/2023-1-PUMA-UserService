@@ -31,7 +31,7 @@ module.exports = {
       global.URL_API = `http://${process.env.IP_ADDRESS}:3004`;
       global.SECRET = process.env.SECRET;
       global.DB_URL = process.env.DB_URL_DEV;
-      global.DB_APP_HOST = process.env.DB_APP_HOST_DEV;
+      global.DB_APP_HOST = process.env.DB_APP_HOST;
     }
   },
 };
