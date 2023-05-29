@@ -34,8 +34,21 @@ routes.get('/aluno/:matriculaId', (req, res) => {
 
 routes.get('/user/teacher/pending', (req, res) => {
   Teacher.findAll({ where: { status: 'PENDENTE' } })
-    .then((pendingTeachers) => {
-      res.status(200).json(pendingTeachers);
+    .then(async (pendingTeachers) => {
+      const response = [];
+
+      for(const teacher of pendingTeachers){
+        const user = await Common_User.findOne({
+          where:{
+            userId: teacher.userId
+          }
+        });
+
+        response.push(user);
+      }
+
+      await Common_User.findAll
+      res.status(200).json({teachers: response});
     });
 });
 
