@@ -27,6 +27,9 @@ module.exports = {
     Teacher.create({
       userId: userId,
       regNumber: newUser.matricula,
+      departament: newUser.departament
+      course: newUser.course,
+      university: newUser.university
     })
       .then((response) => {
         resolve(response.userId);
