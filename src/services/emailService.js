@@ -112,7 +112,7 @@ module.exports = {
         address: receiverAddress,
       },
       subject: 'Puma - Cadastro aceito',
-      html: "<h1> Olá " + userName + ", seu cadastro foi aceito na PUMA, você já pode acessar área logada !!!</h1>",
+      html: "<h1> Olá " + userName + ", seu cadastro de PROFESSOR foi aceito na PUMA, você já pode acessar área logada !!!</h1>",
     });
 
     return info;
