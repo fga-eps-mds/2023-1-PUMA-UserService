@@ -27,6 +27,18 @@ const Teacher = database.define('Teacher', {
     type: DataTypes.ENUM('PENDENTE', 'ACEITO', 'RECUSADO'),
     defaultValue: 'PENDENTE',
   },
+  departament: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+  course: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+  university: {
+        type: DataTypes.STRING,
+        allowNull: false
+   },
 }, {
   freezeTableName: true,
 });

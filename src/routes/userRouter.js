@@ -38,16 +38,22 @@ routes.get('/user/teacher/pending', (req, res) => {
       const response = [];
 
       for(const teacher of pendingTeachers){
+        const professor = await Teacher.findOne({
+          where:{
+            userId: teacher.userId
+          }
+        });
         const user = await Common_User.findOne({
           where:{
             userId: teacher.userId
           }
         });
+        const pendingTeacher = Object.assign(professor, user)
 
-        response.push(user);
+        response.push(pendingTeacher);
       }
 
-      await Common_User.findAll
+      await Teacher.findAll
       res.status(200).json({teachers: response});
     });
 });
