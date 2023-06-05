@@ -1,13 +1,13 @@
 const bcrypt = require('bcrypt');
 const userRepository = require('../../../src/repository/userRepository');
-const Common_User = require('../../../src/db/model/Common_User');
+const User = require('../../../src/db/model/User');
 const Juridical_Agent = require('../../../src/db/model/Juridical_Agent');
 const Physical_Agent = require('../../../src/db/model/Physical_Agent');
 const Student = require('../../../src/db/model/Student');
 const Teacher = require('../../../src/db/model/Teacher');
 
 jest.mock('bcrypt');
-jest.mock('../../../src/db/model/Common_User');
+jest.mock('../../../src/db/model/User');
 jest.mock('../../../src/db/model/Juridical_Agent');
 jest.mock('../../../src/db/model/Physical_Agent');
 jest.mock('../../../src/db/model/Student');
@@ -25,11 +25,11 @@ describe('userRepository', () => {
       const hash = 'hashedPassword';
 
       const expectedUserId = 1;
-      Common_User.create.mockResolvedValue({ userId: expectedUserId });
+      User.create.mockResolvedValue({ userId: expectedUserId });
 
       const userId = await userRepository.addUser(newUser, hash);
 
-      expect(Common_User.create).toHaveBeenCalledWith({
+      expect(User.create).toHaveBeenCalledWith({
         fullName: newUser.name,
         email: newUser.email,
         passwordHash: hash,
@@ -50,10 +50,10 @@ describe('userRepository', () => {
       const hash = 'hashedPassword';
       const error = 'ERROR';
 
-      Common_User.create.mockRejectedValue(error);
+      User.create.mockRejectedValue(error);
 
       await expect(userRepository.addUser(newUser, hash)).rejects.toEqual(error);
-      expect(Common_User.create).toHaveBeenCalledWith({
+      expect(User.create).toHaveBeenCalledWith({
         fullName: newUser.name,
         email: newUser.email,
         passwordHash: hash,
@@ -246,12 +246,12 @@ describe('userRepository', () => {
       };
 
       bcrypt.compare.mockResolvedValue(true);
-      Common_User.findOne.mockResolvedValue(user);
+      User.findOne.mockResolvedValue(user);
 
       const result = await userRepository.checkUser(loginUser);
 
       expect(bcrypt.compare).toHaveBeenCalledWith(loginUser.password, user.passwordHash);
-      expect(Common_User.findOne).toHaveBeenCalledWith({ where: { email: loginUser.email } });
+      expect(User.findOne).toHaveBeenCalledWith({ where: { email: loginUser.email } });
 
       expect(result).toEqual(user.userId);
     });
@@ -268,12 +268,12 @@ describe('userRepository', () => {
       };
 
       bcrypt.compare.mockResolvedValue(false);
-      Common_User.findOne.mockResolvedValue(user);
+      User.findOne.mockResolvedValue(user);
 
       await expect(userRepository.checkUser(loginUser)).rejects.toBeNull();
 
       expect(bcrypt.compare).toHaveBeenCalledWith(loginUser.password, user.passwordHash);
-      expect(Common_User.findOne).toHaveBeenCalledWith({ where: { email: loginUser.email } });
+      expect(User.findOne).toHaveBeenCalledWith({ where: { email: loginUser.email } });
     });
 
     it('should handle errors when checking the user', async () => {
@@ -284,11 +284,11 @@ describe('userRepository', () => {
 
       const error = 'Internal Server Error';
 
-      Common_User.findOne.mockRejectedValue(error);
+      User.findOne.mockRejectedValue(error);
 
       await expect(userRepository.checkUser(loginUser)).rejects.toEqual(error);
 
-      expect(Common_User.findOne).toHaveBeenCalledWith({ where: { email: loginUser.email } });
+      expect(User.findOne).toHaveBeenCalledWith({ where: { email: loginUser.email } });
     });
   });
 
@@ -309,12 +309,12 @@ describe('userRepository', () => {
 
       const expectedType = 'Professor';
 
-      Common_User.findOne.mockResolvedValue(userData);
+      User.findOne.mockResolvedValue(userData);
       Teacher.findOne.mockResolvedValue(professorResult);
 
       const result = await userRepository.getUserData(userId);
 
-      expect(Common_User.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
+      expect(User.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
       expect(Teacher.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
 
       expect(result.userId).toEqual(userData.userId);
@@ -340,12 +340,12 @@ describe('userRepository', () => {
 
       const expectedType = 'Aluno';
 
-      Common_User.findOne.mockResolvedValue(userData);
+      User.findOne.mockResolvedValue(userData);
       Student.findOne.mockResolvedValue(studentResult);
 
       const result = await userRepository.getUserData(userId);
 
-      expect(Common_User.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
+      expect(User.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
       expect(Student.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
 
       expect(result.userId).toEqual(userData.userId);
@@ -371,12 +371,12 @@ describe('userRepository', () => {
 
       const expectedType = 'Agente Externo';
 
-      Common_User.findOne.mockResolvedValue(userData);
+      User.findOne.mockResolvedValue(userData);
       Physical_Agent.findOne.mockResolvedValue(physicalAgentResult);
 
       const result = await userRepository.getUserData(userId);
 
-      expect(Common_User.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
+      expect(User.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
       expect(Physical_Agent.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
 
       expect(result.userId).toEqual(userData.userId);
@@ -402,12 +402,12 @@ describe('userRepository', () => {
 
       const expectedType = 'Agente Externo';
 
-      Common_User.findOne.mockResolvedValue(userData);
+      User.findOne.mockResolvedValue(userData);
       Juridical_Agent.findOne.mockResolvedValue(juridicalAgentResult);
 
       const result = await userRepository.getUserData(userId);
 
-      expect(Common_User.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
+      expect(User.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
       expect(Juridical_Agent.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
 
       expect(result.userId).toEqual(userData.userId);
@@ -422,11 +422,11 @@ describe('userRepository', () => {
 
       const error = 'Internal Server Error';
 
-      Common_User.findOne.mockRejectedValue(error);
+      User.findOne.mockRejectedValue(error);
 
       await expect(userRepository.getUserData(userId)).rejects.toEqual(error);
 
-      expect(Common_User.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
+      expect(User.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
     });
   });
 
@@ -437,11 +437,11 @@ describe('userRepository', () => {
 
       const expectedResponse = {};
 
-      Common_User.update.mockResolvedValue(expectedResponse);
+      User.update.mockResolvedValue(expectedResponse);
 
       const result = await userRepository.updateUserPassword(email, hash);
 
-      expect(Common_User.update).toHaveBeenCalledWith(
+      expect(User.update).toHaveBeenCalledWith(
         { passwordHash: hash },
         { where: { email: email } }
       );
@@ -455,11 +455,11 @@ describe('userRepository', () => {
 
       const error = 'Internal Server Error';
 
-      Common_User.update.mockRejectedValue(error);
+      User.update.mockRejectedValue(error);
 
       await expect(userRepository.updateUserPassword(email, hash)).rejects.toEqual(error);
 
-      expect(Common_User.update).toHaveBeenCalledWith(
+      expect(User.update).toHaveBeenCalledWith(
         { passwordHash: hash },
         { where: { email: email } }
       );
@@ -472,11 +472,11 @@ describe('userRepository', () => {
 
       const expectedResponse = {};
 
-      Common_User.findAll.mockResolvedValue(expectedResponse);
+      User.findAll.mockResolvedValue(expectedResponse);
 
       const result = await userRepository.checkUserByEmail(email);
 
-      expect(Common_User.findAll).toHaveBeenCalledWith({ where: { email: email } });
+      expect(User.findAll).toHaveBeenCalledWith({ where: { email: email } });
       expect(result).toEqual(expectedResponse);
     });
 
@@ -485,11 +485,11 @@ describe('userRepository', () => {
 
       const error = 'Internal Server Error';
 
-      Common_User.findAll.mockRejectedValue(error);
+      User.findAll.mockRejectedValue(error);
 
       await expect(userRepository.checkUserByEmail(email)).rejects.toEqual(error);
 
-      expect(Common_User.findAll).toHaveBeenCalledWith({ where: { email: email } });
+      expect(User.findAll).toHaveBeenCalledWith({ where: { email: email } });
     });
   });
 });

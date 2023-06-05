@@ -6,7 +6,7 @@ const emailService = require('../services/emailService');
 
 const saltRounds = 10;
 const userRepository = require('../repository/userRepository');
-const Common_User = require('../db/model/Common_User');
+const User = require('../db/model/User');
 
 module.exports = {
   registerUser: (newUser) => new Promise((resolve, reject) => {
@@ -35,7 +35,7 @@ module.exports = {
             case 'Professor':
               await userRepository.addProfessor(userId, newUser);
               
-              const admins = await Common_User.findAll({
+              const admins = await User.findAll({
                 where: {
                   isAdmin: true
                 }

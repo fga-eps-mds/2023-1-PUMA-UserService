@@ -1,14 +1,11 @@
 /* eslint-disable import/no-unresolved */
 const bcrypt = require('bcrypt');
-const Common_User = require('../db/model/Common_User');
-const Juridical_Agent = require('../db/model/Juridical_Agent');
-const Physical_Agent = require('../db/model/Physical_Agent');
-const Student = require('../db/model/Student');
-const Teacher = require('../db/model/Teacher');
+const User = require('../db/model/User');
+const Metadata = require('../db/model/Metadata');
 
 module.exports = {
   addUser: (newUser, hash) => new Promise((resolve, reject) => {
-    Common_User.create({
+    User.create({
       fullName: newUser.name,
       email: newUser.email,
       passwordHash: hash,
@@ -24,7 +21,7 @@ module.exports = {
   }),
 
   addProfessor: (userId, newUser) => new Promise((resolve, reject) => {
-    Teacher.create({
+    Metadata.create({
       userId: userId,
       regNumber: newUser.matricula,
     })
@@ -37,7 +34,7 @@ module.exports = {
   }),
 
   addStudent: (userId, newUser) => new Promise((resolve, reject) => {
-    Student.create({
+    Metadata.create({
       userId: userId,
       regNumber: newUser.matricula,
       softSkills: ' ',
@@ -51,7 +48,7 @@ module.exports = {
   }),
 
   addJuridicalAgent: (userId, newUser) => new Promise((resolve, reject) => {
-    Juridical_Agent.create({
+    Metadata.create({
       userId: userId,
       cnpj: newUser.cnpj,
       companyName: newUser.companyName,
@@ -66,7 +63,7 @@ module.exports = {
   }),
 
   addPhysicalAgent: (userId, newUser) => new Promise((resolve, reject) => {
-    Physical_Agent.create({
+    Metadata.create({
       userId: userId,
       cpf: newUser.cpf
     })
@@ -82,7 +79,7 @@ module.exports = {
     // eslint-disable-next-line no-async-promise-executor
     new Promise(async (resolve, reject) => {
       try {
-        const user = await Common_User.findOne({where: { email: loginUser.email }});
+        const user = await User.findOne({where: { email: loginUser.email }});
         if(user){
           if (await bcrypt.compare(loginUser.password, user.passwordHash)) {
             resolve(user.userId);
@@ -103,24 +100,24 @@ module.exports = {
     try {
       let type = null;
 
-      const userData = await Common_User.findOne({where: { userId: userId }});
+      const userData = await User.findOne({where: { userId: userId }});
 
-      const professorResult = await Teacher.findOne({where: { userId: userId }});
+      const professorResult = await Metadata.findOne({where: { userId: userId }});
       if (professorResult) {
         type = 'Professor';
       }
 
-      const studentResult = await Student.findOne({where: { userId: userId }});
+      const studentResult = await Metadata.findOne({where: { userId: userId }});
       if (studentResult) {
         type = 'Aluno';
       }
 
-      const physicalAgentResult = await Physical_Agent.findOne({where: { userId: userId }});
+      const physicalAgentResult = await Metadata.findOne({where: { userId: userId }});
       if (physicalAgentResult) {
         type = 'Agente Externo';
       }
 
-      const juridicalAgentResult = await Juridical_Agent.findOne({where: { userId: userId }});
+      const juridicalAgentResult = await Metadata.findOne({where: { userId: userId }});
       if (juridicalAgentResult) {
         type = 'Agente Externo';
       }
@@ -140,7 +137,7 @@ module.exports = {
   updateUserPassword: async (email, hash) => {
     try {
       return new Promise((resolve, reject) => {
-        Common_User.update(
+        User.update(
           { passwordHash: hash },
           { where: { email:email }}
           )
@@ -158,7 +155,7 @@ module.exports = {
 
   checkUserByEmail: (email) => new Promise((resolve, reject) => {
     try {
-      Common_User.findAll({ where: { email: email }})
+      User.findAll({ where: { email: email }})
         .then((response) => resolve(response))
         .catch((e) => reject(e));
     } catch (e) {
