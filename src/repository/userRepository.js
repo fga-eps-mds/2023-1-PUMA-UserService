@@ -27,7 +27,7 @@ module.exports = {
     Teacher.create({
       userId: userId,
       regNumber: newUser.matricula,
-      departament: newUser.departament
+      departament: newUser.departament,
       course: newUser.course,
       university: newUser.university
     })
