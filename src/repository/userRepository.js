@@ -13,7 +13,8 @@ module.exports = {
       email: newUser.email,
       passwordHash: hash,
       isAdmin: false,
-      phoneNumber: newUser.phoneNumber
+      phoneNumber: newUser.phoneNumber,
+      image: newUser.image,
     })
       .then((response) => {
         resolve(response.userId);
