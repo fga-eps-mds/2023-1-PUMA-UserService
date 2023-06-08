@@ -2,6 +2,7 @@
 const bcrypt = require('bcrypt');
 const User = require('../db/model/User');
 const User_Properties = require('../db/model/User_Properties');
+const User_Type = require('../db/model/User_Type');
 
 module.exports = {
   addUser: (newUser, hash, userTypeId) => new Promise((resolve, reject) => {
@@ -103,32 +104,14 @@ module.exports = {
 
       const userData = await User.findOne({where: { userId: userId }});
 
-      const professorResult = await User_Properties.findOne({where: { userId: userId }});
-      if (professorResult) {
-        type = 'Professor';
-      }
-
-      const studentResult = await User_Properties.findOne({where: { userId: userId }});
-      if (studentResult) {
-        type = 'Aluno';
-      }
-
-      const physicalAgentResult = await User_Properties.findOne({where: { userId: userId }});
-      if (physicalAgentResult) {
-        type = 'Agente Externo';
-      }
-
-      const juridicalAgentResult = await User_Properties.findOne({where: { userId: userId }});
-      if (juridicalAgentResult) {
-        type = 'Agente Externo';
-      }
+      const userPermission = await User_Type.findOne({where: { userTypeId: userData.userTypeId }});
 
       return {
         userId: userData.userId,
         fullName: userData.fullName,
         email: userData.email,
         isAdmin: userData.isAdmin,
-        type,
+        permission: userPermission,
       };
     } catch (e) {
       throw (e);
