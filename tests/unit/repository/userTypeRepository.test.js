@@ -11,8 +11,7 @@ describe('User Type Repository', () => {
   describe('addUserType', () => {
     it('should add a new user type successfully', async () => {
       const newUserType = {
-        typeName: 'Admin',
-        description: 'Administrator User Type',
+        typeName: 'Admin'
       };
 
       const createdUserType = {
@@ -26,8 +25,7 @@ describe('User Type Repository', () => {
       const userType = await userTypeRepository.addUserType(newUserType);
 
       expect(User_Type.create).toHaveBeenCalledWith({
-        typeName: newUserType.typeName,
-        description: newUserType.description,
+        typeName: newUserType.typeName
       });
 
       expect(userType).toEqual(expectedUserTypeId);
@@ -35,8 +33,7 @@ describe('User Type Repository', () => {
 
     it('should handle errors when adding a new user type', async () => {
       const newUserType = {
-        typeName: 'Admin',
-        description: 'Administrator User Type',
+        typeName: 'Admin'
       };
 
       const error = 'Internal Server Error';
@@ -46,8 +43,7 @@ describe('User Type Repository', () => {
       await expect(userTypeRepository.addUserType(newUserType)).rejects.toEqual(error);
 
       expect(User_Type.create).toHaveBeenCalledWith({
-        typeName: newUserType.typeName,
-        description: newUserType.description,
+        typeName: newUserType.typeName
       });
     });
   });
@@ -59,8 +55,7 @@ describe('User Type Repository', () => {
       const userTypes = [
         {
           userTypeId: 1,
-          typeName: 'Admin',
-          description: 'Administrator User Type',
+          typeName: 'Admin'
         },
       ];
 
@@ -83,13 +78,11 @@ describe('User Type Repository', () => {
       const userTypes = [
         {
           userTypeId: 1,
-          typeName: 'Admin',
-          description: 'Administrator User Type',
+          typeName: 'Admin'
         },
         {
           userTypeId: 2,
-          typeName: 'User',
-          description: 'Regular User Type',
+          typeName: 'User'
         },
       ];
 
@@ -125,8 +118,7 @@ describe('User Type Repository', () => {
     it('should update a user type successfully', async () => {
       const userTypeId = 1;
       const newUserType = {
-        typeName: 'SuperAdmin',
-        description: 'Super Administrator User Type',
+        typeName: 'SuperAdmin'
       };
 
       const updatedUserType = {
@@ -140,7 +132,7 @@ describe('User Type Repository', () => {
       const userType = await userTypeRepository.updateUserType(userTypeId, newUserType);
 
       expect(User_Type.update).toHaveBeenCalledWith(
-        { typeName: newUserType.typeName, description: newUserType.description },
+        { typeName: newUserType.typeName },
         { where: { userTypeId: userTypeId }, returning: true }
       );
 
@@ -150,8 +142,7 @@ describe('User Type Repository', () => {
     it('should handle errors when updating a user type', async () => {
       const userTypeId = 1;
       const newUserType = {
-        typeName: 'SuperAdmin',
-        description: 'Super Administrator User Type',
+        typeName: 'SuperAdmin'
       };
 
       const error = 'Internal Server Error';
@@ -161,7 +152,7 @@ describe('User Type Repository', () => {
       await expect(userTypeRepository.updateUserType(userTypeId, newUserType)).rejects.toEqual(error);
 
       expect(User_Type.update).toHaveBeenCalledWith(
-        { typeName: newUserType.typeName, description: newUserType.description },
+        { typeName: newUserType.typeName },
         { where: { userTypeId: userTypeId }, returning: true }
       );
     });

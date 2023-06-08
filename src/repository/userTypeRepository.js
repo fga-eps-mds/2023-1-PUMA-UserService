@@ -4,8 +4,7 @@ const User_Type = require('../db/model/User_Type');
 module.exports = {
   addUserType: (newUserType) => new Promise((resolve, reject) => {
     User_Type.create({
-      typeName: newUserType.typeName,
-      description: newUserType.description
+      typeName: newUserType.typeName
     })
       .then((response) => {
         resolve(response.userTypeid);
@@ -56,7 +55,7 @@ module.exports = {
 
   updateUserType: (userTypeId, newUserType) => new Promise((resolve, reject) => {
     User_Type.update(
-      { typeName: newUserType.typeName, description: newUserType.description },
+      { typeName: newUserType.typeName },
       { where: { userTypeId: userTypeId}, returning: true}
     )
       .then((response) => {
