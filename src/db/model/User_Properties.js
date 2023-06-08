@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const database = require('../AppDb');
 
-const Metadata = database.define('Metadata', {
-  MetadataId: {
+const User_Properties = database.define('User_Properties', {
+  userPropertiesId: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
@@ -43,7 +43,7 @@ const Metadata = database.define('Metadata', {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
-  status: {
+  statusTeacher: {
     type: DataTypes.ENUM('PENDENTE', 'ACEITO', 'RECUSADO'),
     defaultValue: 'PENDENTE',
   },
@@ -51,4 +51,4 @@ const Metadata = database.define('Metadata', {
   freezeTableName: true
 })
 
-module.exports = Metadata
+module.exports = User_Properties

@@ -2,7 +2,7 @@ const express = require('express');
 
 const routes = express.Router();
 const userController = require('../controller/userController');
-const Metadata = require('../db/model/Metadata');
+const User_Properties = require('../db/model/User_Properties');
 const User = require('../db/model/User');
 const emailService = require('../services/emailService');
 
@@ -25,14 +25,14 @@ routes.post('/login', (req, res) => {
 });
 
 routes.get('/aluno/:matriculaId', (req, res) => {
-  Metadata.findAll({ where: { userId: req.params.matriculaId } }).then((response) => {
+  User_Properties.findAll({ where: { userId: req.params.matriculaId } }).then((response) => {
     const result = response.map((model) => { return { userid: model.userId, regnumber: model.regNumber, softskills: model.softSkills } })
     res.json(result);
   });
 });
 
 routes.get('/user/teacher/pending', (req, res) => {
-  Metadata.findAll({ where: { status: 'PENDENTE' } })
+  User_Properties.findAll({ where: { statusTeacher: 'PENDENTE' } })
     .then(async (pendingTeachers) => {
       const response = [];
 
@@ -45,8 +45,6 @@ routes.get('/user/teacher/pending', (req, res) => {
 
         response.push(user);
       }
-
-      await User.findAll
       res.status(200).json({teachers: response});
     });
 });
@@ -55,7 +53,7 @@ routes.patch('/user/teacher/pending/:userId', (req, res) => {
   const { userId } = req.params;
   const { accept } = req.body;
 
-  Metadata.update({ status: accept ? 'ACEITO' : 'RECUSADO' }, { where: { userId } }).then(async (response) => {
+  User_Properties.update({ statusTeacher: accept ? 'ACEITO' : 'RECUSADO' }, { where: { userId } }).then(async (response) => {
     if (response[0] === 0) {
       res.status(404).json({ message: 'Professor não encontrado' });
     } else {

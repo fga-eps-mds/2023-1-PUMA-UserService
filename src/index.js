@@ -5,7 +5,7 @@ const cors = require('cors');
 const environment = require('./config/environment.config');
 const configRoutes = require('./routes/router');
 const User = require('./db/model/User');
-const Metadata = require('./db/model/Metadata');
+const User_Properties = require('./db/model/User_Properties');
 const User_Type = require('./db/model/User_Type');
 const Contact = require('./db/model/Contact');
 // eslint-disable-next-line no-unused-vars
@@ -16,7 +16,7 @@ const app = express();
 (async () => {
   try {
     await User.sync({ alter: true })
-    await Metadata.sync({ alter: true })
+    await User_Properties.sync({ alter: true })
     await User_Type.sync({ alter: true })
     await Contact.sync({ alter: true })
 

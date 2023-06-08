@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 const bcrypt = require('bcrypt');
 const User = require('../db/model/User');
-const Metadata = require('../db/model/Metadata');
+const User_Properties = require('../db/model/User_Properties');
 
 module.exports = {
   addUser: (newUser, hash, userTypeId) => new Promise((resolve, reject) => {
@@ -22,7 +22,7 @@ module.exports = {
   }),
 
   addProfessor: (userId, newUser) => new Promise((resolve, reject) => {
-    Metadata.create({
+    User_Properties.create({
       userId: userId,
       regNumber: newUser.matricula,
     })
@@ -35,7 +35,7 @@ module.exports = {
   }),
 
   addStudent: (userId, newUser) => new Promise((resolve, reject) => {
-    Metadata.create({
+    User_Properties.create({
       userId: userId,
       regNumber: newUser.matricula,
       softSkills: ' ',
@@ -49,7 +49,7 @@ module.exports = {
   }),
 
   addJuridicalAgent: (userId, newUser) => new Promise((resolve, reject) => {
-    Metadata.create({
+    User_Properties.create({
       userId: userId,
       cnpj: newUser.cnpj,
       companyName: newUser.companyName,
@@ -64,7 +64,7 @@ module.exports = {
   }),
 
   addPhysicalAgent: (userId, newUser) => new Promise((resolve, reject) => {
-    Metadata.create({
+    User_Properties.create({
       userId: userId,
       cpf: newUser.cpf
     })
@@ -103,22 +103,22 @@ module.exports = {
 
       const userData = await User.findOne({where: { userId: userId }});
 
-      const professorResult = await Metadata.findOne({where: { userId: userId }});
+      const professorResult = await User_Properties.findOne({where: { userId: userId }});
       if (professorResult) {
         type = 'Professor';
       }
 
-      const studentResult = await Metadata.findOne({where: { userId: userId }});
+      const studentResult = await User_Properties.findOne({where: { userId: userId }});
       if (studentResult) {
         type = 'Aluno';
       }
 
-      const physicalAgentResult = await Metadata.findOne({where: { userId: userId }});
+      const physicalAgentResult = await User_Properties.findOne({where: { userId: userId }});
       if (physicalAgentResult) {
         type = 'Agente Externo';
       }
 
-      const juridicalAgentResult = await Metadata.findOne({where: { userId: userId }});
+      const juridicalAgentResult = await User_Properties.findOne({where: { userId: userId }});
       if (juridicalAgentResult) {
         type = 'Agente Externo';
       }
