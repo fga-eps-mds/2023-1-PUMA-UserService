@@ -9,7 +9,7 @@ const User_Properties = database.define('User_Properties', {
   },
   userId: {
     type: DataTypes.INTEGER,
-    primaryKey: true,
+    unique: true,
     references: {
       model: {
         tableName: "User",

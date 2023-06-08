@@ -11,7 +11,42 @@ const User_Type = database.define('User_Type', {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
-    }
+    },
+    canEditExternalEnvironment: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    },
+    canCreateDiscipline: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    },
+    canAcceptTeacher: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    },
+    canRevokeUserType: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    },
+    canGiveUserType: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    },
+    canEditPermission: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    },
+    canDeleteUserType: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    },
 }, {
     freezeTableName: true
 })
