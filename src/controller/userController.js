@@ -6,6 +6,7 @@ const emailService = require('../services/emailService');
 
 const saltRounds = 10;
 const userRepository = require('../repository/userRepository');
+const userTypeRepository = require('../repository/userTypeRepository');
 const User = require('../db/model/User');
 
 module.exports = {
@@ -15,19 +16,24 @@ module.exports = {
         reject(error);
       } else {
         try {
-          const userId = await userRepository.addUser(newUser, hash);
-          switch (newUser.type) {
-            case 'Agente Externo':
-              switch (newUser.externalAgentType) {
-                case 'Pessoa Fisica':
-                  await userRepository.addPhysicalAgent(userId, newUser);
-                  break;
-                case 'Pessoa Juridica':
-                  await userRepository.addJuridicalAgent(userId, newUser);
-                  break;
-                default:
-                  reject(new Error('Tipo não encontrado'));
-              }
+          let userType;
+          console.log('newUser.type =>');
+          console.log(newUser.type);
+          console.log(newUser.externalAgentType);
+          if(newUser.type === 'Agente Externo') {
+            userType = await userTypeRepository.getUserTypeByName(newUser.externalAgentType);
+          } else {
+            userType = await userTypeRepository.getUserTypeByName(newUser.type);
+          }
+          console.log(userType);
+
+          const userId = await userRepository.addUser(newUser, hash, userType[0].userTypeId);
+          switch (userType[0].typeName) {
+            case 'Pessoa Fisica':
+              await userRepository.addPhysicalAgent(userId, newUser);
+              break;
+            case 'Pessoa Juridica':
+              await userRepository.addJuridicalAgent(userId, newUser);
               break;
             case 'Aluno':
               await userRepository.addStudent(userId, newUser);
@@ -49,6 +55,7 @@ module.exports = {
           }
           await emailService.sendEmailRegister(process.env.GMAIL_ACCOUNT, newUser.email, newUser.name);
         } catch (e) {
+          console.log(e);
           reject(e);
         }
         resolve();

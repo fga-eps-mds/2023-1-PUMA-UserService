@@ -40,6 +40,20 @@ module.exports = {
     }
   }),
 
+  getUserTypeByName: (userTypeName) => new Promise((resolve, reject) => {
+    User_Type.findAll({
+      where: {
+        typeName: userTypeName
+      }
+    })
+    .then((response) => {
+      resolve(response);
+    })
+    .catch((response) => {
+      reject(response);
+    });
+  }),
+
   updateUserType: (userTypeId, newUserType) => new Promise((resolve, reject) => {
     User_Type.update(
       { typeName: newUserType.typeName, description: newUserType.description },

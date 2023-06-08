@@ -4,8 +4,9 @@ const User = require('../db/model/User');
 const Metadata = require('../db/model/Metadata');
 
 module.exports = {
-  addUser: (newUser, hash) => new Promise((resolve, reject) => {
+  addUser: (newUser, hash, userTypeId) => new Promise((resolve, reject) => {
     User.create({
+      userTypeId,
       fullName: newUser.name,
       email: newUser.email,
       passwordHash: hash,

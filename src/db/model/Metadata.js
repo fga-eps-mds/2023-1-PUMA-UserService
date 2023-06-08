@@ -34,22 +34,14 @@ const Metadata = database.define('Metadata', {
   },
   regNumber: {
     type: DataTypes.STRING,
-    allowNull: false,
     primaryKey: true
   },
   softSkills: {
-    type: DataTypes.STRING,
-    allowNull: false
+    type: DataTypes.STRING
   },
   isIdealizer: {
     type: DataTypes.BOOLEAN,
-    allowNull: false,
     defaultValue: false,
-  },
-  regNumber: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    primaryKey: true,
   },
   status: {
     type: DataTypes.ENUM('PENDENTE', 'ACEITO', 'RECUSADO'),
