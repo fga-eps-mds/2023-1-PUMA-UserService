@@ -4,7 +4,14 @@ const User_Type = require('../db/model/User_Type');
 module.exports = {
   addUserType: (newUserType) => new Promise((resolve, reject) => {
     User_Type.create({
-      typeName: newUserType.typeName
+      typeName: newUserType.typeName,
+      canEditExternalEnvironment:newUserType.canEditExternalEnvironment,
+      canCreateDiscipline:newUserType.canCreateDiscipline,
+      canAcceptTeacher:newUserType.canAcceptTeacher,
+      canRevokeUserType:newUserType.canRevokeUserType,
+      canGiveUserType:newUserType.canGiveUserType,
+      canEditPermission:newUserType.canEditPermission,
+      canDeleteUserType:newUserType.canDeleteUserType
     })
       .then((response) => {
         resolve(response.userTypeid);
@@ -54,8 +61,16 @@ module.exports = {
   }),
 
   updateUserType: (userTypeId, newUserType) => new Promise((resolve, reject) => {
-    User_Type.update(
-      { typeName: newUserType.typeName },
+    User_Type.update({ 
+      typeName: newUserType.typeName,
+      canEditExternalEnvironment:newUserType.canEditExternalEnvironment,
+      canCreateDiscipline:newUserType.canCreateDiscipline,
+      canAcceptTeacher:newUserType.canAcceptTeacher,
+      canRevokeUserType:newUserType.canRevokeUserType,
+      canGiveUserType:newUserType.canGiveUserType,
+      canEditPermission:newUserType.canEditPermission,
+      canDeleteUserType:newUserType.canDeleteUserType
+    },
       { where: { userTypeId: userTypeId}, returning: true}
     )
       .then((response) => {
