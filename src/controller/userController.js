@@ -17,15 +17,13 @@ module.exports = {
       } else {
         try {
           let userType;
-          console.log('newUser.type =>');
-          console.log(newUser.type);
-          console.log(newUser.externalAgentType);
-          if(newUser.type === 'Agente Externo') {
+          if(newUser.type === 'Agente Externo' && (newUser.externalAgentType === 'Pessoa Fisica' || newUser.externalAgentType === 'Pessoa Juridica')) {
             userType = await userTypeRepository.getUserTypeByName(newUser.externalAgentType);
-          } else {
+          } else if(newUser.type === 'Aluno' || newUser.type === 'Professor') {
             userType = await userTypeRepository.getUserTypeByName(newUser.type);
+          } else {
+            reject(new Error('Tipo não encontrado'));
           }
-          console.log(userType);
 
           const userId = await userRepository.addUser(newUser, hash, userType[0].userTypeId);
           switch (userType[0].typeName) {
