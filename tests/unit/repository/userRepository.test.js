@@ -1,17 +1,10 @@
 const bcrypt = require('bcrypt');
 const userRepository = require('../../../src/repository/userRepository');
 const User = require('../../../src/db/model/User');
-const Juridical_Agent = require('../../../src/db/model/Juridical_Agent');
-const Physical_Agent = require('../../../src/db/model/Physical_Agent');
-const Student = require('../../../src/db/model/Student');
-const Teacher = require('../../../src/db/model/Teacher');
-
+const User_Properties = require('../../../src/db/model/User_Properties');
 jest.mock('bcrypt');
 jest.mock('../../../src/db/model/User');
-jest.mock('../../../src/db/model/Juridical_Agent');
-jest.mock('../../../src/db/model/Physical_Agent');
-jest.mock('../../../src/db/model/Student');
-jest.mock('../../../src/db/model/Teacher');
+jest.mock('../../../src/db/model/User_Properties');
 
 describe('userRepository', () => {
   describe('addUser', () => {
@@ -72,11 +65,11 @@ describe('userRepository', () => {
 
       const expectedUserId = 1;
 
-      Teacher.create.mockResolvedValue({ userId: expectedUserId });
+      User_Properties.create.mockResolvedValue({ userId: expectedUserId });
 
       const result = await userRepository.addProfessor(userId, newUser);
 
-      expect(Teacher.create).toHaveBeenCalledWith({
+      expect(User_Properties.create).toHaveBeenCalledWith({
         userId: userId,
         regNumber: newUser.matricula,
       });
@@ -92,11 +85,11 @@ describe('userRepository', () => {
 
       const error = 'Internal Server Error';
 
-      Teacher.create.mockRejectedValue(error);
+      User_Properties.create.mockRejectedValue(error);
 
       await expect(userRepository.addProfessor(userId, newUser)).rejects.toEqual(error);
 
-      expect(Teacher.create).toHaveBeenCalledWith({
+      expect(User_Properties.create).toHaveBeenCalledWith({
         userId: userId,
         regNumber: newUser.matricula,
       });
@@ -112,10 +105,10 @@ describe('userRepository', () => {
 
       const expectedUserId = 1;
 
-      Student.create.mockResolvedValue({ userId: expectedUserId });
+      User_Properties.create.mockResolvedValue({ userId: expectedUserId });
       const result = await userRepository.addStudent(userId, newUser);
 
-      expect(Student.create).toHaveBeenCalledWith({
+      expect(User_Properties.create).toHaveBeenCalledWith({
         userId: userId,
         regNumber: newUser.matricula,
         softSkills: ' ',
@@ -132,11 +125,11 @@ describe('userRepository', () => {
 
       const error = 'Internal Server Error';
 
-      Student.create.mockRejectedValue(error);
+      User_Properties.create.mockRejectedValue(error);
 
       await expect(userRepository.addStudent(userId, newUser)).rejects.toEqual(error);
 
-      expect(Student.create).toHaveBeenCalledWith({
+      expect(User_Properties.create).toHaveBeenCalledWith({
         userId: userId,
         regNumber: newUser.matricula,
         softSkills: ' ',
@@ -155,11 +148,11 @@ describe('userRepository', () => {
 
       const expectedUserId = 1;
 
-      Juridical_Agent.create.mockResolvedValue({ userId: expectedUserId });
+      User_Properties.create.mockResolvedValue({ userId: expectedUserId });
 
       const result = await userRepository.addJuridicalAgent(userId, newUser);
 
-      expect(Juridical_Agent.create).toHaveBeenCalledWith({
+      expect(User_Properties.create).toHaveBeenCalledWith({
         userId: userId,
         cnpj: newUser.cnpj,
         companyName: newUser.companyName,
@@ -179,11 +172,11 @@ describe('userRepository', () => {
 
       const error = 'Internal Server Error';
 
-      Juridical_Agent.create.mockRejectedValue(error);
+      User_Properties.create.mockRejectedValue(error);
 
       await expect(userRepository.addJuridicalAgent(userId, newUser)).rejects.toEqual(error);
 
-      expect(Juridical_Agent.create).toHaveBeenCalledWith({
+      expect(User_Properties.create).toHaveBeenCalledWith({
         userId: userId,
         cnpj: newUser.cnpj,
         companyName: newUser.companyName,
@@ -201,11 +194,11 @@ describe('userRepository', () => {
 
       const expectedUserId = 1;
 
-      Physical_Agent.create.mockResolvedValue({ userId: expectedUserId });
+      User_Properties.create.mockResolvedValue({ userId: expectedUserId });
 
       const result = await userRepository.addPhysicalAgent(userId, newUser);
 
-      expect(Physical_Agent.create).toHaveBeenCalledWith({
+      expect(User_Properties.create).toHaveBeenCalledWith({
         userId: userId,
         cpf: newUser.cpf,
       });
@@ -221,11 +214,11 @@ describe('userRepository', () => {
 
       const error = 'Internal Server Error';
 
-      Physical_Agent.create.mockRejectedValue(error);
+      User_Properties.create.mockRejectedValue(error);
 
       await expect(userRepository.addPhysicalAgent(userId, newUser)).rejects.toEqual(error);
 
-      expect(Physical_Agent.create).toHaveBeenCalledWith({
+      expect(User_Properties.create).toHaveBeenCalledWith({
         userId: userId,
         cpf: newUser.cpf,
       });
@@ -310,12 +303,12 @@ describe('userRepository', () => {
       const expectedType = 'Professor';
 
       User.findOne.mockResolvedValue(userData);
-      Teacher.findOne.mockResolvedValue(professorResult);
+      User_Properties.findOne.mockResolvedValue(professorResult);
 
       const result = await userRepository.getUserData(userId);
 
       expect(User.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
-      expect(Teacher.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
+      expect(User_Properties.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
 
       expect(result.userId).toEqual(userData.userId);
       expect(result.fullName).toEqual(userData.fullName);
@@ -341,12 +334,12 @@ describe('userRepository', () => {
       const expectedType = 'Aluno';
 
       User.findOne.mockResolvedValue(userData);
-      Student.findOne.mockResolvedValue(studentResult);
+      User_Properties.findOne.mockResolvedValue(studentResult);
 
       const result = await userRepository.getUserData(userId);
 
       expect(User.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
-      expect(Student.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
+      expect(User_Properties.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
 
       expect(result.userId).toEqual(userData.userId);
       expect(result.fullName).toEqual(userData.fullName);
@@ -372,12 +365,12 @@ describe('userRepository', () => {
       const expectedType = 'Agente Externo';
 
       User.findOne.mockResolvedValue(userData);
-      Physical_Agent.findOne.mockResolvedValue(physicalAgentResult);
+      User_Properties.findOne.mockResolvedValue(physicalAgentResult);
 
       const result = await userRepository.getUserData(userId);
 
       expect(User.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
-      expect(Physical_Agent.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
+      expect(User_Properties.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
 
       expect(result.userId).toEqual(userData.userId);
       expect(result.fullName).toEqual(userData.fullName);
@@ -403,12 +396,12 @@ describe('userRepository', () => {
       const expectedType = 'Agente Externo';
 
       User.findOne.mockResolvedValue(userData);
-      Juridical_Agent.findOne.mockResolvedValue(juridicalAgentResult);
+      User_Properties.findOne.mockResolvedValue(juridicalAgentResult);
 
       const result = await userRepository.getUserData(userId);
 
       expect(User.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
-      expect(Juridical_Agent.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
+      expect(User_Properties.findOne).toHaveBeenCalledWith({ where: { userId: userId } });
 
       expect(result.userId).toEqual(userData.userId);
       expect(result.fullName).toEqual(userData.fullName);
