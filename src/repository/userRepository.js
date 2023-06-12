@@ -143,4 +143,31 @@ module.exports = {
       reject(e);
     }
   }),
+
+  getAllUsers: () => new Promise((resolve, reject) => {
+    try {
+      User.findAll().then((response) => {
+        resolve(response);
+      }).catch((e) => reject(e));
+    } catch(e) {
+      reject(e);
+    }
+  }),
+
+  getUserProperties: (userId) => new Promise((resolve, reject) => {
+    try {
+      User_Properties.findAll({
+        where: {
+          userId
+        }
+      }).then((response) => {
+        resolve(response);
+      }).catch((error) => {
+        reject(error);
+      })
+    } catch(error) {
+      reject(error);
+    }
+  })
+
 };
