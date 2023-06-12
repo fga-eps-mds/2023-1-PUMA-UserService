@@ -15,9 +15,9 @@ const app = express();
 
 (async () => {
   try {
+    await User_Type.sync({ alter: true })
     await User.sync({ alter: true })
     await User_Properties.sync({ alter: true })
-    await User_Type.sync({ alter: true })
     await Contact.sync({ alter: true })
 
     console.log("Database Inicializado")

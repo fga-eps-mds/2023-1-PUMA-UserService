@@ -11,7 +11,6 @@ module.exports = {
       fullName: newUser.name,
       email: newUser.email,
       passwordHash: hash,
-      isAdmin: false,
       phoneNumber: newUser.phoneNumber
     })
       .then((response) => {
@@ -100,8 +99,6 @@ module.exports = {
 
   getUserData: async (userId) => {
     try {
-      let type = null;
-
       const userData = await User.findOne({where: { userId: userId }});
 
       const userPermission = await User_Type.findOne({where: { userTypeId: userData.userTypeId }});

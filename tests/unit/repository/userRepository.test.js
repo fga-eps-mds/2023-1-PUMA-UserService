@@ -313,8 +313,6 @@ describe('userRepository', () => {
       expect(result.userId).toEqual(userData.userId);
       expect(result.fullName).toEqual(userData.fullName);
       expect(result.email).toEqual(userData.email);
-      expect(result.isAdmin).toEqual(userData.isAdmin);
-      expect(result.type).toEqual(expectedType);
     });
 
     it('should return the user data for a specific user ID (student)', async () => {
@@ -344,8 +342,6 @@ describe('userRepository', () => {
       expect(result.userId).toEqual(userData.userId);
       expect(result.fullName).toEqual(userData.fullName);
       expect(result.email).toEqual(userData.email);
-      expect(result.isAdmin).toEqual(userData.isAdmin);
-      expect(result.type).toEqual(expectedType);
     });
 
     it('should return the user data for a specific user ID (physical agent)', async () => {
@@ -375,8 +371,6 @@ describe('userRepository', () => {
       expect(result.userId).toEqual(userData.userId);
       expect(result.fullName).toEqual(userData.fullName);
       expect(result.email).toEqual(userData.email);
-      expect(result.isAdmin).toEqual(userData.isAdmin);
-      expect(result.type).toEqual(expectedType);
     });
 
     it('should return the user data for a specific user ID (juridical agent)', async () => {
@@ -406,8 +400,6 @@ describe('userRepository', () => {
       expect(result.userId).toEqual(userData.userId);
       expect(result.fullName).toEqual(userData.fullName);
       expect(result.email).toEqual(userData.email);
-      expect(result.isAdmin).toEqual(userData.isAdmin);
-      expect(result.type).toEqual(expectedType);
     });
 
     it('should handle errors when getting user data', async () => {
