@@ -3,8 +3,10 @@ const emailService = require('../../../src/services/emailService');
 const controller = require('../../../src/controller/userController');
 const userRepository = require('../../../src/repository/userRepository');
 const User = require('../../../src/db/model/User');
+const userTypeRepository = require('../../../src/repository/userTypeRepository');
 
 jest.mock('../../../src/repository/userRepository');
+jest.mock('../../../src/repository/userTypeRepository');
 jest.mock('../../../src/services/emailService');
 jest.mock('../../../src/db/model/User');
 
@@ -16,6 +18,17 @@ describe('Controller', () => {
       password: 'password',
       type: 'Agente Externo',
       externalAgentType: 'Pessoa Fisica',
+    };
+    let userType = {
+      userTypeId: 1,
+      typeName: 'Aluno',
+      canEditExternalEnvironment: false,
+      canCreateDiscipline: false,
+      canAcceptTeacher: false,
+      canRevokeUserType: false,
+      canGiveUserType: false,
+      canEditPermission: false,
+      canDeleteUserType: false
     };
     const userId = '123';
     const addPhysicalAgent = jest.fn();
@@ -31,6 +44,17 @@ describe('Controller', () => {
         type: 'Agente Externo',
         externalAgentType: 'Pessoa Fisica',
       };
+      userType = {
+        userTypeId: 1,
+        typeName: 'Aluno',
+        canEditExternalEnvironment: false,
+        canCreateDiscipline: false,
+        canAcceptTeacher: false,
+        canRevokeUserType: false,
+        canGiveUserType: false,
+        canEditPermission: false,
+        canDeleteUserType: false
+      };
       userRepository.addUser.mockResolvedValue(userId);
       userRepository.addPhysicalAgent.mockImplementation(addPhysicalAgent);
       userRepository.addJuridicalAgent.mockImplementation(addJuridicalAgent);
@@ -44,6 +68,8 @@ describe('Controller', () => {
     });
 
     it('should register a physical agent', async () => {
+      userType.typeName = 'Pessoa Fisica';
+      userTypeRepository.getUserTypeByName.mockResolvedValue([userType]);
       await expect(controller.registerUser(newUser)).resolves.toBeUndefined();
       expect(addPhysicalAgent).toHaveBeenCalledWith(userId, newUser);
       expect(addJuridicalAgent).not.toHaveBeenCalled();
@@ -54,6 +80,8 @@ describe('Controller', () => {
 
     it('should register a juridical agent', async () => {
         newUser.externalAgentType = 'Pessoa Juridica';
+        userType.typeName = 'Pessoa Juridica';
+        userTypeRepository.getUserTypeByName.mockResolvedValue([userType]);
         await expect(controller.registerUser(newUser)).resolves.toBeUndefined();
         expect(addPhysicalAgent).not.toHaveBeenCalledWith(userId, newUser);
         expect(addJuridicalAgent).toHaveBeenCalled();
@@ -64,6 +92,7 @@ describe('Controller', () => {
 
     it('should register a student agent', async () => {
         newUser.type = 'Aluno';
+        userTypeRepository.getUserTypeByName.mockResolvedValue([userType]);
         await expect(controller.registerUser(newUser)).resolves.toBeUndefined();
         expect(addPhysicalAgent).not.toHaveBeenCalledWith(userId, newUser);
         expect(addJuridicalAgent).not.toHaveBeenCalled();
@@ -74,7 +103,9 @@ describe('Controller', () => {
 
     it('should register a professor agent', async () => {
         newUser.type = 'Professor';
+        userType.typeName = 'Professor';
         User.findAll.mockResolvedValue([]);
+        userTypeRepository.getUserTypeByName.mockResolvedValue([userType]);
 
         await expect(controller.registerUser(newUser)).resolves.toBeUndefined();
         expect(addPhysicalAgent).not.toHaveBeenCalledWith(userId, newUser);
@@ -95,19 +126,24 @@ describe('Controller', () => {
     it('should reject when userRepository.addUser throws an error', async () => {
       const error = new Error('add user error');
       userRepository.addUser.mockRejectedValue(error);
+      userTypeRepository.getUserTypeByName.mockResolvedValue([userType]);
       await expect(controller.registerUser(newUser)).rejects.toThrow(error);
     });
 
     it('should reject when userRepository.addPhysicalAgent throws an error', async () => {
       const error = new Error('add physical agent error');
+      userType.typeName = 'Pessoa Fisica';
       userRepository.addPhysicalAgent.mockRejectedValue(error);
+      userTypeRepository.getUserTypeByName.mockResolvedValue([userType]);
       await expect(controller.registerUser(newUser)).rejects.toThrow(error);
     });
 
     it('should reject when userRepository.addJuridicalAgent throws an error', async () => {
       const error = new Error('add juridical agent error');
+      userType.typeName = 'Pessoa Juridica';
       newUser.externalAgentType = 'Pessoa Juridica';
       userRepository.addJuridicalAgent.mockRejectedValue(error);
+      userTypeRepository.getUserTypeByName.mockResolvedValue([userType]);
       await expect(controller.registerUser(newUser)).rejects.toThrow(error);
     });
 
@@ -115,13 +151,16 @@ describe('Controller', () => {
       const error = new Error('add student error');
       newUser.type = 'Aluno';
       userRepository.addStudent.mockRejectedValue(error);
+      userTypeRepository.getUserTypeByName.mockResolvedValue([userType]);
       await expect(controller.registerUser(newUser)).rejects.toThrow(error);
     });
 
     it('should reject when userRepository.addProfessor throws an error', async () => {
       const error = new Error('add professor error');
+      userType.typeName = 'Professor';
       newUser.type = 'Professor';
       userRepository.addProfessor.mockRejectedValue(error);
+      userTypeRepository.getUserTypeByName.mockResolvedValue([userType]);
       await expect(controller.registerUser(newUser)).rejects.toThrow(error);
     });
 
