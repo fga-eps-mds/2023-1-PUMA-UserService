@@ -534,5 +534,32 @@ describe('userRepository', () => {
       expect(User.findAll).toHaveBeenCalled();
     });
   });
+
+  describe('getUserProperties', () => {
+    it('should return the user property', async () => {
+      const expectedResponse = {};
+
+      const userId = 1;
+
+      User_Properties.findAll.mockResolvedValue(expectedResponse);
+
+      const result = await userRepository.getUserProperties(userId);
+
+      expect(User_Properties.findAll).toHaveBeenCalledWith({ where: { userId: userId } });
+      expect(result).toEqual(expectedResponse);
+    });
+
+    it('should handle errors when get user property', async () => {
+      const error = 'Internal Server Error';
+
+      const userId = 1;
+
+      User_Properties.findAll.mockRejectedValue(error);
+
+      await expect(userRepository.getUserProperties(userId)).rejects.toEqual(error);
+
+      expect(User_Properties.findAll).toHaveBeenCalledWith({ where: { userId: userId } });
+    });
+  });
 });
 
