@@ -113,7 +113,7 @@ module.exports = {
   getAllUsers: () => new Promise(async (resolve, reject) => {
     try {
       const users = await userRepository.getAllUsers();
-      for(var user of users) {
+      for(const user of users) {
         user.user_properties = await userRepository.getUserProperties(user.userId);
       }
       resolve(users);
