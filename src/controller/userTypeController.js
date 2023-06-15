@@ -32,16 +32,6 @@ module.exports = {
         }
     }),
 
-    getUserTypeByName: (userTypeName) => new Promise(async (resolve, reject) => {
-        try {
-            const response = await userTypeRepository.getUserTypeByName(userTypeName);
-            resolve(response);
-        } catch (e) {
-            console.log(e);
-            reject(e);
-        }
-    }),
-
     updateUserType: (userTypeId, newUserType) => new Promise(async (resolve, reject) => {
         try {
             const response = await userTypeRepository.updateUserType(userTypeId, newUserType);
