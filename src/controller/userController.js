@@ -110,13 +110,14 @@ module.exports = {
     }
   }),
 
-  getAllUsers: () => new Promise(async (resolve, reject) => {
+  getAllUsers: () => new Promise((resolve, reject) => {
     try {
-      const users = await userRepository.getAllUsers();
-      for(const user of users) {
-        user.user_properties = await userRepository.getUserProperties(user.userId);
-      }
-      resolve(users);
+      userRepository.getAllUsers().then(async (response) => {
+        for(const user of response) {
+          user.user_properties = await userRepository.getUserProperties(user.userId);
+        }
+        resolve(response);
+      });
     } catch(error) {
       reject(error);
     }
