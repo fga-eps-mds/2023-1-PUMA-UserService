@@ -119,58 +119,42 @@ module.exports = {
   },
 
   updateUserPassword: async (email, hash) => {
-    try {
-      return new Promise((resolve, reject) => {
-        User.update(
-          { passwordHash: hash },
-          { where: { email:email }}
-          )
-          .then((_response) => {
-            resolve();
-          })
-          .catch((response) => {
-            reject(response);
-          });
-      });
-    } catch (e) {
-      reject(e);
-    }
+    return new Promise((resolve, reject) => {
+      User.update(
+        { passwordHash: hash },
+        { where: { email:email }}
+        )
+        .then((_response) => {
+          resolve();
+        })
+        .catch((response) => {
+          reject(response);
+        });
+    });
   },
 
   checkUserByEmail: (email) => new Promise((resolve, reject) => {
-    try {
-      User.findAll({ where: { email: email }})
-        .then((response) => resolve(response))
-        .catch((e) => reject(e));
-    } catch (e) {
-      reject(e);
-    }
+    User.findAll({ where: { email: email }})
+      .then((response) => resolve(response))
+      .catch((e) => reject(e));
   }),
 
   getAllUsers: () => new Promise((resolve, reject) => {
-    try {
-      User.findAll().then((response) => {
-        resolve(response);
-      }).catch((e) => reject(e));
-    } catch(e) {
-      reject(e);
-    }
+    User.findAll().then((response) => {
+      resolve(response);
+    }).catch((e) => reject(e));
   }),
 
   getUserProperties: (userId) => new Promise((resolve, reject) => {
-    try {
-      User_Properties.findAll({
-        where: {
-          userId
-        }
-      }).then((response) => {
-        resolve(response);
-      }).catch((error) => {
-        reject(error);
-      })
-    } catch(error) {
+    User_Properties.findAll({
+      where: {
+        userId
+      }
+    }).then((response) => {
+      resolve(response);
+    }).catch((error) => {
       reject(error);
-    }
+    })
   })
 
 };
