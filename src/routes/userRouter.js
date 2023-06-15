@@ -43,7 +43,7 @@ routes.get('/user/teacher/pending', (req, res) => {
           }
         });
 
-        response.push(user);
+        response.push({...user, ...teacher});
       }
       res.status(200).json({teachers: response});
     });
