@@ -111,16 +111,14 @@ module.exports = {
   }),
 
   getAllUsers: () => new Promise((resolve, reject) => {
-    try {
       userRepository.getAllUsers().then(async (response) => {
         for(const user of response) {
           user.user_properties = await userRepository.getUserProperties(user.userId);
         }
         resolve(response);
+      }).catch((error) => {
+        reject(error);
       });
-    } catch(error) {
-      reject(error);
-    }
   }),
 
 };
