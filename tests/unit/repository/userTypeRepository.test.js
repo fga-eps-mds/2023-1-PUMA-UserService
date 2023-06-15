@@ -74,6 +74,31 @@ describe('User Type Repository', () => {
       expect(userType).toEqual(expectedUserType);
     });
 
+    it('should get a user type by name successfully', async () => {
+      const userTypeName = 'Admin';
+
+      const userTypes = [
+        {
+          userTypeId: 1,
+          typeName: 'Admin'
+        },
+      ];
+
+      User_Type.findAll.mockResolvedValue(userTypes);
+
+      const expectedUserType = userTypes;
+
+      const userType = await userTypeRepository.getUserTypeByName(userTypeName);
+
+      expect(User_Type.findAll).toHaveBeenCalledWith({
+        where: {
+          typeName: userTypeName,
+        },
+      });
+
+      expect(userType).toEqual(expectedUserType);
+    });
+
     it('should get all user types successfully', async () => {
       const userTypes = [
         {
@@ -109,6 +134,22 @@ describe('User Type Repository', () => {
       expect(User_Type.findAll).toHaveBeenCalledWith({
         where: {
           userTypeId: userTypeId,
+        },
+      });
+    });
+
+    it('should handle errors when getting user types by name', async () => {
+      const userTypeName = 'Admin';
+
+      const error = 'Internal Server Error';
+
+      User_Type.findAll.mockRejectedValue(error);
+
+      await expect(userTypeRepository.getUserTypeByName(userTypeName)).rejects.toEqual(error);
+
+      expect(User_Type.findAll).toHaveBeenCalledWith({
+        where: {
+          typeName: userTypeName,
         },
       });
     });
