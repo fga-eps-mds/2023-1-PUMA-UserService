@@ -5,7 +5,13 @@ module.exports = {
   addUserType: (newUserType) => new Promise((resolve, reject) => {
     User_Type.create({
       typeName: newUserType.typeName,
-      description: newUserType.description
+      canEditExternalEnvironment:newUserType.canEditExternalEnvironment,
+      canCreateDiscipline:newUserType.canCreateDiscipline,
+      canAcceptTeacher:newUserType.canAcceptTeacher,
+      canRevokeUserType:newUserType.canRevokeUserType,
+      canGiveUserType:newUserType.canGiveUserType,
+      canEditPermission:newUserType.canEditPermission,
+      canDeleteUserType:newUserType.canDeleteUserType
     })
       .then((response) => {
         resolve(response.userTypeid);
@@ -40,9 +46,31 @@ module.exports = {
     }
   }),
 
+  getUserTypeByName: (userTypeName) => new Promise((resolve, reject) => {
+    User_Type.findAll({
+      where: {
+        typeName: userTypeName
+      }
+    })
+    .then((response) => {
+      resolve(response);
+    })
+    .catch((response) => {
+      reject(response);
+    });
+  }),
+
   updateUserType: (userTypeId, newUserType) => new Promise((resolve, reject) => {
-    User_Type.update(
-      { typeName: newUserType.typeName, description: newUserType.description },
+    User_Type.update({ 
+      typeName: newUserType.typeName,
+      canEditExternalEnvironment:newUserType.canEditExternalEnvironment,
+      canCreateDiscipline:newUserType.canCreateDiscipline,
+      canAcceptTeacher:newUserType.canAcceptTeacher,
+      canRevokeUserType:newUserType.canRevokeUserType,
+      canGiveUserType:newUserType.canGiveUserType,
+      canEditPermission:newUserType.canEditPermission,
+      canDeleteUserType:newUserType.canDeleteUserType
+    },
       { where: { userTypeId: userTypeId}, returning: true}
     )
       .then((response) => {

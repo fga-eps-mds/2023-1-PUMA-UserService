@@ -6,7 +6,8 @@ const emailService = require('../services/emailService');
 
 const saltRounds = 10;
 const userRepository = require('../repository/userRepository');
-const Common_User = require('../db/model/Common_User');
+const userTypeRepository = require('../repository/userTypeRepository');
+const User = require('../db/model/User');
 
 module.exports = {
   registerUser: (newUser) => new Promise((resolve, reject) => {
@@ -15,19 +16,22 @@ module.exports = {
         reject(error);
       } else {
         try {
-          const userId = await userRepository.addUser(newUser, hash);
-          switch (newUser.type) {
-            case 'Agente Externo':
-              switch (newUser.externalAgentType) {
-                case 'Pessoa Fisica':
-                  await userRepository.addPhysicalAgent(userId, newUser);
-                  break;
-                case 'Pessoa Juridica':
-                  await userRepository.addJuridicalAgent(userId, newUser);
-                  break;
-                default:
-                  reject(new Error('Tipo não encontrado'));
-              }
+          let userType;
+          if(newUser.type === 'Agente Externo' && (newUser.externalAgentType === 'Pessoa Fisica' || newUser.externalAgentType === 'Pessoa Juridica')) {
+            userType = await userTypeRepository.getUserTypeByName(newUser.externalAgentType);
+          } else if(newUser.type === 'Aluno' || newUser.type === 'Professor') {
+            userType = await userTypeRepository.getUserTypeByName(newUser.type);
+          } else {
+            reject(new Error('Tipo não encontrado'));
+          }
+
+          const userId = await userRepository.addUser(newUser, hash, userType[0].userTypeId);
+          switch (userType[0].typeName) {
+            case 'Pessoa Fisica':
+              await userRepository.addPhysicalAgent(userId, newUser);
+              break;
+            case 'Pessoa Juridica':
+              await userRepository.addJuridicalAgent(userId, newUser);
               break;
             case 'Aluno':
               await userRepository.addStudent(userId, newUser);
@@ -35,7 +39,7 @@ module.exports = {
             case 'Professor':
               await userRepository.addProfessor(userId, newUser);
               
-              const admins = await Common_User.findAll({
+              const admins = await User.findAll({
                 where: {
                   isAdmin: true
                 }
@@ -49,6 +53,7 @@ module.exports = {
           }
           await emailService.sendEmailRegister(process.env.GMAIL_ACCOUNT, newUser.email, newUser.name);
         } catch (e) {
+          console.log(e);
           reject(e);
         }
         resolve();
@@ -103,6 +108,17 @@ module.exports = {
     } catch (e) {
       reject(e);
     }
+  }),
+
+  getAllUsers: () => new Promise((resolve, reject) => {
+      userRepository.getAllUsers().then(async (response) => {
+        for(const user of response) {
+          user.user_properties = await userRepository.getUserProperties(user.userId);
+        }
+        resolve(response);
+      }).catch((error) => {
+        reject(error);
+      });
   }),
 
 };

@@ -1,11 +1,21 @@
 const { DataTypes } = require('sequelize');
 const database = require('../AppDb');
 
-const Common_User = database.define('Common_User', {
+const User = database.define('User', {
     userId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
+    },
+    userTypeId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: "User_Type",
+            schema: "public",
+          },
+          key: "userTypeId"
+        },
     },
     email: {
         type: DataTypes.STRING,
@@ -29,8 +39,11 @@ const Common_User = database.define('Common_User', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    image: {
+        type: DataTypes.TEXT,
+    }
 }, {
     freezeTableName: true
 })
 
-module.exports = Common_User
+module.exports = User
