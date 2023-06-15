@@ -511,5 +511,28 @@ describe('userRepository', () => {
       expect(User.findAll).toHaveBeenCalledWith({ where: { email: email } });
     });
   });
+
+  describe('getAllUsers', () => {
+    it('should return all the users', async () => {
+      const expectedResponse = {};
+
+      User.findAll.mockResolvedValue(expectedResponse);
+
+      const result = await userRepository.getAllUsers();
+
+      expect(User.findAll).toHaveBeenCalled();
+      expect(result).toEqual(expectedResponse);
+    });
+
+    it('should handle errors when get all users', async () => {
+      const error = 'Internal Server Error';
+
+      User.findAll.mockRejectedValue(error);
+
+      await expect(userRepository.getAllUsers()).rejects.toEqual(error);
+
+      expect(User.findAll).toHaveBeenCalled();
+    });
+  });
 });
 
