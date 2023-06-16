@@ -4,11 +4,8 @@ const express = require('express');
 const cors = require('cors');
 const environment = require('./config/environment.config');
 const configRoutes = require('./routes/router');
-const Common_User = require('./db/model/Common_User');
-const Juridical_Agent = require('./db/model/Juridical_Agent');
-const Physical_Agent = require('./db/model/Physical_Agent');
-const Student = require('./db/model/Student');
-const Teacher = require('./db/model/Teacher');
+const User = require('./db/model/User');
+const User_Properties = require('./db/model/User_Properties');
 const User_Type = require('./db/model/User_Type');
 const Contact = require('./db/model/Contact');
 // eslint-disable-next-line no-unused-vars
@@ -18,12 +15,9 @@ const app = express();
 
 (async () => {
   try {
-    await Common_User.sync({ alter: true })
-    await Juridical_Agent.sync({ alter: true })
-    await Physical_Agent.sync({ alter: true })
-    await Student.sync({ alter: true })
-    await Teacher.sync({ alter: true })
     await User_Type.sync({ alter: true })
+    await User.sync({ alter: true })
+    await User_Properties.sync({ alter: true })
     await Contact.sync({ alter: true })
 
     console.log("Database Inicializado")
