@@ -11,7 +11,8 @@ module.exports = {
       fullName: newUser.name,
       email: newUser.email,
       passwordHash: hash,
-      phoneNumber: newUser.phoneNumber
+      phoneNumber: newUser.phoneNumber,
+      image: newUser.image,
     })
       .then((response) => {
         resolve(response.userId);

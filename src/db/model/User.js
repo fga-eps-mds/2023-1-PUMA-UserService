@@ -41,7 +41,8 @@ const User = database.define('User', {
     },
     image: {
         type: DataTypes.TEXT,
-    }
+        allowNull: true
+    },
 }, {
     freezeTableName: true
 })
