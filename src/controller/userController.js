@@ -1,6 +1,7 @@
 /* eslint-disable prefer-const */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const emailService = require('../services/emailService');
 
@@ -62,17 +63,13 @@ module.exports = {
   }),
 
   checkUserAndGetUserData: async (user) => {
-    let userId;
-
-    userId = await userRepository.checkUser(user);
-    let userData = await userRepository.getUserData(userId);
-
+    const userId = await userRepository.checkUser(user);
+    const userData = await userRepository.getUserData(userId);
     return { ...userData };
   },
 
-  updatePassword: async (user) => new Promise((resolve, reject) => {
+  updatePassword: async ({ email, password }) => new Promise((resolve, reject) => {
     try {
-      const { email, password } = user;
       bcrypt.hash(password, saltRounds, async (error, hash) => {
         if (error) {
           reject(error);
@@ -84,6 +81,7 @@ module.exports = {
       resolve({ email });
     } catch (e) {
       console.log(e);
+      reject(e);
     }
   }),
 
@@ -121,4 +119,20 @@ module.exports = {
       });
   }),
 
+  generateToken: (user) => {
+    const payload = { 
+      id: user.id,
+      name: user.name,
+      email: user.email 
+    };
+    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+  },
+
+  decodeToken: (token) => {
+    try {
+      return jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+      throw error;
+    }
+  }
 };
