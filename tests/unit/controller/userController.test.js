@@ -342,6 +342,12 @@ describe('Controller', () => {
       const response = await controller.getAllUsers();
       expect(response).toEqual(expected)
     });
+
+    it('should reject when userRepository.getAllUsers throws an error', async () => {
+      const error = new Error('add user error');
+      userRepository.getAllUsers.mockRejectedValue(error);
+      await expect(controller.getAllUsers()).rejects.toThrow(error);
+    });
   });
 })
 
