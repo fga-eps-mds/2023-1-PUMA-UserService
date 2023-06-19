@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const express = require('express');
 
 const routes = express.Router();
@@ -71,6 +72,7 @@ routes.patch('/user/teacher/pending/:userId', (req, res) => {
     }
   });
 });
+
 routes.get('/', (req, res) => {
   res.status(200).json({
     Project: 'Puma',
@@ -78,9 +80,14 @@ routes.get('/', (req, res) => {
   });
 });
 
-routes.put('/password/:email', (req, res) => {
+routes.put('/password/:token', (req, res) => {
   const { body, params } = req;
-  userController.updatePassword({ ...body, ...params }).then(({ email }) => {
+  const { token } = params;
+  
+  const decodedToken = userController.decodeToken(token);
+  const email = decodedToken.email;
+
+  userController.updatePassword({ ...body, email }).then(({ email }) => {
     res.status(200).json({ email });
   }).catch((response) => {
     res.status(400).json({ response });
@@ -89,8 +96,9 @@ routes.put('/password/:email', (req, res) => {
 
 routes.post('/recover', async (req, res) => {
   const { body } = req;
+ 
 
-  userController.recoverPassword(body).then((response) => {
+  userController.recoverPassword({email: body.email}).then((response) => {
     if (response.status === 404) {
       res.status(404).json({ response });
     } else {
