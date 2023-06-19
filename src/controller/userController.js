@@ -1,7 +1,6 @@
 /* eslint-disable prefer-const */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const emailService = require('../services/emailService');
 
@@ -12,9 +11,9 @@ const User = require('../db/model/User');
 
 module.exports = {
   registerUser: (newUser) => new Promise((resolve, reject) => {
-    bcrypt.hash(newUser.password, saltRounds, async (err, hash) => {
-      if (err) {
-        reject(err);
+    bcrypt.hash(newUser.password, saltRounds, async (error, hash) => {
+      if (error) {
+        reject(error);
       } else {
         try {
           let userType;
@@ -63,16 +62,20 @@ module.exports = {
   }),
 
   checkUserAndGetUserData: async (user) => {
-    const userId = await userRepository.checkUser(user);
-    const userData = await userRepository.getUserData(userId);
+    let userId;
+
+    userId = await userRepository.checkUser(user);
+    let userData = await userRepository.getUserData(userId);
+
     return { ...userData };
   },
 
-  updatePassword: async ({ email, password }) => new Promise((resolve, reject) => {
+  updatePassword: async (user) => new Promise((resolve, reject) => {
     try {
-      bcrypt.hash(password, saltRounds, async (err, hash) => {
-        if (err) {
-          reject(err);
+      const { email, password } = user;
+      bcrypt.hash(password, saltRounds, async (error, hash) => {
+        if (error) {
+          reject(error);
         } else {
           await userRepository.updateUserPassword(email, hash);
           await emailService.sendEmailConfimationPasswordUpdated(process.env.GMAIL_ACCOUNT, email);
@@ -81,7 +84,6 @@ module.exports = {
       resolve({ email });
     } catch (e) {
       console.log(e);
-      reject(e);
     }
   }),
 
@@ -119,20 +121,4 @@ module.exports = {
       });
   }),
 
-  generateToken: (user) => {
-    const payload = { 
-      id: user.id,
-      name: user.name,
-      email: user.email 
-    };
-    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
-  },
-
-  decodeToken: (token) => {
-    try {
-      return jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      throw err;
-    }
-  }
 };
