@@ -279,6 +279,7 @@ describe('Controller', () => {
     it('should recover password and return status 200', async () => {
       const user = {
         email: 'john@example.com',
+        token: 'eywjk'
       };
   
       const userData = [
@@ -299,7 +300,7 @@ describe('Controller', () => {
         status: 200,
       });
       expect(userRepository.checkUserByEmail).toHaveBeenCalledWith(user.email);
-      expect(emailService.sendEmail).toHaveBeenCalledWith(process.env.GMAIL_ACCOUNT, user.email);
+      expect(emailService.sendEmail).toHaveBeenCalledWith(process.env.GMAIL_ACCOUNT, user.email, user.token);
     });
   
     it('should recover password and return status 404 when user does not exist', async () => {
