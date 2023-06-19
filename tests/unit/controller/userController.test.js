@@ -4,6 +4,7 @@ const controller = require('../../../src/controller/userController');
 const userRepository = require('../../../src/repository/userRepository');
 const User = require('../../../src/db/model/User');
 const userTypeRepository = require('../../../src/repository/userTypeRepository');
+const jwt = require('jsonwebtoken');
 
 jest.mock('../../../src/repository/userRepository');
 jest.mock('../../../src/repository/userTypeRepository');
@@ -279,6 +280,7 @@ describe('Controller', () => {
     it('should recover password and return status 200', async () => {
       const user = {
         email: 'john@example.com',
+        token: 'eywjk'
       };
   
       const userData = [
@@ -299,7 +301,7 @@ describe('Controller', () => {
         status: 200,
       });
       expect(userRepository.checkUserByEmail).toHaveBeenCalledWith(user.email);
-      expect(emailService.sendEmail).toHaveBeenCalledWith(process.env.GMAIL_ACCOUNT, user.email);
+      expect(emailService.sendEmail).toHaveBeenCalledWith(process.env.GMAIL_ACCOUNT, user.email, user.token);
     });
   
     it('should recover password and return status 404 when user does not exist', async () => {
@@ -313,6 +315,71 @@ describe('Controller', () => {
       await expect(controller.recoverPassword(user)).resolves.toEqual({ status: 404 });
       expect(userRepository.checkUserByEmail).toHaveBeenCalledWith(user.email);
       expect(emailService.sendEmail).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('getAllUsers', () => {
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+  
+    it('should get all users and return status 200', async () => {
+      const responseMocked = [
+        {
+          userId: 1
+        }
+      ];
+
+      const expected = [
+        {
+          userId: 1,
+          user_properties: {}
+        }
+      ];
+  
+      userRepository.getAllUsers.mockResolvedValue(responseMocked);
+      userRepository.getUserProperties.mockResolvedValue({});
+
+      const response = await controller.getAllUsers();
+      expect(response).toEqual(expected)
+    });
+
+    it('should reject when userRepository.getAllUsers throws an error', async () => {
+      const error = new Error('add user error');
+      userRepository.getAllUsers.mockRejectedValue(error);
+      await expect(controller.getAllUsers()).rejects.toThrow(error);
+    });
+  });
+
+  describe('Token', () => {
+    const SECRET = 'your-secret-key';
+    const email = 'test@example.com';
+  
+    describe('generateToken', () => {
+      it('should generate a valid token', () => {
+        process.env.SECRET = SECRET
+        const token = controller.generateToken(email);
+        const decoded = jwt.verify(token, process.env.SECRET);
+        expect(decoded.email).toBe(email);
+      });
+    });
+  
+    describe('decodeToken', () => {
+      it('should decode a valid token and return the payload', () => {
+        process.env.SECRET = SECRET
+        const payload = { email };
+        const token = jwt.sign(payload, process.env.SECRET, { expiresIn: '1h' });
+        const decoded = controller.decodeToken(token);
+        expect(decoded.email).toBe(email);
+      });
+  
+      it('should throw an error for an invalid token', () => {
+        process.env.SECRET = SECRET
+        const invalidToken = 'invalid-token';
+        expect(() => {
+          controller.decodeToken(invalidToken);
+        }).toThrow();
+      });
     });
   });
 })

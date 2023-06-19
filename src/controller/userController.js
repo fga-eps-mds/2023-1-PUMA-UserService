@@ -1,6 +1,7 @@
 /* eslint-disable prefer-const */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const emailService = require('../services/emailService');
 
@@ -62,11 +63,8 @@ module.exports = {
   }),
 
   checkUserAndGetUserData: async (user) => {
-    let userId;
-
-    userId = await userRepository.checkUser(user);
-    let userData = await userRepository.getUserData(userId);
-
+    const userId = await userRepository.checkUser(user);
+    const userData = await userRepository.getUserData(userId);
     return { ...userData };
   },
 
@@ -84,17 +82,18 @@ module.exports = {
       resolve({ email });
     } catch (e) {
       console.log(e);
+      reject(e);
     }
   }),
 
   recoverPassword: (user) => new Promise((resolve, reject) => {
     try {
-      const { email } = user;
+      const { email, token } = user;
 
       userRepository.checkUserByEmail(email)
         .then(async (response) => {
           if (response.length > 0) {
-            const info = await emailService.sendEmail(process.env.GMAIL_ACCOUNT, email);
+            const info = await emailService.sendEmail(process.env.GMAIL_ACCOUNT, email, token);
             resolve({
               ...info,
               status: 200,
@@ -121,4 +120,18 @@ module.exports = {
       });
   }),
 
+  generateToken: (email) => {
+    const payload = { 
+      email: email 
+    };
+    return jwt.sign(payload, process.env.SECRET, { expiresIn: '1h' });
+  },
+
+  decodeToken: (token) => {
+    try {
+      return jwt.verify(token, process.env.SECRET);
+    } catch (error) {
+      throw error;
+    }
+  }
 };

@@ -15,6 +15,7 @@ describe('Email Service', () => {
     it('should send an email successfully', async () => {
       const mailerAddress = 'sender@example.com';
       const receiverAddress = 'receiver@example.com';
+      const token = 'abcde'
 
       const transporterMock = {
         sendMail: jest.fn().mockResolvedValue('Email sent successfully'),
@@ -23,7 +24,7 @@ describe('Email Service', () => {
 
       const expectedEmailInfo = 'Email sent successfully';
 
-      const emailInfo = await emailService.sendEmail(mailerAddress, receiverAddress);
+      const emailInfo = await emailService.sendEmail(mailerAddress, receiverAddress, token);
 
       expect(nodemailer.createTransport).toHaveBeenCalledWith({
         service: process.env.EMAIL_SERVICE,
@@ -44,7 +45,7 @@ describe('Email Service', () => {
           address: receiverAddress,
         },
         subject: 'Puma - Recuperação de Senha',
-        html: "<h1> Clique no link para recuperar sua senha: <a href='teste/atualizar-senha/'>RECUPERAR SENHA</a> </h1>",
+        html: `<h1> Clique no link para recuperar sua senha: <a href='teste/atualizar-senha?token=${token}'>RECUPERAR SENHA</a> </h1>`,
       });
 
       expect(emailInfo).toEqual(expectedEmailInfo);

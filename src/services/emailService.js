@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 module.exports = {
-  async sendEmail(mailerAddress, receiverAddress) {
+  async sendEmail(mailerAddress, receiverAddress, token) {
     const settings = {
       service: process.env.EMAIL_SERVICE,
       port: parseInt(process.env.EMAIL_PORT, 10),
@@ -23,7 +23,7 @@ module.exports = {
         address: receiverAddress,
       },
       subject: 'Puma - Recuperação de Senha',
-      html: `<h1> Clique no link para recuperar sua senha: <a href='${global.URL_FRONT}/atualizar-senha/'>RECUPERAR SENHA</a> </h1>`,
+      html: `<h1> Clique no link para recuperar sua senha: <a href='${global.URL_FRONT}/atualizar-senha?token=${token}'>RECUPERAR SENHA</a> </h1>`,
     });
     
 
