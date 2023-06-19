@@ -96,9 +96,9 @@ routes.put('/password/:token', (req, res) => {
 
 routes.post('/recover', async (req, res) => {
   const { body } = req;
- 
+  const token = userController.generateToken(body.email);
 
-  userController.recoverPassword({email: body.email}).then((response) => {
+  userController.recoverPassword({email: body.email, token}).then((response) => {
     if (response.status === 404) {
       res.status(404).json({ response });
     } else {

@@ -68,8 +68,9 @@ module.exports = {
     return { ...userData };
   },
 
-  updatePassword: async ({ email, password }) => new Promise((resolve, reject) => {
+  updatePassword: async (user) => new Promise((resolve, reject) => {
     try {
+      const { email, password } = user;
       bcrypt.hash(password, saltRounds, async (error, hash) => {
         if (error) {
           reject(error);
@@ -87,12 +88,12 @@ module.exports = {
 
   recoverPassword: (user) => new Promise((resolve, reject) => {
     try {
-      const { email } = user;
+      const { email, token } = user;
 
       userRepository.checkUserByEmail(email)
         .then(async (response) => {
           if (response.length > 0) {
-            const info = await emailService.sendEmail(process.env.GMAIL_ACCOUNT, email);
+            const info = await emailService.sendEmail(process.env.GMAIL_ACCOUNT, email, token);
             resolve({
               ...info,
               status: 200,
@@ -119,18 +120,16 @@ module.exports = {
       });
   }),
 
-  generateToken: (user) => {
+  generateToken: (email) => {
     const payload = { 
-      id: user.id,
-      name: user.name,
-      email: user.email 
+      email: email 
     };
-    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+    return jwt.sign(payload, process.env.SECRET, { expiresIn: '1h' });
   },
 
   decodeToken: (token) => {
     try {
-      return jwt.verify(token, process.env.JWT_SECRET);
+      return jwt.verify(token, process.env.SECRET);
     } catch (error) {
       throw error;
     }
