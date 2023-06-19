@@ -316,5 +316,32 @@ describe('Controller', () => {
       expect(emailService.sendEmail).not.toHaveBeenCalled();
     });
   });
+
+  describe('getAllUsers', () => {
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+  
+    it('should get all users and return status 200', async () => {
+      const responseMocked = [
+        {
+          userId: 1
+        }
+      ];
+
+      const expected = [
+        {
+          userId: 1,
+          user_properties: {}
+        }
+      ];
+  
+      userRepository.getAllUsers.mockResolvedValue(responseMocked);
+      userRepository.getUserProperties.mockResolvedValue({});
+
+      const response = await controller.getAllUsers();
+      expect(response).toEqual(expected)
+    });
+  });
 })
 
