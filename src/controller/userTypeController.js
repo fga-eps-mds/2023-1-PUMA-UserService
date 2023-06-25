@@ -52,4 +52,14 @@ module.exports = {
         }
     }),
 
+    revokeUserPermissions: (userId) => new Promise(async (resolve, reject) => {
+        try {
+            const response = await userTypeRepository.revokeUserPermissions(userId);
+            resolve(response);
+        } catch (e) {
+            console.log(e);
+            reject(e);
+        }
+    }),
+
 };

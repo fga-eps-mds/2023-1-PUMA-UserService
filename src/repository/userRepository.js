@@ -8,6 +8,7 @@ module.exports = {
   addUser: (newUser, hash, userTypeId) => new Promise((resolve, reject) => {
     User.create({
       userTypeId,
+      initialUserTypeId: userTypeId,
       fullName: newUser.name,
       email: newUser.email,
       passwordHash: hash,
@@ -156,6 +157,30 @@ module.exports = {
     }).catch((error) => {
       reject(error);
     })
-  })
+  }),
+
+  revokeUserPermissions: (userId) => new Promise((resolve, reject) => {
+    User.findOne(
+      {
+        where: {
+          userId: userId
+        }
+      }).then((responseFindOne) => {
+        User.update(
+          { userTypeId: responseFindOne.initialUserTypeId },
+          { 
+            where: { userId: userId },
+            returning: true,
+          })
+          .then((responseUpdate) => {
+            resolve(responseUpdate);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      }).catch((error) => {
+        reject(error);
+      })
+  }),
 
 };
