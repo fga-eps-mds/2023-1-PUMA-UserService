@@ -183,4 +183,27 @@ module.exports = {
       })
   }),
 
+  changeUserTypes: (users) => new Promise((resolve, reject) => {
+    if(users.length > 0) {
+      for(let i = 0;i < users.length;i++) {
+        if(users[i] !== null) {
+          User.update({
+            userTypeId: users[i].userTypeId,
+          }, {
+            where: {
+              userId: users[i].userId,
+            },
+            returning: true,
+          }).then(() => {
+          }).catch((error) => {
+            reject(error);
+          });
+        }
+      }
+      resolve('Tipos de usuário atualizados com sucesso');
+    } else {
+      reject(`Array de usuários passado está vazio`);
+    }
+  }),
+
 };
