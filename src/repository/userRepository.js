@@ -202,7 +202,7 @@ module.exports = {
       }
       resolve('Tipos de usuário atualizados com sucesso');
     } else {
-      reject(`Array de usuários passado está vazio`);
+      throw new Error('Array de usuários passado está vazio');
     }
   }),
 
