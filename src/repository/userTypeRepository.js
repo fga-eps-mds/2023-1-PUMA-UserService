@@ -69,9 +69,13 @@ module.exports = {
       canRevokeUserType:newUserType.canRevokeUserType,
       canGiveUserType:newUserType.canGiveUserType,
       canEditPermission:newUserType.canEditPermission,
-      canDeleteUserType:newUserType.canDeleteUserType
-    },
-      { where: { userTypeId: userTypeId}, returning: true}
+      canDeleteUserType:newUserType.canDeleteUserType,
+    }, {
+      where: { 
+        userTypeId: userTypeId
+      }, 
+      returning: true,
+    }
     )
       .then((response) => {
         resolve(response[1][0].userTypeId);

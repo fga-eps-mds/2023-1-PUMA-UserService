@@ -8,6 +8,7 @@ module.exports = {
   addUser: (newUser, hash, userTypeId) => new Promise((resolve, reject) => {
     User.create({
       userTypeId,
+      initialUserTypeId: userTypeId,
       fullName: newUser.name,
       email: newUser.email,
       passwordHash: hash,
@@ -156,6 +157,53 @@ module.exports = {
     }).catch((error) => {
       reject(error);
     })
-  })
+  }),
+
+  revokeUserPermissions: (userId) => new Promise((resolve, reject) => {
+    User.findOne(
+      {
+        where: {
+          userId: userId
+        }
+      }).then((responseFindOne) => {
+        User.update(
+          { userTypeId: responseFindOne.initialUserTypeId },
+          { 
+            where: { userId: userId },
+            returning: true,
+          })
+          .then((responseUpdate) => {
+            resolve(responseUpdate);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      }).catch((error) => {
+        reject(error);
+      })
+  }),
+
+  changeUserTypes: (users) => new Promise((resolve, reject) => {
+    if(users.length > 0) {
+      for(let i = 0;i < users.length;i++) {
+        if(users[i] !== null) {
+          User.update({
+            userTypeId: users[i].userTypeId,
+          }, {
+            where: {
+              userId: users[i].userId,
+            },
+            returning: true,
+          }).then(() => {
+          }).catch((error) => {
+            reject(error);
+          });
+        }
+      }
+      resolve('Tipos de usuário atualizados com sucesso');
+    } else {
+      throw new Error('Array de usuários passado está vazio');
+    }
+  }),
 
 };

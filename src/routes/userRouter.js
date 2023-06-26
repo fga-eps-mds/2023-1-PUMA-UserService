@@ -109,8 +109,27 @@ routes.post('/recover', async (req, res) => {
   });
 });
 
-routes.get('/all-users', async(req, res) => {
+routes.get('/user/all', async(req, res) => {
   userController.getAllUsers().then((response) => {
+    res.status(200).json(response);
+  }).catch((response) => {
+    res.status(400).json(response);
+  })
+});
+
+routes.put('/user/revoke/:userId', async(req, res) => {
+  const { params } = req;
+  const { userId } = params;
+  userController.revokeUserPermissions(userId).then((response) => {
+    res.status(200).json(response);
+  }).catch((response) => {
+    res.status(400).json(response);
+  })
+});
+
+routes.put('/users/type/change', async(req, res) => {
+  const { body } = req;
+  userController.changeUserTypes(body).then((response) => {
     res.status(200).json(response);
   }).catch((response) => {
     res.status(400).json(response);

@@ -40,6 +40,7 @@ describe('userRepository', () => {
         email: 'john.doe@example.com',
         password: 'password123',
         phoneNumber: '1234567890',
+        image: 'any',
       };
 
       const userTypeId = 1;
@@ -57,6 +58,8 @@ describe('userRepository', () => {
         passwordHash: hash,
         phoneNumber: newUser.phoneNumber,
         userTypeId: userTypeId,
+        initialUserTypeId: userTypeId,
+        image: 'any',
       });
 
       expect(userId).toEqual(expectedUserId);
@@ -68,6 +71,7 @@ describe('userRepository', () => {
         email: 'john.doe@example.com',
         password: 'password123',
         phoneNumber: '1234567890',
+        image: 'any',
       };
       const hash = 'hashedPassword';
       const userTypeId = 1;
@@ -82,6 +86,8 @@ describe('userRepository', () => {
         passwordHash: hash,
         phoneNumber: newUser.phoneNumber,
         userTypeId,
+        initialUserTypeId: userTypeId,
+        image: 'any',
       });
     });
   });
@@ -559,6 +565,120 @@ describe('userRepository', () => {
       await expect(userRepository.getUserProperties(userId)).rejects.toEqual(error);
 
       expect(User_Properties.findAll).toHaveBeenCalledWith({ where: { userId: userId } });
+    });
+  });
+
+  describe('getAllUsers', () => {
+    it('should resolve with response when User.findAll resolves', async () => {
+      const mockResponse = ['user1', 'user2'];
+      User.findAll = jest.fn().mockResolvedValue(mockResponse);
+
+      const result = await userRepository.getAllUsers();
+
+      expect(User.findAll).toHaveBeenCalled();
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should reject with error when User.findAll rejects', async () => {
+      const mockError = new Error('Database error');
+      User.findAll = jest.fn().mockRejectedValue(mockError);
+
+      await expect(userRepository.getAllUsers()).rejects.toThrow(mockError);
+      expect(User.findAll).toHaveBeenCalled();
+    });
+  });
+
+  describe('getUserProperties', () => {
+    it('should resolve with response when User_Properties.findAll resolves', async () => {
+      const mockResponse = ['property1', 'property2'];
+      User_Properties.findAll = jest.fn().mockResolvedValue(mockResponse);
+      const userId = 1;
+
+      const result = await userRepository.getUserProperties(userId);
+
+      expect(User_Properties.findAll).toHaveBeenCalledWith({ where: { userId } });
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should reject with error when User_Properties.findAll rejects', async () => {
+      const mockError = new Error('Database error');
+      User_Properties.findAll = jest.fn().mockRejectedValue(mockError);
+      const userId = 1;
+
+      await expect(userRepository.getUserProperties(userId)).rejects.toThrow(mockError);
+      expect(User_Properties.findAll).toHaveBeenCalledWith({ where: { userId } });
+    });
+  });
+
+  describe('revokeUserPermissions', () => {
+    it('should resolve with response when User.findOne and User.update resolve', async () => {
+      const mockFindOneResponse = {
+        initialUserTypeId: 2
+      };
+      const mockUpdateResponse = ['updatedUser'];
+      User.findOne = jest.fn().mockResolvedValue(mockFindOneResponse);
+      User.update = jest.fn().mockResolvedValue(mockUpdateResponse);
+      const userId = 1;
+
+      const result = await userRepository.revokeUserPermissions(userId);
+
+      expect(User.findOne).toHaveBeenCalledWith({ where: { userId } });
+      expect(User.update).toHaveBeenCalledWith(
+        { userTypeId: mockFindOneResponse.initialUserTypeId },
+        { where: { userId }, returning: true }
+      );
+      expect(result).toEqual(mockUpdateResponse);
+    });
+
+    it('should reject with error when User.findOne rejects', async () => {
+      const mockError = new Error('Database error');
+      User.findOne = jest.fn().mockRejectedValue(mockError);
+      const userId = 1;
+
+      await expect(userRepository.revokeUserPermissions(userId)).rejects.toThrow(mockError);
+      expect(User.findOne).toHaveBeenCalledWith({ where: { userId } });
+    });
+
+    it('should reject with error when User.update rejects', async () => {
+      const mockFindOneResponse = {
+        initialUserTypeId: 2
+      };
+      const mockError = new Error('Database error');
+      User.findOne = jest.fn().mockResolvedValue(mockFindOneResponse);
+      User.update = jest.fn().mockRejectedValue(mockError);
+      const userId = 1;
+
+      await expect(userRepository.revokeUserPermissions(userId)).rejects.toThrow(mockError);
+      expect(User.findOne).toHaveBeenCalledWith({ where: { userId } });
+      expect(User.update).toHaveBeenCalledWith(
+        { userTypeId: mockFindOneResponse.initialUserTypeId },
+        { where: { userId }, returning: true }
+      );
+    });
+  });
+
+  describe('changeUserTypes', () => {
+    it('should resolve with success message when users array is not empty', async () => {
+      const mockUsers = [
+        { userId: 1, userTypeId: 2 },
+        { userId: 3, userTypeId: 4 }
+      ];
+      User.update = jest.fn().mockResolvedValue();
+
+      const result = await userRepository.changeUserTypes(mockUsers);
+
+      expect(User.update).toHaveBeenCalledTimes(mockUsers.length);
+      expect(result).toBe('Tipos de usuário atualizados com sucesso');
+    });
+
+    it('should reject with error when users array is empty', async () => {
+      const mockUsers = [];
+      User.update = jest.fn();
+
+      await expect(userRepository.changeUserTypes(mockUsers)).rejects.toThrow(
+        'Array de usuários passado está vazio'
+      );
+      expect(User.update).not.toHaveBeenCalled();
     });
   });
 });

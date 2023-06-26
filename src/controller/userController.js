@@ -133,5 +133,25 @@ module.exports = {
     } catch (error) {
       throw error;
     }
-  }
+  },
+
+  revokeUserPermissions: (userId) => new Promise(async (resolve, reject) => {
+    try {
+        const response = await userRepository.revokeUserPermissions(userId);
+        resolve(response);
+    } catch (e) {
+        console.log(e);
+        reject(e);
+    }
+  }),
+
+  changeUserTypes: (users) => new Promise(async (resolve, reject) => {
+    try {
+        const response = await userRepository.changeUserTypes(users);
+        resolve(response);
+    } catch (e) {
+        console.log(e);
+        reject(e);
+    }
+  }),
 };
