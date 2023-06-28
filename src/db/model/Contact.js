@@ -16,6 +16,10 @@ const Contact = database.define('Contact', {
         allowNull: false,
         unique: true
     },
+    image: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
 }, {
     freezeTableName: true
 })

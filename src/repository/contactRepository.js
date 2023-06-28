@@ -4,7 +4,8 @@ module.exports = {
     addContact: (newContact) => new Promise((resolve, reject) => {
         Contact.create({
             name: newContact.name,
-            email: newContact.email
+            email: newContact.email,
+            image: newContact.image,
         })
         .then((response) => {
             resolve(response.contactId);
@@ -34,18 +35,19 @@ module.exports = {
         } catch (e) {
           reject(e);
         }
-  }),
+    }),
 
-  updateContact: (contactId, newContact) => new Promise((resolve, reject) => {
-    Contact.update(
-      { name: newContact.name, email: newContact.email },
-      { where: { contactId: contactId } }
-    )
-      .then((response) => {
-        resolve(true);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  }),
+    updateContact: (contactId, newContact) => new Promise((resolve, reject) => {
+      Contact.update(
+        { name: newContact.name, email: newContact.email, image: newContact.image, },
+        { where: { contactId: contactId } }
+      )
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+    }),
 };
